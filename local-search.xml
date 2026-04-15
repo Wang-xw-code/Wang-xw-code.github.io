@@ -4,7 +4,20 @@
   
   
   <entry>
-    <title>Day 2</title>
+    <title>Day-03</title>
+    <link href="/2026/04/15/Day-03/"/>
+    <url>/2026/04/15/Day-03/</url>
+    
+    <content type="html"><![CDATA[<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>昨天2个小时看了29行代码，我感觉也没有太深究，整体应该是因为对B样条还是不太了解，我一直以为是传入几个点就直接成线，但是昨天了解要先得到曲线刻度位置再生成，包括什么偏移量kt这个概念，也不知道为什么要有这个东西存在，总的来说还是不懂。老师你看下这边有没有必要学下这个内容还是先放着单知道是在生成刻度位置就行。</p><h2 id="tc函数"><a href="#tc函数" class="headerlink" title="tc函数"></a>tc函数</h2><h3 id="整体分析"><a href="#整体分析" class="headerlink" title="整体分析"></a>整体分析</h3><p>首先这个tc是knots节点向量和control points控制点的缩写，根据我提供的点，把曲线的骨架和时间轴焊死。</p><h3 id="参数分析"><a href="#参数分析" class="headerlink" title="参数分析"></a>参数分析</h3><p>关于这里的参数，P同样是原始点的坐标列表数据，clamped就是决定曲线是否要精确地触碰起点和终点。<code>p=k-1</code>是在计算曲线的阶数&#x2F;多项式次数，<code>M=len(P)</code>记录传进来的点有多少。</p><h3 id="closed"><a href="#closed" class="headerlink" title="closed"></a>closed</h3><p>闭合曲线时，为了让曲线首尾相连，不能直接尾巴连头，这样接缝处会很生硬。如果画一个圆，最后一个点和第一个点位置重合，但是在数学上曲线运行到终点时速度（一阶导）和加速度（二阶导）会突然中断。<code>P[-(offset_remainder):]</code>取出原始序列末尾的几个点，强行塞到开头，<code>P[:half_offset]:</code>则相反。<code>np.vstack</code>是将多个数组按行合并，将三个组成一个新的长矩阵。这样曲线在走到终点时，由于后面还有（开头）点，因为由k个数据所控制，会平滑地和开头连接起来。在后续真正绘图的时候会省略这里添加的开头和结尾。</p><h3 id="clamped"><a href="#clamped" class="headerlink" title="clamped"></a>clamped</h3><p><code>P=np.vstack([[P[0]*(p),P[mult,mult],[P[-1]]*(p)])</code>，这里乘p是在强行修改基函数的权重，当有k-1个控制点重合在一点时，基函数在该店的权重会突变成1。这里第一个参数就是在创造p个起点的坐标列表，无论怎么平滑，曲线的头必须死死定在P<sub>0</sub>上。这里<code>P[1:-1]</code>是在切片，掐头去尾，将头和尾用手动复制的数据替代。至于这里为什么是P[mult,-mult]是因为前面add_mutiplicity函数加噪点（对所有点），这里要把噪点个开头和结尾删掉换成改掉的数据，故要这么去舍弃那些数据。</p><h3 id="其余部分"><a href="#其余部分" class="headerlink" title="其余部分"></a>其余部分</h3><p><code>n=len(P)</code>现在的n时经过刚才vstack扩充后的点数。<code>t=np.arange(m-(p)*2)</code>这里是在生成一个等差数列，即中间段的刻度。</p><h3 id="vstack-vs-contatenate"><a href="#vstack-vs-contatenate" class="headerlink" title="vstack vs contatenate"></a>vstack vs contatenate</h3><p>前者保持原有格式拼接，后者要指定，至于为什么前面用，因为前面是一维的，无所谓。如果是二维后者就会拆成行从而破坏结构</p><h2 id="一点点的B样条"><a href="#一点点的B样条" class="headerlink" title="一点点的B样条"></a>一点点的B样条</h2><p>在B样条中，曲线是由多段基函数加权合成的。每一段曲线（两个节点之间）实际上只由k个控制点拉扯而成。如果说k增大，曲线被越多的点拉扯，整体越光滑，但越难精确经过某个点。k和上一篇文章里曲线的样式连接到一起，如果不会可以回头看下。这里k是自定义的，对平滑度有什么要求就用多少的k。</p><p>B样条不是画出来的，而是动出来的。曲线上每一个点都是在某个时间点t下算出来的，如果没有这一段代码造出来的时间刻度尺，控制点就没办法整出一条曲线。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Day-02</title>
     <link href="/2026/04/14/Day-02/"/>
     <url>/2026/04/14/Day-02/</url>
     

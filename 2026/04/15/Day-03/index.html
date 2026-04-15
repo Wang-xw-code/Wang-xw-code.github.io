@@ -19,21 +19,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="B样条和贝塞尔曲线的浅入理解和第三部分代码前几个函数本次在读代码的过程中发现整体涉及到B样条的相关知识，于是在B站上寻找相关视频学习。 贝塞尔曲线对于贝塞尔曲线，其根本的逻辑在于点的插值，即在一条线段上取一点，按照比例求点（类似等比分点）。通过对多个点不断确定两点之间线段上一定比例的点，得到第一轮n-1个点，后续按照此规则循环迭代得到为一点。按照该方法把0~1之间所对应的所有t值的最终点连接起来便">
+    <meta name="description" content="回顾昨天2个小时看了29行代码，我感觉也没有太深究，整体应该是因为对B样条还是不太了解，我一直以为是传入几个点就直接成线，但是昨天了解要先得到曲线刻度位置再生成，包括什么偏移量kt这个概念，也不知道为什么要有这个东西存在，总的来说还是不懂。老师你看下这边有没有必要学下这个内容还是先放着单知道是在生成刻度位置就行。 tc函数整体分析首先这个tc是knots节点向量和control points控制点">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Day-01">
-<meta property="og:url" content="https://wang-xw-code.github.io/2026/04/13/Day-01/index.html">
+<meta property="og:title" content="Day-03">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/04/15/Day-03/index.html">
 <meta property="og:site_name" content="Wang-xw-code">
-<meta property="og:description" content="B样条和贝塞尔曲线的浅入理解和第三部分代码前几个函数本次在读代码的过程中发现整体涉及到B样条的相关知识，于是在B站上寻找相关视频学习。 贝塞尔曲线对于贝塞尔曲线，其根本的逻辑在于点的插值，即在一条线段上取一点，按照比例求点（类似等比分点）。通过对多个点不断确定两点之间线段上一定比例的点，得到第一轮n-1个点，后续按照此规则循环迭代得到为一点。按照该方法把0~1之间所对应的所有t值的最终点连接起来便">
+<meta property="og:description" content="回顾昨天2个小时看了29行代码，我感觉也没有太深究，整体应该是因为对B样条还是不太了解，我一直以为是传入几个点就直接成线，但是昨天了解要先得到曲线刻度位置再生成，包括什么偏移量kt这个概念，也不知道为什么要有这个东西存在，总的来说还是不懂。老师你看下这边有没有必要学下这个内容还是先放着单知道是在生成刻度位置就行。 tc函数整体分析首先这个tc是knots节点向量和control points控制点">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-04-13T12:10:00.000Z">
-<meta property="article:modified_time" content="2026-04-15T02:20:21.145Z">
+<meta property="article:published_time" content="2026-04-15T02:29:51.000Z">
+<meta property="article:modified_time" content="2026-04-15T04:06:57.702Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Day-01 - Wang-xw-code</title>
+  <title>Day-03 - Wang-xw-code</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -302,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Day-01"></span>
+            <span id="subtitle" data-typed-text="Day-03"></span>
           
         </div>
 
@@ -313,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-04-13 20:10" pubdate>
-          April 13, 2026 pm
+        <time datetime="2026-04-15 10:29" pubdate>
+          April 15, 2026 am
         </time>
       </span>
     
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k words
+          1.2k words
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          15 mins
+          11 mins
         
       </span>
     
@@ -375,31 +375,20 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Day-01</h1>
+            <h1 id="seo-header">Day-03</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="B样条和贝塞尔曲线的浅入理解和第三部分代码前几个函数"><a href="#B样条和贝塞尔曲线的浅入理解和第三部分代码前几个函数" class="headerlink" title="B样条和贝塞尔曲线的浅入理解和第三部分代码前几个函数"></a>B样条和贝塞尔曲线的浅入理解和第三部分代码前几个函数</h1><p>本次在读代码的过程中发现整体涉及到B样条的相关知识，于是在B站上寻找相关视频学习。</p>
-<h2 id="贝塞尔曲线"><a href="#贝塞尔曲线" class="headerlink" title="贝塞尔曲线"></a>贝塞尔曲线</h2><p>对于贝塞尔曲线，其根本的逻辑在于点的插值，即在一条线段上取一点，按照比例求点（类似等比分点）。通过对多个点不断确定两点之间线段上一定比例的点，得到第一轮n-1个点，后续按照此规则循环迭代得到为一点。按照该方法把0~1之间所对应的所有t值的最终点连接起来便是贝塞尔曲线。由于此生成模式，如果其中某个点变化，那整体的图样便会变化，对于大规模工程来说稳定性能较低。</p>
-<p>若给定n+1个点，得到的贝塞尔曲线为n次曲线，某个点同时也具有相应的计算公式，为各个分向量及其权重的线性组合所得。</p>
-<p>如果n比较大，可由两个次一级的贝塞尔曲线按照两点线段取点的方式生成，通常为P<sub>0</sub><del>P<sub>n-1</sub>和P<sub>1</sub></del>P<sub>b</sub>两条贝塞尔曲线，故可能涉及到函数迭代问题。</p>
-<p>综合来讲贝塞尔曲线的特征：</p>
-<ol>
-<li>曲线总是过第一个和最后一个控制点。</li>
-<li>曲线的起始切线和终点切线落在前两个和后两个点的连线上</li>
-<li>如果改变一个点，整条贝塞尔曲线的形状都会改变</li>
-</ol>
-<h2 id="B样条"><a href="#B样条" class="headerlink" title="B样条"></a>B样条</h2><p>关于B样条，是由多条贝塞尔曲线相互拼接所形成的结构，但是在学习的时候发现涉及不同点吸引强度不用这个观念还不是很清楚，通过不同点设置吸引强度，控制一小段的形状。B样条的连接点是由多个线段重叠组成的，那这个时候怎么去控制连接点的机理先放着，后续有需要再学。</p>
-<h2 id="NK函数"><a href="#NK函数" class="headerlink" title="NK函数"></a>NK函数</h2><p>关于NK函数，此处是在分配权重，参数u在0~1之间代表第i个点控制点对曲线位置的贡献度。在提到贝塞尔曲线时，不同点的贡献度在求得最终点的百分比贡献不同，这里应该是上面的概念吗？</p>
-<p><code>basis knots=np.linspace(0,k,k+1)</code>这一行是在输入k个点，平均分成012……k+1份，linspace就是分段操作所对应的np内置函数。因为B样条是由多段贝塞尔曲线所组成，上述分出来的点便是线段的连接点。在这些点之间，通过迭代形成钟形曲线。</p>
-<p><code>bsp = BSpline.basis_element(basis_knots).derivative(der)</code>这一行代码是在生成一个阶数为k的单体基函数，这边基函数的概念也先放着。der的输入数据不同，所涉及的意义也不同，0代表基函数本身，1代表基函数速度&#x2F;权重的变化率，2则是加速度&#x2F;斜率的变化率。</p>
-<p>总结就是basis_knots划定分析的区域bsp根据der的值进行不同含义的运算。NK运行完成后返回一个函数，可理解为返回一个计算工具，这里涉及一个闭包的概念，返回时函数内部会存储本应随着NK函数运行完毕所销毁的bsp相关数据。整个计算过程只在0<del>1之间存在意义，clip函数便是将数据严格控制在0</del>k之间，多切少补。整个函数返回一个权重、速度变化率或者加速度变化率</p>
-<h2 id="add-multiplicity函数"><a href="#add-multiplicity函数" class="headerlink" title="add_multiplicity函数"></a>add_multiplicity函数</h2><p><code>Q = np.kron(Q, np.ones((multiplicity, 1)))</code>这一行是在进行控制点的自我克隆，<code>np.ones((multiplicity,1))</code>生成了multiplicity个由1组成的列向量，kron运算使得Q的每一个元素乘后面的列向量完成自我克隆。这里提一下kron内置函数的逻辑，用第二个参数对第一个参数操作，如果是标量就直接乘第二个参数，如果是矩阵则是A中每一个元素乘B矩阵，最终形成一个新的矩阵。这里可以理解为将控制点增多，方便对曲线进行细微控制，一般而言B样条是平滑的，这里将某些点的重数增加，这个点对曲线的吸引力度就更大，便于通过参数调整去形成一些图形特征，比如尖端连接点之类。这里是在-noise和noise之间公平随机地选数，那最后这个参数是向代码要求生成和Q矩阵类型相同的随机数据，这里的uniform代表均匀分布，如果是normal则是按照正态分布去生成随机数。至于这里加噪声，因为克隆点一致如果不微调，最终优化的时候这些点对曲线的控制力度相同会出问题，这里噪声非常小，机器处理数据能识别，而肉眼观测的差距就很小了。</p>
-<p><code>np.random.uniform(-noise,noise)</code></p>
-<h2 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h2><ol>
-<li>画图的时候涉及到长度、速度、加速度这三个概念，后面两个在图形上有什么表现？比如长度就是控制这条线多长，后两个不理解。</li>
-</ol>
+                <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>昨天2个小时看了29行代码，我感觉也没有太深究，整体应该是因为对B样条还是不太了解，我一直以为是传入几个点就直接成线，但是昨天了解要先得到曲线刻度位置再生成，包括什么偏移量kt这个概念，也不知道为什么要有这个东西存在，总的来说还是不懂。老师你看下这边有没有必要学下这个内容还是先放着单知道是在生成刻度位置就行。</p>
+<h2 id="tc函数"><a href="#tc函数" class="headerlink" title="tc函数"></a>tc函数</h2><h3 id="整体分析"><a href="#整体分析" class="headerlink" title="整体分析"></a>整体分析</h3><p>首先这个tc是knots节点向量和control points控制点的缩写，根据我提供的点，把曲线的骨架和时间轴焊死。</p>
+<h3 id="参数分析"><a href="#参数分析" class="headerlink" title="参数分析"></a>参数分析</h3><p>关于这里的参数，P同样是原始点的坐标列表数据，clamped就是决定曲线是否要精确地触碰起点和终点。<code>p=k-1</code>是在计算曲线的阶数&#x2F;多项式次数，<code>M=len(P)</code>记录传进来的点有多少。</p>
+<h3 id="closed"><a href="#closed" class="headerlink" title="closed"></a>closed</h3><p>闭合曲线时，为了让曲线首尾相连，不能直接尾巴连头，这样接缝处会很生硬。如果画一个圆，最后一个点和第一个点位置重合，但是在数学上曲线运行到终点时速度（一阶导）和加速度（二阶导）会突然中断。<code>P[-(offset_remainder):]</code>取出原始序列末尾的几个点，强行塞到开头，<code>P[:half_offset]:</code>则相反。<code>np.vstack</code>是将多个数组按行合并，将三个组成一个新的长矩阵。这样曲线在走到终点时，由于后面还有（开头）点，因为由k个数据所控制，会平滑地和开头连接起来。在后续真正绘图的时候会省略这里添加的开头和结尾。</p>
+<h3 id="clamped"><a href="#clamped" class="headerlink" title="clamped"></a>clamped</h3><p><code>P=np.vstack([[P[0]*(p),P[mult,mult],[P[-1]]*(p)])</code>，这里乘p是在强行修改基函数的权重，当有k-1个控制点重合在一点时，基函数在该店的权重会突变成1。这里第一个参数就是在创造p个起点的坐标列表，无论怎么平滑，曲线的头必须死死定在P<sub>0</sub>上。这里<code>P[1:-1]</code>是在切片，掐头去尾，将头和尾用手动复制的数据替代。至于这里为什么是P[mult,-mult]是因为前面add_mutiplicity函数加噪点（对所有点），这里要把噪点个开头和结尾删掉换成改掉的数据，故要这么去舍弃那些数据。</p>
+<h3 id="其余部分"><a href="#其余部分" class="headerlink" title="其余部分"></a>其余部分</h3><p><code>n=len(P)</code>现在的n时经过刚才vstack扩充后的点数。<code>t=np.arange(m-(p)*2)</code>这里是在生成一个等差数列，即中间段的刻度。</p>
+<h3 id="vstack-vs-contatenate"><a href="#vstack-vs-contatenate" class="headerlink" title="vstack vs contatenate"></a>vstack vs contatenate</h3><p>前者保持原有格式拼接，后者要指定，至于为什么前面用，因为前面是一维的，无所谓。如果是二维后者就会拆成行从而破坏结构</p>
+<h2 id="一点点的B样条"><a href="#一点点的B样条" class="headerlink" title="一点点的B样条"></a>一点点的B样条</h2><p>在B样条中，曲线是由多段基函数加权合成的。每一段曲线（两个节点之间）实际上只由k个控制点拉扯而成。如果说k增大，曲线被越多的点拉扯，整体越光滑，但越难精确经过某个点。k和上一篇文章里曲线的样式连接到一起，如果不会可以回头看下。这里k是自定义的，对平滑度有什么要求就用多少的k。</p>
+<p>B样条不是画出来的，而是动出来的。曲线上每一个点都是在某个时间点t下算出来的，如果没有这一段代码造出来的时间刻度尺，控制点就没办法整出一条曲线。</p>
 
                 
               </div>
@@ -417,8 +406,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Day-01</div>
-      <div>https://wang-xw-code.github.io/2026/04/13/Day-01/</div>
+      <div>Day-03</div>
+      <div>https://wang-xw-code.github.io/2026/04/15/Day-03/</div>
     </div>
     <div class="license-meta">
       
@@ -430,7 +419,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>April 13, 2026</div>
+          <div>April 15, 2026</div>
         </div>
       
       
@@ -462,15 +451,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/04/14/Day-02/" title="Day-02">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Day-02</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2026/04/14/Day-02/" title="Day-02">
+                        <span class="hidden-mobile">Day-02</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
