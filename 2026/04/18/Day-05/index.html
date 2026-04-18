@@ -19,21 +19,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="tcu函数整体来说，这一个函数是在获取一个信息——输入的控制点对应在节点向量的哪一秒。这里就是把tc算出来的静态骨架和u(经过时间)绑定在一起。 t,c&#x3D;tc(P,k,mult,closed,clamped&#x3D;clamped)是在通过调用tc函数将带负数的、延长的节点向量和被复制、被夹紧的最终控制点矩阵赋值给t和c。 这里对节点向量和控制点做一个定义上的了解。控制点矩阵是空间位置的集合，而节点向量是">
+    <meta name="description" content="关于前文bspline_samples里output的分析在不破坏函数返回值(采样点)的前提下带出中间数据。如果这里要正常return的话返回值太繁琐，所以提前设置一个字典“储物柜”作为参数偷渡数据。 uniform_gramian函数这里提到是为了解决平滑问题里的能量代价。在平滑算法中，对于不同的der希望其越小越好。 参数的分析，nbasis是控制点的总数，k是B样条阶数，der是要计算的导数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Day-04">
-<meta property="og:url" content="https://wang-xw-code.github.io/2026/04/16/Day-04/index.html">
+<meta property="og:title" content="Day-05">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/04/18/Day-05/index.html">
 <meta property="og:site_name" content="Wang-xw-code">
-<meta property="og:description" content="tcu函数整体来说，这一个函数是在获取一个信息——输入的控制点对应在节点向量的哪一秒。这里就是把tc算出来的静态骨架和u(经过时间)绑定在一起。 t,c&#x3D;tc(P,k,mult,closed,clamped&#x3D;clamped)是在通过调用tc函数将带负数的、延长的节点向量和被复制、被夹紧的最终控制点矩阵赋值给t和c。 这里对节点向量和控制点做一个定义上的了解。控制点矩阵是空间位置的集合，而节点向量是">
+<meta property="og:description" content="关于前文bspline_samples里output的分析在不破坏函数返回值(采样点)的前提下带出中间数据。如果这里要正常return的话返回值太繁琐，所以提前设置一个字典“储物柜”作为参数偷渡数据。 uniform_gramian函数这里提到是为了解决平滑问题里的能量代价。在平滑算法中，对于不同的der希望其越小越好。 参数的分析，nbasis是控制点的总数，k是B样条阶数，der是要计算的导数">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-04-16T11:15:13.000Z">
-<meta property="article:modified_time" content="2026-04-16T13:29:27.116Z">
+<meta property="article:published_time" content="2026-04-18T12:11:45.000Z">
+<meta property="article:modified_time" content="2026-04-18T13:32:54.904Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Day-04 - Wang-xw-code</title>
+  <title>Day-05 - Wang-xw-code</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -302,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Day-04"></span>
+            <span id="subtitle" data-typed-text="Day-05"></span>
           
         </div>
 
@@ -313,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-04-16 19:15" pubdate>
-          April 16, 2026 pm
+        <time datetime="2026-04-18 20:11" pubdate>
+          April 18, 2026 pm
         </time>
       </span>
     
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k words
+          1.2k words
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          12 mins
+          11 mins
         
       </span>
     
@@ -375,27 +375,29 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Day-04</h1>
+            <h1 id="seo-header">Day-05</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="tcu函数"><a href="#tcu函数" class="headerlink" title="tcu函数"></a>tcu函数</h2><p>整体来说，这一个函数是在获取一个信息——输入的控制点对应在节点向量的哪一秒。这里就是把tc算出来的静态骨架和u(经过时间)绑定在一起。</p>
-<p><code>t,c=tc(P,k,mult,closed,clamped=clamped)</code>是在通过调用tc函数将带负数的、延长的节点向量和被复制、被夹紧的最终控制点矩阵赋值给t和c。</p>
-<p>这里对节点向量和控制点做一个定义上的了解。控制点矩阵是空间位置的集合，而节点向量是参数空间的划分，规定在某一段时刻哪些控制点能够对曲线进行控制。</p>
-<p><code>u=keypoint_times(P,t,k,mult,closed)</code>。这里是说假如后续计算在某一时刻曲线和原始点的距离偏差，但若点经过了复制和噪点的添加，究竟哪一个时刻是A应该选取的位置呢？u就是起确定位置的作用。</p>
-<p>关于三个返回值所对应的概念分别是空间的刻度(节点向量、时刻表)、修改后的控制点列表(开头结尾平滑连接)和空间的关键节点。</p>
-<h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>由于这里涉及到蛮多前面的函数，故这里做一个回顾。</p>
-<p>首先通过<code>is_number</code>判断输入的数据是否有问题。<code>NK</code>函数是一个权重返回器，算权重，根据der计算比如位置、速度、加速度的权重。<code>add_multiplicity</code>给控制点添加噪声，使线条更有特色，这里每个都加了噪点，不是单一的哈。<mark>Emm…<code>keypoint_times</code>函数还是有点不是很清楚，这里先标记下。</mark>  <code>tc</code>函数则是在确保曲线在起始与终点平滑连续，同时生成节点向量(时间表)，它会返回修改过后的控制点列表。<mark>这里怎么生成还不很理解，也先放着。</mark></p>
-<p>感觉对NK权重得要再强调一下，位置权重代表这第i个点对当前位置坐标贡献了多少；如果是速度权重则是对当前运动方向和快慢的影响；加速度则是对变向的控制力度，运动方向变化的快慢。</p>
-<h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><p>[ : : -1 ]在np数组和字符串中都是起翻转作用，只是np这里不生成新的数组，字符串的话就是在复制拷贝了，效率很低下。</p>
-<h2 id="retrieve-control-points函数"><a href="#retrieve-control-points函数" class="headerlink" title="retrieve_control_points函数"></a>retrieve_control_points函数</h2><p>整体上是为了在计算完成后去除为了数学计算而添加的多余数据去掉(如为了经过起始终止点添加的数据)，还原纯净控制点。</p>
-<p>这里切掉的逻辑和tc函数添加的逻辑是相反的，closed的话就是删掉粘贴的开头结尾，clamped的话就是删掉复制的起始结尾点。那这里不会修剪掉add_multiplicity所添加的噪点。换句话说tc充气，retrieve_control_points放气。</p>
-<h2 id="bspline-samples函数"><a href="#bspline-samples函数" class="headerlink" title="bspline_samples函数"></a>bspline_samples函数</h2><p><code>if not is_nummber</code>为什么还能算呢，因为假如我想同时拿到位置、速度、加速度的话传入的deriv是[0,1,2]，这样is_number就是False了。这时候就会根据列表推导式的自我递归得到最终的数据列表并返回。</p>
-<p>这里同样调用了tc函数将时刻表和修改后的控制点数据赋值给t和C。之后通过<code>eval_bspline</code>计算曲线的空间位置。</p>
-<p>为什么不用一开始的原始控制点数据呢，因为这个时候没有经过tc添加一些点确保closed或者clamped，生成的曲线会有问题。</p>
-<p>那<code>if get_tc</code>证明我想要将这些点喂给后面的平滑算法，就把t、C这两个数据也同时传回去，。然单纯画图的话就返回计算的空间位置数据X。</p>
-<h2 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h2><p>这里output有个小问题，明天看下</p>
+                <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="关于前文bspline-samples里output的分析"><a href="#关于前文bspline-samples里output的分析" class="headerlink" title="关于前文bspline_samples里output的分析"></a>关于前文bspline_samples里output的分析</h2><p>在不破坏函数返回值(采样点)的前提下带出中间数据。如果这里要正常return的话返回值太繁琐，所以提前设置一个字典“储物柜”作为参数偷渡数据。</p>
+<h2 id="uniform-gramian函数"><a href="#uniform-gramian函数" class="headerlink" title="uniform_gramian函数"></a>uniform_gramian函数</h2><p>这里提到是为了解决平滑问题里的能量代价。在平滑算法中，对于不同的der希望其越小越好。</p>
+<p>参数的分析，nbasis是控制点的总数，k是B样条阶数，der是要计算的导数阶数。</p>
+<p><code>res,_=quad(...)</code>这里的quad是在计算定积分，存到res里面。<code>G=np.zero</code>是在创建全0矩阵，用于后续填数。这里<code>N=NK(k,der=der)</code>便是在调用前面的计算工具，根据der的不同算数据，返回一个B样条基函数的导数对象。</p>
+<p>不对不对，这里NK是计算工具不是值。</p>
+<p>这里的定积分计算的不是面积吗？在这里面积的意义是代价，如果两个点重叠面积很大，同时移动这两个点的话整个曲线平滑度就会剧变，这里的G矩阵就类似罚款矩阵，告知怎么动点更平滑。</p>
+<p>提一嘴，基函数先理解为权重。后面需要深入再说。</p>
+<p><code>offset=j-i</code>代表两个点的索引差，因为所有山丘长的一样，两座山丘重叠的面积只取决于它们离得多远。<code>abs(offset)&lt;k</code>就是如果两个点的距离小于阶数k的话，它们之间就没有重叠。</p>
+<p>为什么长得一样，因为这里用到的是均匀B样条(节点是等间距的)</p>
+<p>后面Gm也是再做类似上面建空矩阵填数据的工作。但之前的G矩阵算的是理想山丘，这里计算起点损失了多少面积。p的话是B样条的次数。</p>
+<p>S的话就是通过<code>np.eye</code>生成一个对角矩阵，通过[:,::-1]将矩阵的列反转，因为曲线是对称的，起点和终点是相反的，反转一下就可以得到，不用重新写一遍终点的积分逻辑。</p>
+<p><code>G[:p,:p]-=Gm</code>从账本的左上角减去多算的面积，后面就是从右下角通过镜像变化减去终点多算的面积。其中<code>@</code>是NumPy里的矩阵乘法。</p>
+<p><code>key=(k,der,offset)</code>这里是元组打包，在上面有建立字典gramian_cache，如果这里的三个数一样，算出来的积分就一样，省去运算步骤。</p>
+<p>所以<code>if key in gramian_cache</code>就是判断这一组数据之前有没有算过，算过拿结果，没有现场算，同时再次存到gramian_cache里面。为什么会出现同样的数据呢，因为山丘长的一样，间距也是一样，所以1和2与5和6形状距离阶数一样，那算出来的重叠面积也是一样的。</p>
+<p>最终返回的G是关联度地图，代表点与点之间的关系，物理意义便是哪些点动起来费劲，哪些省力。虽然abs(offset)和k看起来只在计算两个点的关联度，实际也如此，但最终矩阵G通过这样计算是记录了所有点之间的关系。</p>
+<h2 id="B样条再提一嘴"><a href="#B样条再提一嘴" class="headerlink" title="B样条再提一嘴"></a>B样条再提一嘴</h2><p>B样条有个数据是阶数k，每个节点的影响长度范围就是k，如果两个点的山丘有重叠，那重叠部分的点的位置就由它们的权重所计算出来。</p>
+<p>所以上面由abs(offset)和k之间比较，这里就是判断是否会重叠。</p>
+<h2 id="留存的问题"><a href="#留存的问题" class="headerlink" title="留存的问题"></a>留存的问题</h2><p>下次解决为什么会有Gm这个矩阵。</p>
 
                 
               </div>
@@ -413,8 +415,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Day-04</div>
-      <div>https://wang-xw-code.github.io/2026/04/16/Day-04/</div>
+      <div>Day-05</div>
+      <div>https://wang-xw-code.github.io/2026/04/18/Day-05/</div>
     </div>
     <div class="license-meta">
       
@@ -426,7 +428,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>April 16, 2026</div>
+          <div>April 18, 2026</div>
         </div>
       
       
@@ -458,18 +460,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/04/18/Day-05/" title="Day-05">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Day-05</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/04/15/Day-03/" title="Day-03">
-                        <span class="hidden-mobile">Day-03</span>
+                      <a href="/2026/04/16/Day-04/" title="Day-04">
+                        <span class="hidden-mobile">Day-04</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
