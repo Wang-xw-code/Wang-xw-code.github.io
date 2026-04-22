@@ -19,15 +19,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Study for calligraph.">
+    <meta name="description" content="make_lambda函数其中的theta和scale参数为前面的旋转角和长短轴拉伸倍数。 return np.linalg.inv(make_sigma(theta,scale))，其中make_sigma是上一个函数所得到的协方差矩阵。linalg是专门用于矩阵运算的工具库。里面的inv也就是用到的是用来求矩阵的逆，另外举det的例子，可以直接算出行列式。 关于协方差矩阵差代表每个点离平均值的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Day-07">
 <meta property="og:url" content="https://wang-xw-code.github.io/2026/04/22/Day-07/index.html">
 <meta property="og:site_name" content="Wang-xw-code">
-<meta property="og:description" content="Study for calligraph.">
+<meta property="og:description" content="make_lambda函数其中的theta和scale参数为前面的旋转角和长短轴拉伸倍数。 return np.linalg.inv(make_sigma(theta,scale))，其中make_sigma是上一个函数所得到的协方差矩阵。linalg是专门用于矩阵运算的工具库。里面的inv也就是用到的是用来求矩阵的逆，另外举det的例子，可以直接算出行列式。 关于协方差矩阵差代表每个点离平均值的">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-04-22T08:22:11.000Z">
-<meta property="article:modified_time" content="2026-04-22T08:22:11.134Z">
+<meta property="article:modified_time" content="2026-04-22T09:33:44.938Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 words
+          861 words
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          1 mins
+          8 mins
         
       </span>
     
@@ -380,7 +380,22 @@
             
               <div class="markdown-body">
                 
-                
+                <h2 id="make-lambda函数"><a href="#make-lambda函数" class="headerlink" title="make_lambda函数"></a>make_lambda函数</h2><p>其中的theta和scale参数为前面的旋转角和长短轴拉伸倍数。</p>
+<p><code>return np.linalg.inv(make_sigma(theta,scale))</code>，其中make_sigma是上一个函数所得到的协方差矩阵。linalg是专门用于矩阵运算的工具库。里面的inv也就是用到的是用来求矩阵的逆，另外举det的例子，可以直接算出行列式。</p>
+<h3 id="关于协方差矩阵"><a href="#关于协方差矩阵" class="headerlink" title="关于协方差矩阵"></a>关于协方差矩阵</h3><p>差代表每个点离平均值的距离；方代表平方；协意味着关系，相互之间的变化关系。</p>
+<h3 id="疑问与解答？"><a href="#疑问与解答？" class="headerlink" title="疑问与解答？"></a>疑问与解答？</h3><ol>
+<li>theta是对整个图形还是局部？<br>是局部笔触的属性。这里给了个比喻，B样条轨迹是我写出来的字的路径，而theta和scale是我握笔的姿势，能影响到笔迹的宽度，比如毛笔越往下接触面积越大，笔迹越粗。</li>
+<li>如果笔刷具有宽度属性，那怎么判断点是不是被画进来了呢？<br>对应当经过的点找一个最近B样条轨迹上的控制点，得到相对向量。塞进make_lambda这里得到的矩阵，进行还原。为什么还原？假如用毛笔写字，顺着运笔方向和垂直的两种情况，相隔相同的距离位置的颜色是不相同的。最后计算两点间距，判断是否在范围里。最后最重要的就是这里不是直接涂黑，类似渐变这个概念，通过浓度公式进行不同百分比程度的染色。</li>
+<li>它和前面的rot_2d有什么区别呢？<br>前面rot_2d是在生成旋转矩阵，是对角度的改变。而这里的make_lambda是长度的改变设置。前面让我们能够斜着画出椭圆，后面让我们能够设置椭圆的具体形状等。</li>
+</ol>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ol>
+<li>如果说描述圆给出半径就可以，正方形则是边长。那如果描述笔触的话就很难办，这里就是笔触形状的说明书(粗细)。</li>
+<li>后续染色边缘晕染需要这个矩阵，决定淡的速度和方向。</li>
+<li>如果画出来的图形不像，可以修改这里的theta和scale进行微操。</li>
+</ol>
+<p>其中有四个数据，分别是X的方差、Y的方差、协方差(右上左下)。表示在X方向散的有多开，在Y方向散的有多开。这里的协方差如果大于零说明两个正相关，其余类似。</p>
+<h2 id="简略的画图逻辑"><a href="#简略的画图逻辑" class="headerlink" title="简略的画图逻辑"></a>简略的画图逻辑</h2><p>先通过B样条控制点和基函数计算点的轨迹，其次设置笔刷的属性，然后上色，这里提到浓度公式。</p>
+
                 
               </div>
             
