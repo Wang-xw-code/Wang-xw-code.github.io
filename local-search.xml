@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>Day-06</title>
+    <link href="/2026/04/20/Day-06/"/>
+    <url>/2026/04/20/Day-06/</url>
+    
+    <content type="html"><![CDATA[<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="rot-2d函数"><a href="#rot-2d函数" class="headerlink" title="rot_2d函数"></a>rot_2d函数</h2><p>theta参数代表旋转的角度，是以弧度制为单位的。</p><p><code>np.eye</code>之前提到过，用于创建单位矩阵，这里m就是2*2的单位矩阵。下文ct与st是在计算三角函数，计算完成后再按照特定的顺序与要求填到创建的单位矩阵之中。这样既定矩阵与这个矩阵相乘之后便能实现旋转的目的。类似之前的NK，都是一个工具，最后把旋转矩阵传回去。</p><p>为什么要调用np里三角函数的计算工具？因为它可以一次性完成多个数据的计算，python自带的只能一个个算。</p><p>那为什么需要这个旋转矩阵呢？假如说正在训练AI，可能会用到不同角度的图片让其识别；又或者合成出来的B样条曲线在实际建模的时候需要旋转某些角度；或者说画|和——的时候只要旋转就行，没必要计算两次，省步骤。</p><h2 id="make-sigma函数"><a href="#make-sigma函数" class="headerlink" title="make_sigma函数"></a>make_sigma函数</h2><p>整体来说是在计算协方差矩阵。定义了一个点集或者形状在空间中的散布情况，换句话说协方差就是描述这个玩意形状方面长什么样。</p><p><code>Phi=rot_2d</code>先生成一个旋转矩阵，这里提到基底变换决定了生成的形状最终指向哪个方向。自己理解的话就是存个旋转矩阵，需要哪个方向直接旋转就行了。<code>np.array</code>这里就是生成np数组，里面存放长轴和短轴的长度，这里单位是标准差，协方差矩阵的单位是方差，所以这里要平方。那这里平方就涉及到np的一个性质，可以对每一个元素都平方。</p><p><code>np.diag</code>是在根据后面的数组创建对角矩阵S，它定义了在没有旋转时这个形状在X或Y轴方向原始的拉伸倍数。</p><p><code>return Phi @ S @ Phi.T</code>叫做什么对称分解公式，后面的.T是转置的意思。那这一行运算的话Phi.T是把空间旋转回标准位置，S的话在标准位置进行拉伸，Phi再把拉伸后的形状旋转回原来的theta角度。</p><p>为什么要这个玩意？B样条只是给出笔迹的路径，并没有实际的粗细。可以用这一部分去给每一个控制点分配一个Sigma，其中scale决定笔刷的粗细和扁平程度，theta决定笔刷的入笔角度。</p><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>老师线性代数这方面学的都忘了蛮多的，然后如何对应到图像上就更不了解了，老师你觉得这部分用不用捡一下呢？</p><p>然后老师我发现对数据结构与算法这一部分太长时间没有学习，所以明天公休日打算复习一下，同时还有图树这一部分明天给完成掉。然后再接着这部分继续。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Day-05</title>
+    <link href="/2026/04/18/Day-05/"/>
+    <url>/2026/04/18/Day-05/</url>
+    
+    <content type="html"><![CDATA[<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="关于前文bspline-samples里output的分析"><a href="#关于前文bspline-samples里output的分析" class="headerlink" title="关于前文bspline_samples里output的分析"></a>关于前文bspline_samples里output的分析</h2><p>在不破坏函数返回值(采样点)的前提下带出中间数据。如果这里要正常return的话返回值太繁琐，所以提前设置一个字典“储物柜”作为参数偷渡数据。</p><h2 id="uniform-gramian函数"><a href="#uniform-gramian函数" class="headerlink" title="uniform_gramian函数"></a>uniform_gramian函数</h2><p>这里提到是为了解决平滑问题里的能量代价。在平滑算法中，对于不同的der希望其越小越好。</p><p>参数的分析，nbasis是控制点的总数，k是B样条阶数，der是要计算的导数阶数。</p><p><code>res,_=quad(...)</code>这里的quad是在计算定积分，存到res里面。<code>G=np.zero</code>是在创建全0矩阵，用于后续填数。这里<code>N=NK(k,der=der)</code>便是在调用前面的计算工具，根据der的不同算数据，返回一个B样条基函数的导数对象。</p><p>不对不对，这里NK是计算工具不是值。</p><p>这里的定积分计算的不是面积吗？在这里面积的意义是代价，如果两个点重叠面积很大，同时移动这两个点的话整个曲线平滑度就会剧变，这里的G矩阵就类似罚款矩阵，告知怎么动点更平滑。</p><p>提一嘴，基函数先理解为权重。后面需要深入再说。</p><p><code>offset=j-i</code>代表两个点的索引差，因为所有山丘长的一样，两座山丘重叠的面积只取决于它们离得多远。<code>abs(offset)&lt;k</code>就是如果两个点的距离小于阶数k的话，它们之间就没有重叠。</p><p>为什么长得一样，因为这里用到的是均匀B样条(节点是等间距的)</p><p>后面Gm也是再做类似上面建空矩阵填数据的工作。但之前的G矩阵算的是理想山丘，这里计算起点损失了多少面积。p的话是B样条的次数。</p><p>S的话就是通过<code>np.eye</code>生成一个对角矩阵，通过[:,::-1]将矩阵的列反转，因为曲线是对称的，起点和终点是相反的，反转一下就可以得到，不用重新写一遍终点的积分逻辑。</p><p><code>G[:p,:p]-=Gm</code>从账本的左上角减去多算的面积，后面就是从右下角通过镜像变化减去终点多算的面积。其中<code>@</code>是NumPy里的矩阵乘法。</p><p><code>key=(k,der,offset)</code>这里是元组打包，在上面有建立字典gramian_cache，如果这里的三个数一样，算出来的积分就一样，省去运算步骤。</p><p>所以<code>if key in gramian_cache</code>就是判断这一组数据之前有没有算过，算过拿结果，没有现场算，同时再次存到gramian_cache里面。为什么会出现同样的数据呢，因为山丘长的一样，间距也是一样，所以1和2与5和6形状距离阶数一样，那算出来的重叠面积也是一样的。</p><p>最终返回的G是关联度地图，代表点与点之间的关系，物理意义便是哪些点动起来费劲，哪些省力。虽然abs(offset)和k看起来只在计算两个点的关联度，实际也如此，但最终矩阵G通过这样计算是记录了所有点之间的关系。</p><h2 id="B样条再提一嘴"><a href="#B样条再提一嘴" class="headerlink" title="B样条再提一嘴"></a>B样条再提一嘴</h2><p>B样条有个数据是阶数k，每个节点的影响长度范围就是k，如果两个点的山丘有重叠，那重叠部分的点的位置就由它们的权重所计算出来。</p><p>所以上面由abs(offset)和k之间比较，这里就是判断是否会重叠。</p><h2 id="留存的问题"><a href="#留存的问题" class="headerlink" title="留存的问题"></a>留存的问题</h2><p>下次解决为什么会有Gm这个矩阵。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Day-04</title>
+    <link href="/2026/04/16/Day-04/"/>
+    <url>/2026/04/16/Day-04/</url>
+    
+    <content type="html"><![CDATA[<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="tcu函数"><a href="#tcu函数" class="headerlink" title="tcu函数"></a>tcu函数</h2><p>整体来说，这一个函数是在获取一个信息——输入的控制点对应在节点向量的哪一秒。这里就是把tc算出来的静态骨架和u(经过时间)绑定在一起。</p><p><code>t,c=tc(P,k,mult,closed,clamped=clamped)</code>是在通过调用tc函数将带负数的、延长的节点向量和被复制、被夹紧的最终控制点矩阵赋值给t和c。</p><p>这里对节点向量和控制点做一个定义上的了解。控制点矩阵是空间位置的集合，而节点向量是参数空间的划分，规定在某一段时刻哪些控制点能够对曲线进行控制。</p><p><code>u=keypoint_times(P,t,k,mult,closed)</code>。这里是说假如后续计算在某一时刻曲线和原始点的距离偏差，但若点经过了复制和噪点的添加，究竟哪一个时刻是A应该选取的位置呢？u就是起确定位置的作用。</p><p>关于三个返回值所对应的概念分别是空间的刻度(节点向量、时刻表)、修改后的控制点列表(开头结尾平滑连接)和空间的关键节点。</p><h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>由于这里涉及到蛮多前面的函数，故这里做一个回顾。</p><p>首先通过<code>is_number</code>判断输入的数据是否有问题。<code>NK</code>函数是一个权重返回器，算权重，根据der计算比如位置、速度、加速度的权重。<code>add_multiplicity</code>给控制点添加噪声，使线条更有特色，这里每个都加了噪点，不是单一的哈。<mark>Emm…<code>keypoint_times</code>函数还是有点不是很清楚，这里先标记下。</mark>  <code>tc</code>函数则是在确保曲线在起始与终点平滑连续，同时生成节点向量(时间表)，它会返回修改过后的控制点列表。<mark>这里怎么生成还不很理解，也先放着。</mark></p><p>感觉对NK权重得要再强调一下，位置权重代表这第i个点对当前位置坐标贡献了多少；如果是速度权重则是对当前运动方向和快慢的影响；加速度则是对变向的控制力度，运动方向变化的快慢。</p><h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><p>[ : : -1 ]在np数组和字符串中都是起翻转作用，只是np这里不生成新的数组，字符串的话就是在复制拷贝了，效率很低下。</p><h2 id="retrieve-control-points函数"><a href="#retrieve-control-points函数" class="headerlink" title="retrieve_control_points函数"></a>retrieve_control_points函数</h2><p>整体上是为了在计算完成后去除为了数学计算而添加的多余数据去掉(如为了经过起始终止点添加的数据)，还原纯净控制点。</p><p>这里切掉的逻辑和tc函数添加的逻辑是相反的，closed的话就是删掉粘贴的开头结尾，clamped的话就是删掉复制的起始结尾点。那这里不会修剪掉add_multiplicity所添加的噪点。换句话说tc充气，retrieve_control_points放气。</p><h2 id="bspline-samples函数"><a href="#bspline-samples函数" class="headerlink" title="bspline_samples函数"></a>bspline_samples函数</h2><p><code>if not is_nummber</code>为什么还能算呢，因为假如我想同时拿到位置、速度、加速度的话传入的deriv是[0,1,2]，这样is_number就是False了。这时候就会根据列表推导式的自我递归得到最终的数据列表并返回。</p><p>这里同样调用了tc函数将时刻表和修改后的控制点数据赋值给t和C。之后通过<code>eval_bspline</code>计算曲线的空间位置。</p><p>为什么不用一开始的原始控制点数据呢，因为这个时候没有经过tc添加一些点确保closed或者clamped，生成的曲线会有问题。</p><p>那<code>if get_tc</code>证明我想要将这些点喂给后面的平滑算法，就把t、C这两个数据也同时传回去，。然单纯画图的话就返回计算的空间位置数据X。</p><h2 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h2><p>这里output有个小问题，明天看下</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Day-03</title>
+    <link href="/2026/04/15/Day-03/"/>
+    <url>/2026/04/15/Day-03/</url>
+    
+    <content type="html"><![CDATA[<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>昨天2个小时看了29行代码，我感觉也没有太深究，整体应该是因为对B样条还是不太了解，我一直以为是传入几个点就直接成线，但是昨天了解要先得到曲线刻度位置再生成，包括什么偏移量kt这个概念，也不知道为什么要有这个东西存在，总的来说还是不懂。老师你看下这边有没有必要学下这个内容还是先放着单知道是在生成刻度位置就行。</p><h2 id="tc函数"><a href="#tc函数" class="headerlink" title="tc函数"></a>tc函数</h2><h3 id="整体分析"><a href="#整体分析" class="headerlink" title="整体分析"></a>整体分析</h3><p>首先这个tc是knots节点向量和control points控制点的缩写，根据我提供的点，把曲线的骨架和时间轴焊死。</p><h3 id="参数分析"><a href="#参数分析" class="headerlink" title="参数分析"></a>参数分析</h3><p>关于这里的参数，P同样是原始点的坐标列表数据，clamped就是决定曲线是否要精确地触碰起点和终点。<code>p=k-1</code>是在计算曲线的阶数&#x2F;多项式次数，<code>M=len(P)</code>记录传进来的点有多少。</p><h3 id="closed"><a href="#closed" class="headerlink" title="closed"></a>closed</h3><p>闭合曲线时，为了让曲线首尾相连，不能直接尾巴连头，这样接缝处会很生硬。如果画一个圆，最后一个点和第一个点位置重合，但是在数学上曲线运行到终点时速度（一阶导）和加速度（二阶导）会突然中断。<code>P[-(offset_remainder):]</code>取出原始序列末尾的几个点，强行塞到开头，<code>P[:half_offset]:</code>则相反。<code>np.vstack</code>是将多个数组按行合并，将三个组成一个新的长矩阵。这样曲线在走到终点时，由于后面还有（开头）点，因为由k个数据所控制，会平滑地和开头连接起来。在后续真正绘图的时候会省略这里添加的开头和结尾。</p><h3 id="clamped"><a href="#clamped" class="headerlink" title="clamped"></a>clamped</h3><p><code>P=np.vstack([[P[0]*(p),P[mult,mult],[P[-1]]*(p)])</code>，这里乘p是在强行修改基函数的权重，当有k-1个控制点重合在一点时，基函数在该店的权重会突变成1。这里第一个参数就是在创造p个起点的坐标列表，无论怎么平滑，曲线的头必须死死定在P<sub>0</sub>上。这里<code>P[1:-1]</code>是在切片，掐头去尾，将头和尾用手动复制的数据替代。至于这里为什么是P[mult,-mult]是因为前面add_mutiplicity函数加噪点（对所有点），这里要把噪点个开头和结尾删掉换成改掉的数据，故要这么去舍弃那些数据。</p><h3 id="其余部分"><a href="#其余部分" class="headerlink" title="其余部分"></a>其余部分</h3><p><code>n=len(P)</code>现在的n时经过刚才vstack扩充后的点数。<code>t=np.arange(m-(p)*2)</code>这里是在生成一个等差数列，即中间段的刻度。</p><h3 id="vstack-vs-contatenate"><a href="#vstack-vs-contatenate" class="headerlink" title="vstack vs contatenate"></a>vstack vs contatenate</h3><p>前者保持原有格式拼接，后者要指定，至于为什么前面用，因为前面是一维的，无所谓。如果是二维后者就会拆成行从而破坏结构</p><h2 id="一点点的B样条"><a href="#一点点的B样条" class="headerlink" title="一点点的B样条"></a>一点点的B样条</h2><p>在B样条中，曲线是由多段基函数加权合成的。每一段曲线（两个节点之间）实际上只由k个控制点拉扯而成。如果说k增大，曲线被越多的点拉扯，整体越光滑，但越难精确经过某个点。k和上一篇文章里曲线的样式连接到一起，如果不会可以回头看下。这里k是自定义的，对平滑度有什么要求就用多少的k。</p><p>B样条不是画出来的，而是动出来的。曲线上每一个点都是在某个时间点t下算出来的，如果没有这一段代码造出来的时间刻度尺，控制点就没办法整出一条曲线。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Day-02</title>
+    <link href="/2026/04/14/Day-02/"/>
+    <url>/2026/04/14/Day-02/</url>
+    
+    <content type="html"><![CDATA[<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="keypoint-times函数"><a href="#keypoint-times函数" class="headerlink" title="keypoint_times函数"></a>keypoint_times函数</h2><p>首先对形参做了一定的了解，<img src="/%E7%9B%B8%E5%85%B3%E5%8F%82%E6%95%B0%E6%84%8F%E4%B9%89.png" alt="img_4.png">，不知道这些有啥意义，所以了解了下。P首先传入一堆点的位置列表，代表我想让曲线经过这些点。关于阶数k，曲线次数&#x3D;阶数-1，如果2阶线条就是一条直线。三阶如抛物线，故高阶的话整体曲线更平滑。t的话便是某个点在这个曲线上的位置，可以理解为坐标，用来定位的。mult关键点重复度就是前面加噪点时kron所克隆的份数，重复度越高曲线在该关键点就更硬更尖锐。</p><p>这边又了解了之前的NK函数就是生成每一小段的弯曲曲线，最后拼成完整线条。</p><p><code>p=k-1</code>这一行是在计算曲线的次数p。<code>o=k/2-np.floor(k/2)</code>这一段是在判断如果closed，即闭合曲线时曲线阶数的奇偶性，同时生成一个偏移量o，用户后续参数位置的对称调整。这里<code>np.floor</code>是向下取整。</p><p><code>kt=np.linspace(t[p]-o+1,t[-k]-o,len(P))</code>是在均匀的生成一串数，份数是len(P)。这里是让所有点在曲线参数上均匀分布。</p><p>else里面的话就是对开放曲线的操作。<code>o1=o1=k/2</code>这里就是定义两个偏移量，用来调整中间关键点的参数范围。那这里的kt也是在计算点。</p><p>这里第二个<code>kt=np.concatenate([[t[p]]*nult,kt,[t[-k]]*mult])</code>这里是固定首尾关键点的参数位置，比卖你曲线飘离起点和终点。这里concatenate是将三个拼接起来。</p><p>综合分析的话该函数作用是对我输入的每一个关键点数组P里的点，分配一个曲线参数t上的专属位置，这个位置就是kt中的一个数字，最终保证生成的平滑曲线能够精确经过每一个P点。然后返回每个P列表里的点所对应的曲线参数位置（kt数组）</p><p>这里我的疑问是既然我给定了P位置数组，为什么还要算kt这个列表呢？因为这里P是空间位置的概念，而kt是在曲线上的刻度位置，不是一个概念。我一直以为这里的线是迭代插值所算出来的，但是他说是先有一条刻度t，把点挂在轴上，最后加权求和生成曲线，唉，没看懂。</p><p>这边B样条逻辑先这样，没时间了下次再补下。刻度位置列表里的每一个点控制一小段曲线，把这个曲线上这个点所受控制的点全部都按加权算出一个坐标，这个坐标就是B样条上的一个点</p><h2 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h2><p>这里o一直在计算偏移，问了好多遍但是一直没搞懂为什么要有这个偏移，比如它回我0-1和5-6结构不一样，但它解释的看不懂。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Day-01</title>
+    <link href="/2026/04/13/Day-01/"/>
+    <url>/2026/04/13/Day-01/</url>
+    
+    <content type="html"><![CDATA[<h1 id="B样条和贝塞尔曲线的浅入理解和第三部分代码前几个函数"><a href="#B样条和贝塞尔曲线的浅入理解和第三部分代码前几个函数" class="headerlink" title="B样条和贝塞尔曲线的浅入理解和第三部分代码前几个函数"></a>B样条和贝塞尔曲线的浅入理解和第三部分代码前几个函数</h1><p>本次在读代码的过程中发现整体涉及到B样条的相关知识，于是在B站上寻找相关视频学习。</p><h2 id="贝塞尔曲线"><a href="#贝塞尔曲线" class="headerlink" title="贝塞尔曲线"></a>贝塞尔曲线</h2><p>对于贝塞尔曲线，其根本的逻辑在于点的插值，即在一条线段上取一点，按照比例求点（类似等比分点）。通过对多个点不断确定两点之间线段上一定比例的点，得到第一轮n-1个点，后续按照此规则循环迭代得到为一点。按照该方法把0-1之间所对应的所有t值的最终点连接起来便是贝塞尔曲线。由于此生成模式，如果其中某个点变化，那整体的图样便会变化，对于大规模工程来说稳定性能较低。</p><p>若给定n+1个点，得到的贝塞尔曲线为n次曲线，某个点同时也具有相应的计算公式，为各个分向量及其权重的线性组合所得。</p><p>如果n比较大，可由两个次一级的贝塞尔曲线按照两点线段取点的方式生成，通常为P<sub>0</sub>-P<sub>n-1</sub>和P<sub>1</sub>-P<sub>b</sub>两条贝塞尔曲线，故可能涉及到函数迭代问题。</p><p>综合来讲贝塞尔曲线的特征：</p><ol><li>曲线总是过第一个和最后一个控制点。</li><li>曲线的起始切线和终点切线落在前两个和后两个点的连线上</li><li>如果改变一个点，整条贝塞尔曲线的形状都会改变</li></ol><h2 id="B样条"><a href="#B样条" class="headerlink" title="B样条"></a>B样条</h2><p>关于B样条，是由多条贝塞尔曲线相互拼接所形成的结构，但是在学习的时候发现涉及不同点吸引强度不用这个观念还不是很清楚，通过不同点设置吸引强度，控制一小段的形状。B样条的连接点是由多个线段重叠组成的，那这个时候怎么去控制连接点的机理先放着，后续有需要再学。</p><h2 id="NK函数"><a href="#NK函数" class="headerlink" title="NK函数"></a>NK函数</h2><p>关于NK函数，此处是在分配权重，参数u在0-1之间代表第i个点控制点对曲线位置的贡献度。在提到贝塞尔曲线时，不同点的贡献度在求得最终点的百分比贡献不同，这里应该是上面的概念吗？</p><p><code>basis knots=np.linspace(0,k,k+1)</code>这一行是在输入k个点，平均分成012……k+1份，linspace就是分段操作所对应的np内置函数。因为B样条是由多段贝塞尔曲线所组成，上述分出来的点便是线段的连接点。在这些点之间，通过迭代形成钟形曲线。</p><p><code>bsp = BSpline.basis_element(basis_knots).derivative(der)</code>这一行代码是在生成一个阶数为k的单体基函数，这边基函数的概念也先放着。der的输入数据不同，所涉及的意义也不同，0代表基函数本身，1代表基函数速度&#x2F;权重的变化率，2则是加速度&#x2F;斜率的变化率。</p><p>总结就是basis_knots划定分析的区域bsp根据der的值进行不同含义的运算。NK运行完成后返回一个函数，可理解为返回一个计算工具，这里涉及一个闭包的概念，返回时函数内部会存储本应随着NK函数运行完毕所销毁的bsp相关数据。整个计算过程只在0-1之间存在意义，clip函数便是将数据严格控制在0-k之间，多切少补。整个函数返回一个权重、速度变化率或者加速度变化率</p><h2 id="add-multiplicity函数"><a href="#add-multiplicity函数" class="headerlink" title="add_multiplicity函数"></a>add_multiplicity函数</h2><p><code>Q = np.kron(Q, np.ones((multiplicity, 1)))</code>这一行是在进行控制点的自我克隆，<code>np.ones((multiplicity,1))</code>生成了multiplicity个由1组成的列向量，kron运算使得Q的每一个元素乘后面的列向量完成自我克隆。这里提一下kron内置函数的逻辑，用第二个参数对第一个参数操作，如果是标量就直接乘第二个参数，如果是矩阵则是A中每一个元素乘B矩阵，最终形成一个新的矩阵。这里可以理解为将控制点增多，方便对曲线进行细微控制，一般而言B样条是平滑的，这里将某些点的重数增加，这个点对曲线的吸引力度就更大，便于通过参数调整去形成一些图形特征，比如尖端连接点之类。这里是在-noise和noise之间公平随机地选数，那最后这个参数是向代码要求生成和Q矩阵类型相同的随机数据，这里的uniform代表均匀分布，如果是normal则是按照正态分布去生成随机数。至于这里加噪声，因为克隆点一致如果不微调，最终优化的时候这些点对曲线的控制力度相同会出问题，这里噪声非常小，机器处理数据能识别，而肉眼观测的差距就很小了。</p><p><code>np.random.uniform(-noise,noise)</code></p><h2 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h2><ol><li>画图的时候涉及到长度、速度、加速度这三个概念，后面两个在图形上有什么表现？比如长度就是控制这条线多长，后两个不理解。</li></ol>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  
+</search>
