@@ -19,21 +19,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="make_lambda函数其中的theta和scale参数为前面的旋转角和长短轴拉伸倍数。 return np.linalg.inv(make_sigma(theta,scale))，其中make_sigma是上一个函数所得到的协方差矩阵。linalg是专门用于矩阵运算的工具库。里面的inv也就是用到的是用来求矩阵的逆，另外举det的例子，可以直接算出行列式。 关于协方差矩阵差代表每个点离平均值的">
+    <meta name="description" content="compute_smoothing_bspline函数 整体来看，作用是给定一堆乱糟糟的点Q，造出一条既听话(贴近原点)又优雅(平滑不抖动)的B样条曲线。  这里参数比较多，所以先看下传入的是什么(Q,mult&#x3D;1,der&#x3D;3,k&#x3D;6,r&#x3D;1000,sigma&#x3D;1.0,end_weight&#x3D;100,pspline&#x3D;False,use_keypoints&#x3D;False,closed&#x3D;False,con">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Day-07">
-<meta property="og:url" content="https://wang-xw-code.github.io/2026/04/22/Day-07/index.html">
+<meta property="og:title" content="Day-08">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/04/23/Day-08/index.html">
 <meta property="og:site_name" content="Wang-xw-code">
-<meta property="og:description" content="make_lambda函数其中的theta和scale参数为前面的旋转角和长短轴拉伸倍数。 return np.linalg.inv(make_sigma(theta,scale))，其中make_sigma是上一个函数所得到的协方差矩阵。linalg是专门用于矩阵运算的工具库。里面的inv也就是用到的是用来求矩阵的逆，另外举det的例子，可以直接算出行列式。 关于协方差矩阵差代表每个点离平均值的">
+<meta property="og:description" content="compute_smoothing_bspline函数 整体来看，作用是给定一堆乱糟糟的点Q，造出一条既听话(贴近原点)又优雅(平滑不抖动)的B样条曲线。  这里参数比较多，所以先看下传入的是什么(Q,mult&#x3D;1,der&#x3D;3,k&#x3D;6,r&#x3D;1000,sigma&#x3D;1.0,end_weight&#x3D;100,pspline&#x3D;False,use_keypoints&#x3D;False,closed&#x3D;False,con">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-04-22T08:22:11.000Z">
-<meta property="article:modified_time" content="2026-04-22T09:33:44.938Z">
+<meta property="article:published_time" content="2026-04-23T13:15:15.000Z">
+<meta property="article:modified_time" content="2026-04-23T14:29:11.410Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Day-07 - Wang-xw-code</title>
+  <title>Day-08 - Wang-xw-code</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -302,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Day-07"></span>
+            <span id="subtitle" data-typed-text="Day-08"></span>
           
         </div>
 
@@ -313,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-04-22 16:22" pubdate>
-          April 22, 2026 pm
+        <time datetime="2026-04-23 21:15" pubdate>
+          April 23, 2026 pm
         </time>
       </span>
     
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          861 words
+          1.2k words
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          8 mins
+          10 mins
         
       </span>
     
@@ -375,26 +375,40 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Day-07</h1>
+            <h1 id="seo-header">Day-08</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="make-lambda函数"><a href="#make-lambda函数" class="headerlink" title="make_lambda函数"></a>make_lambda函数</h2><p>其中的theta和scale参数为前面的旋转角和长短轴拉伸倍数。</p>
-<p><code>return np.linalg.inv(make_sigma(theta,scale))</code>，其中make_sigma是上一个函数所得到的协方差矩阵。linalg是专门用于矩阵运算的工具库。里面的inv也就是用到的是用来求矩阵的逆，另外举det的例子，可以直接算出行列式。</p>
-<h3 id="关于协方差矩阵"><a href="#关于协方差矩阵" class="headerlink" title="关于协方差矩阵"></a>关于协方差矩阵</h3><p>差代表每个点离平均值的距离；方代表平方；协意味着关系，相互之间的变化关系。</p>
-<h3 id="疑问与解答？"><a href="#疑问与解答？" class="headerlink" title="疑问与解答？"></a>疑问与解答？</h3><ol>
-<li>theta是对整个图形还是局部？<br>是局部笔触的属性。这里给了个比喻，B样条轨迹是我写出来的字的路径，而theta和scale是我握笔的姿势，能影响到笔迹的宽度，比如毛笔越往下接触面积越大，笔迹越粗。</li>
-<li>如果笔刷具有宽度属性，那怎么判断点是不是被画进来了呢？<br>对应当经过的点找一个最近B样条轨迹上的控制点，得到相对向量。塞进make_lambda这里得到的矩阵，进行还原。为什么还原？假如用毛笔写字，顺着运笔方向和垂直的两种情况，相隔相同的距离位置的颜色是不相同的。最后计算两点间距，判断是否在范围里。最后最重要的就是这里不是直接涂黑，类似渐变这个概念，通过浓度公式进行不同百分比程度的染色。</li>
-<li>它和前面的rot_2d有什么区别呢？<br>前面rot_2d是在生成旋转矩阵，是对角度的改变。而这里的make_lambda是长度的改变设置。前面让我们能够斜着画出椭圆，后面让我们能够设置椭圆的具体形状等。</li>
+                <h2 id="compute-smoothing-bspline函数"><a href="#compute-smoothing-bspline函数" class="headerlink" title="compute_smoothing_bspline函数"></a>compute_smoothing_bspline函数</h2><ul>
+<li><p>整体来看，作用是给定一堆乱糟糟的点Q，造出一条既听话(贴近原点)又优雅(平滑不抖动)的B样条曲线。</p>
+</li>
+<li><p>这里参数比较多，所以先看下传入的是什么<code>(Q,mult=1,der=3,k=6,r=1000,sigma=1.0,end_weight=100,pspline=False,use_keypoints=False,closed=False,constrain=True,get_keypoints=True)</code></p>
+<ol>
+<li>Q是我需要拟合的原始点集(这里的是我通过加噪、强行拟合后的处理后的点集)；</li>
+<li>mult是节点重合度，控制曲线在起始点和终点的粘性，如果说mult增加，曲线会更贴合起始点(我寻思必定经过起始点，其实这个是贝塞尔曲线的特性，不是B样条的性质，所以这里可能要增加mult去贴合起始或终点)；</li>
+<li>der是平滑阶数，想让这根线丝滑到什么程度；k是阶数，决定了每个控制点能够影响多远的距离，阶数越高曲线越平滑(这个和之前NK函数的der不是一个东西)；</li>
+<li>r是平滑惩罚系数，如果r很大，曲线很平滑，牺牲细节，很小的话又会想经过所有点，一直抖动，这里r就是其平衡作用；</li>
+<li>sigma就是之前求出来的协方差矩阵；</li>
+<li>end_weight是末端权重，如果值越大，曲线的头尾就越不容易变形；</li>
+<li>pspline为惩罚样条开关，一种计算方法；</li>
+<li>use_keypoints&amp;&amp;get_key_points为关键点控制，决定曲线是均匀分布节点还是根据原始点Q的疏密程度动态调整节点；</li>
+<li>closed判断画的是一个闭合线条还是一撇一捺这种线条；</li>
+<li>constrain判断是否要强行要求曲线的控制点对齐原始边界。做个解释，如果没有约束，曲线如果要接近Q的时候平滑惩罚r很大，那为了平滑会和不符预期。那有约束的时候无论中间怎么平滑，笔画的头尾必须钉死在规定的位置上。也就是这里所说的对齐原始边界。</li>
 </ol>
-<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ol>
-<li>如果说描述圆给出半径就可以，正方形则是边长。那如果描述笔触的话就很难办，这里就是笔触形状的说明书(粗细)。</li>
-<li>后续染色边缘晕染需要这个矩阵，决定淡的速度和方向。</li>
-<li>如果画出来的图形不像，可以修改这里的theta和scale进行微操。</li>
-</ol>
-<p>其中有四个数据，分别是X的方差、Y的方差、协方差(右上左下)。表示在X方向散的有多开，在Y方向散的有多开。这里的协方差如果大于零说明两个正相关，其余类似。</p>
-<h2 id="简略的画图逻辑"><a href="#简略的画图逻辑" class="headerlink" title="简略的画图逻辑"></a>简略的画图逻辑</h2><p>先通过B样条控制点和基函数计算点的轨迹，其次设置笔刷的属性，然后上色，这里提到浓度公式。</p>
+</li>
+<li><p><code>dim=len(Q[0])</code>是在判断点是有几个维度，判断是在二维空间还是三维空间画图；</p>
+</li>
+<li><p><code>p=k-1</code>还是在用阶数计算次数；</p>
+</li>
+<li><p><code>Qm=Q</code>这里将原始点给赋值了一边，看着很没必要，但这里是在保护原始数据，还是蛮有必要的；</p>
+</li>
+<li><p><code>c,C,uk=tcu(...)</code>这里调用了之前的tcu函数，将原始数据变成B样条能处理的数据，把空间和时间对应；</p>
+</li>
+<li><p><code>skip=None</code>程序默认情况下把tcu给出的所有控制点都拿来进行优化计算。<code>if not closed</code>如果不闭合的话，<code>if constrain</code>还有约束要求那也是保留所有控制点(尤其是边缘的那几个点)；假如不约束(优雅派)就是说更在乎线条整体是不是平滑，至于起始和终点有没有偏差这里就不在意。</p>
+</li>
+</ul>
+<h2 id="遗留的问题"><a href="#遗留的问题" class="headerlink" title="遗留的问题"></a>遗留的问题</h2><p>剩下的代码还有为什么skip&#x3D;p，为什么不能既要平滑又经过起始点和终点(今天晚上有通选课，没法晚自习，只能回宿舍学一会)</p>
 
                 
               </div>
@@ -412,8 +426,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Day-07</div>
-      <div>https://wang-xw-code.github.io/2026/04/22/Day-07/</div>
+      <div>Day-08</div>
+      <div>https://wang-xw-code.github.io/2026/04/23/Day-08/</div>
     </div>
     <div class="license-meta">
       
@@ -425,7 +439,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>April 22, 2026</div>
+          <div>April 23, 2026</div>
         </div>
       
       
@@ -457,18 +471,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/04/23/Day-08/" title="Day-08">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Day-08</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/04/20/Day-06/" title="Day-06">
-                        <span class="hidden-mobile">Day-06</span>
+                      <a href="/2026/04/22/Day-07/" title="Day-07">
+                        <span class="hidden-mobile">Day-07</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

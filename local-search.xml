@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>Day-08</title>
+    <link href="/2026/04/23/Day-08/"/>
+    <url>/2026/04/23/Day-08/</url>
+    
+    <content type="html"><![CDATA[<h2 id="compute-smoothing-bspline函数"><a href="#compute-smoothing-bspline函数" class="headerlink" title="compute_smoothing_bspline函数"></a>compute_smoothing_bspline函数</h2><ul><li><p>整体来看，作用是给定一堆乱糟糟的点Q，造出一条既听话(贴近原点)又优雅(平滑不抖动)的B样条曲线。</p></li><li><p>这里参数比较多，所以先看下传入的是什么<code>(Q,mult=1,der=3,k=6,r=1000,sigma=1.0,end_weight=100,pspline=False,use_keypoints=False,closed=False,constrain=True,get_keypoints=True)</code></p><ol><li>Q是我需要拟合的原始点集(这里的是我通过加噪、强行拟合后的处理后的点集)；</li><li>mult是节点重合度，控制曲线在起始点和终点的粘性，如果说mult增加，曲线会更贴合起始点(我寻思必定经过起始点，其实这个是贝塞尔曲线的特性，不是B样条的性质，所以这里可能要增加mult去贴合起始或终点)；</li><li>der是平滑阶数，想让这根线丝滑到什么程度；k是阶数，决定了每个控制点能够影响多远的距离，阶数越高曲线越平滑(这个和之前NK函数的der不是一个东西)；</li><li>r是平滑惩罚系数，如果r很大，曲线很平滑，牺牲细节，很小的话又会想经过所有点，一直抖动，这里r就是其平衡作用；</li><li>sigma就是之前求出来的协方差矩阵；</li><li>end_weight是末端权重，如果值越大，曲线的头尾就越不容易变形；</li><li>pspline为惩罚样条开关，一种计算方法；</li><li>use_keypoints&amp;&amp;get_key_points为关键点控制，决定曲线是均匀分布节点还是根据原始点Q的疏密程度动态调整节点；</li><li>closed判断画的是一个闭合线条还是一撇一捺这种线条；</li><li>constrain判断是否要强行要求曲线的控制点对齐原始边界。做个解释，如果没有约束，曲线如果要接近Q的时候平滑惩罚r很大，那为了平滑会和不符预期。那有约束的时候无论中间怎么平滑，笔画的头尾必须钉死在规定的位置上。也就是这里所说的对齐原始边界。</li></ol></li><li><p><code>dim=len(Q[0])</code>是在判断点是有几个维度，判断是在二维空间还是三维空间画图；</p></li><li><p><code>p=k-1</code>还是在用阶数计算次数；</p></li><li><p><code>Qm=Q</code>这里将原始点给赋值了一边，看着很没必要，但这里是在保护原始数据，还是蛮有必要的；</p></li><li><p><code>c,C,uk=tcu(...)</code>这里调用了之前的tcu函数，将原始数据变成B样条能处理的数据，把空间和时间对应；</p></li><li><p><code>skip=None</code>程序默认情况下把tcu给出的所有控制点都拿来进行优化计算。<code>if not closed</code>如果不闭合的话，<code>if constrain</code>还有约束要求那也是保留所有控制点(尤其是边缘的那几个点)；假如不约束(优雅派)就是说更在乎线条整体是不是平滑，至于起始和终点有没有偏差这里就不在意。</p></li></ul><h2 id="遗留的问题"><a href="#遗留的问题" class="headerlink" title="遗留的问题"></a>遗留的问题</h2><p>剩下的代码还有为什么skip&#x3D;p，为什么不能既要平滑又经过起始点和终点(今天晚上有通选课，没法晚自习，只能回宿舍学一会)</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Day-07</title>
     <link href="/2026/04/22/Day-07/"/>
     <url>/2026/04/22/Day-07/</url>
