@@ -19,21 +19,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="上次结个尾平滑与起始点为什么不能既过起点又平滑：类似橡皮筋，如果不平滑的话就会有回拉的倾向，如果起始点固定，那回弹肯定会受一定的影响。 skipskip这一段是判断要不要跳过某些点，默认是不跳过，接下来判断是不是闭合曲线(圆圈)，如果强行约束(constrain)就也不跳过，不然就跳过前后p个点； 疑惑这里我的疑问是既然要约束了，为什么不直接踢掉反而参与运算？因为如果剔除掉，或许不清楚中间的线条平">
+    <meta name="description" content="clipper模块说明感觉B样条那里涉及到太多的矩阵什么的容易晕，先尝试看其他模块的代码会不会有这个问题。 分析cfg两行第一个要了解的是lambda这里的使用逻辑，其次是python中的类对象可以不先声明直接调用(调用的时候一同生成这个变量)。 ensure_list函数这里是将用户传入的数据做一个形式上的统一，比如一个点就是一个坐标，一个线条就是多个坐标，多个线条就是多个一个线条。如果这个时候">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Day-09">
-<meta property="og:url" content="https://wang-xw-code.github.io/2026/04/24/Day-09/index.html">
+<meta property="og:title" content="Day-10">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/04/26/Day-10/index.html">
 <meta property="og:site_name" content="Wang-xw-code">
-<meta property="og:description" content="上次结个尾平滑与起始点为什么不能既过起点又平滑：类似橡皮筋，如果不平滑的话就会有回拉的倾向，如果起始点固定，那回弹肯定会受一定的影响。 skipskip这一段是判断要不要跳过某些点，默认是不跳过，接下来判断是不是闭合曲线(圆圈)，如果强行约束(constrain)就也不跳过，不然就跳过前后p个点； 疑惑这里我的疑问是既然要约束了，为什么不直接踢掉反而参与运算？因为如果剔除掉，或许不清楚中间的线条平">
+<meta property="og:description" content="clipper模块说明感觉B样条那里涉及到太多的矩阵什么的容易晕，先尝试看其他模块的代码会不会有这个问题。 分析cfg两行第一个要了解的是lambda这里的使用逻辑，其次是python中的类对象可以不先声明直接调用(调用的时候一同生成这个变量)。 ensure_list函数这里是将用户传入的数据做一个形式上的统一，比如一个点就是一个坐标，一个线条就是多个坐标，多个线条就是多个一个线条。如果这个时候">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-04-24T11:06:11.000Z">
-<meta property="article:modified_time" content="2026-04-25T12:50:49.525Z">
+<meta property="article:published_time" content="2026-04-26T11:12:17.000Z">
+<meta property="article:modified_time" content="2026-04-26T13:27:42.334Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Day-09 - Wang-xw-code</title>
+  <title>Day-10 - Wang-xw-code</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -302,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Day-09"></span>
+            <span id="subtitle" data-typed-text="Day-10"></span>
           
         </div>
 
@@ -313,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-04-24 19:06" pubdate>
-          April 24, 2026 pm
+        <time datetime="2026-04-26 19:12" pubdate>
+          April 26, 2026 pm
         </time>
       </span>
     
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k words
+          1.7k words
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          18 mins
+          14 mins
         
       </span>
     
@@ -375,45 +375,55 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Day-09</h1>
+            <h1 id="seo-header">Day-10</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="上次结个尾"><a href="#上次结个尾" class="headerlink" title="上次结个尾"></a>上次结个尾</h2><h3 id="平滑与起始点"><a href="#平滑与起始点" class="headerlink" title="平滑与起始点"></a>平滑与起始点</h3><p>为什么不能既过起点又平滑：类似橡皮筋，如果不平滑的话就会有回拉的倾向，如果起始点固定，那回弹肯定会受一定的影响。</p>
-<h3 id="skip"><a href="#skip" class="headerlink" title="skip"></a>skip</h3><p>skip这一段是判断要不要跳过某些点，默认是不跳过，接下来判断是不是闭合曲线(圆圈)，如果强行约束(constrain)就也不跳过，不然就跳过前后p个点；</p>
-<h3 id="疑惑"><a href="#疑惑" class="headerlink" title="疑惑"></a>疑惑</h3><p>这里我的疑问是既然要约束了，为什么不直接踢掉反而参与运算？因为如果剔除掉，或许不清楚中间的线条平滑成了什么样，因此在衔接处可能会产生某些折痕。那约束就可能在后续的代码单独划分一块区域运算。</p>
-<h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><ul>
-<li>is_number判断数据类型。</li>
-<li>NK根据不同的der计算不同的数据。</li>
-<li>add_multiplicity添加噪点，便于细微调节。</li>
-<li>keypoint_times是在为每一个点分配“出场时间”，返回值kt就是B样条坐标轴上的时间点。这里名字所谓关键时间，在分配完时间后，假如A有很多噪点，都在同一时刻，那没法分身，会有后续代码进行重心的判断，给出一个A的关键点。</li>
-<li>tc如果闭合，在起始终止前后添加后面与前面的点，让开头结尾顺畅的连接在一起；不闭合就增大起点终点权重。</li>
-<li>tcu是造骨架——节点向量，keypoint_times的时间就是在这个骨架上开展的。返回的t是进度条，c是屏幕上的真实位置(X,Y)，u就是进度条上的进度，而且t是为基函数服务的，并没有每个数据的具体进度，这个是由u所完成的任务。</li>
-<li>retrieve_control_points还原纯净控制点。</li>
-<li>bspline_samples就是把画图所需要的点集计算出来。</li>
-<li>uniform_gramian计算各个点之间的关联度，动起来费不费力。</li>
-<li>rot_2d返回一个旋转矩阵。</li>
-<li>make_sigma返回协方差矩阵(描述图像的形状)。</li>
-<li>make_lambda，换句话来讲就是前面让笔尖转向，这个控制笔尖的形状。</li>
+                <h1 id="clipper模块"><a href="#clipper模块" class="headerlink" title="clipper模块"></a>clipper模块</h1><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>感觉B样条那里涉及到太多的矩阵什么的容易晕，先尝试看其他模块的代码会不会有这个问题。</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="cfg两行"><a href="#cfg两行" class="headerlink" title="cfg两行"></a>cfg两行</h3><p>第一个要了解的是lambda这里的使用逻辑，其次是python中的类对象可以不先声明直接调用(调用的时候一同生成这个变量)。</p>
+<h3 id="ensure-list函数"><a href="#ensure-list函数" class="headerlink" title="ensure_list函数"></a>ensure_list函数</h3><p>这里是将用户传入的数据做一个形式上的统一，比如一个点就是一个坐标，一个线条就是多个坐标，多个线条就是多个一个线条。如果这个时候去for-in遍历得到的元素是不同的，会有问题。所以这里的统一形式是很有必要的。</p>
+<h3 id="polynode-contours函数"><a href="#polynode-contours函数" class="headerlink" title="polynode_contours函数"></a>polynode_contours函数</h3><ul>
+<li><p>这里的参数比较特别，是pyclipper.PyPolyNode这个玩意的类型对象。为什么会有这个东西，假如一个图形是正方形减去一个圆，那Contour属性就是第一层，Childs就是里面圆的这一层。如果图形特别复杂，可能里面的形状是由很多图形拼接所形成。</p>
+</li>
+<li><p>这里的函数就是起记录信息的作用，<code>for c in n.Childs</code>这边还用到了DFS算法调用本函数<code>polynode_contours</code>，将每一个第一层深挖。然后这里还有个性质，就是python函数里对列表这些的修改是能够传回去，所以这里没有用return返回值。</p>
+</li>
 </ul>
-<h2 id="compute-smoothing-bspline剩余部分"><a href="#compute-smoothing-bspline剩余部分" class="headerlink" title="compute_smoothing_bspline剩余部分"></a>compute_smoothing_bspline剩余部分</h2><ul>
-<li><code>n=len(c)</code>和<code>p=k-1</code>没什么好说的，控制点个数和B样条次数。</li>
-<li><code>def construct_B</code>定义了一个内嵌函数，调用NK计算工具，创建一个零矩阵(采样点数，控制点数)。这里行代表位置，列代表每一个控制点，矩阵里的数据类比于一个人对橡皮筋使了多大的力。<code>u-t[i]</code>是算两个位置间的距离，用来计算花费的力气。</li>
-<li>np类型切片<code>B[:,i]</code>冒号代表所有的，这里是指第i列所有的数据。这样整体赋值避免了最原始的两个for in行列循环再单一化赋值，整体效率非常高。</li>
-<li><code>if use_keypoints</code>判断是否需要决定曲线是均匀分布节点还是根据原始点Q的疏密程度动态调整节点。如果是动态调整的话可以确保曲线的转折处或特定物理特征点与时间轴对齐。否则就是均匀地生成，由np里的linspace完成。再次说明下均不均匀的区别，均匀的时候每个点的影响其实可以类比，它们的基函数是类似的，曲线通常不经过第一个和最后一个点，但最大的问题也就是太均匀了；另外的话就可以通过挤压节点之类的对局部进行微调，整体会更复杂些。</li>
-<li><code>B=B[:,skip:-skip]</code>这里就用到参数里的skip，后续参与的可能是平滑优化这些，如果不想让它们参与的话，就把这些头尾切掉。</li>
-<li><code>Bb=np.kron(B,np.eye(dim))</code>，dim是维度的意思，之前算出来的B(影响力度表)只是针对一个维度的，通过与np.eye(dim)矩阵相乘对所有维度把这个影响力度给加上去。</li>
-<li>后面两行<code>np.hstack</code>将数据处理，便于运算(如行列两维挤成一维)。</li>
-<li><code>if pspline</code>判断是否需要进入平滑惩罚环节，这里涉及了好多不理解没学过的矩阵知识，只大概知道G是点与点之间的牵连关系，亦或说是关联程度。</li>
-<li><code>Gb=np.kron(G,np.eye(dim))</code>也是将维度扩展。</li>
+<h3 id="conv-from函数"><a href="#conv-from函数" class="headerlink" title="conv_from函数"></a>conv_from函数</h3><ul>
+<li><p><code>if type(S)==clip.PyPolyNode</code>便是在判断S是否是PyPolyNode对象类型，是的话就创建一个空列表contours用来进行上面一个函数的信息记录。</p>
+</li>
+<li><p><code>return [np.array([np.array(p)/cfg.scale for p in P]) for P in contours]</code>这里是一个列表推导式，同时也用到np数组对数据一次性处理的特性。还是以图形切割为例，contours记录了所有图形，P是某一个图形，p是某一个图形的某一个点。</p>
+</li>
+<li><p>同时这里因为某些原因，数据必须是整数，在计算前会全部给乘某个倍数，这里除法就是在消去这个东西。</p>
+</li>
 </ul>
-<h2 id="搞不懂的东西"><a href="#搞不懂的东西" class="headerlink" title="搞不懂的东西"></a>搞不懂的东西</h2><p>协方差矩阵之前问着说是描述图形的样子，或者讲着说笔尖的形状。但这里又讲说打分时候的误差范围。真搞不懂是什么东西了。这一部分完全没看懂。</p>
-<h2 id="疑问-难处"><a href="#疑问-难处" class="headerlink" title="疑问&#x2F;难处"></a>疑问&#x2F;难处</h2><p>老师，我看代码基本就是每一行都要问AI，涉及的名词又一点不清楚，就比如协方差矩阵，包括一些原理方面的问题，比如曲线时刻坐标和位置坐标。这些我都是去问AI的，它有时候解释的又很奇葩，不同的比喻，就类似上面。</p>
-<p>摸棱两可的懂了之后过一两天又不是很清楚，上面代码的回顾就花费了很多时间。我不知道我这样学到底能学到啥，或者是我切入的方向有问题。</p>
-<p>最难受的就是给个矩阵运算，只说结果是什么，但捉摸不透的就是为什么要这样算，为什么这样结果就是我要的。</p>
-<p>老师你觉得我这样看是不是有什么问题啊，因为我同学二本的已经把数据结构这些看完再刷题了，但我不清楚我到现在学到了啥。老师你当时说后面的一个目标是做到我清楚去那里对整个项目做修改，可是这样我感觉最大的问题是数据处理，类似实现的时候不知道咋算，咋用矩阵。学的一头雾水现在。</p>
-<p>老师您看有没有啥建议？或者我不应该去看这个B样条这部分的函数，直接看其他部分的呢？但我瞄了一下好像也存在上面这些问题。目前学的蛮困扰的，麻烦老师了。</p>
+<h3 id="conv-to函数"><a href="#conv-to函数" class="headerlink" title="conv_to函数"></a>conv_to函数</h3><ul>
+<li><p>上面提到数据必须是整数，这里就是在倍乘，然后再转换成整型数据类型。</p>
+</li>
+<li><p><code>return tuple([tuple([(int...)])</code>这里为什么要用元组，因为列表的数据是可变，而这个特殊的什么东西对这个有要求。这里也涉及到三个元组的嵌套，最内层将点xy围在一起，其次是将一个完整图形的所有点包在一起，最后打包出去，逻辑顺一下。</p>
+</li>
+</ul>
+<h3 id="offset函数"><a href="#offset函数" class="headerlink" title="offset函数"></a>offset函数</h3><ul>
+<li>整体作用是接收一个形状(点集)，通过平移变化大小，这个过程的线线交点也被处理了(平角、尖角、圆角)。</li>
+<li>S代表处理的原始几何形状；amt代表偏移的距离；join_type为连接处的类型(round圆弧，square切平，miter尖角)；end_type为断口处的类型(closed_polygon为闭合，open…等是其他的样式)；miter只有在join_type&#x3D;miter的时候才起作用，处理一定东西。</li>
+<li>开头两行的字典存储了join_types与end_types的类型。</li>
+<li>然后调用了clip里的一些东西。</li>
+<li><code>S=ensure_list</code>确保数据统一性，<code>S=conv_to</code>将数据倍乘变整数，确保能够被处理。最后调用一堆方法完成平移与交点处理，然后数据复原(除)返回。</li>
+</ul>
+<h3 id="clean-polygon函数"><a href="#clean-polygon函数" class="headerlink" title="clean_polygon函数"></a>clean_polygon函数</h3><ul>
+<li>首先还是conv_to数据转化，这里传入一个图形P的点集，取出来后调用方法清理，主要是冗余的数据(重复的点、类似三点一线可省略中间点的类型…)，最后还原倍数返回。</li>
+<li>为什么要清理呢？节省计算时间提高效率。</li>
+</ul>
+<h3 id="op函数"><a href="#op函数" class="headerlink" title="op函数"></a>op函数</h3><ul>
+<li>这里是最关键的操作部分，称作多边形的布尔运算(交集、并集、差集)；A主体；B刀具；clip_type填充规则，这里说是假如图形的线段自己相交，哪里算外面，哪里算里面。</li>
+<li>通过双重保险(ensure_list和if…list)确保数据一定是列表。同时也是两个字典去放数据</li>
+</ul>
+<h2 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h2><ol>
+<li>用户输入的数据不一定是能够直接使用，要考虑到不同的表现形式，最终决定是标注提示还是后台统一标准。 </li>
+<li>DFS递归算法。</li>
+<li>为了代码的简略或美观，不一定要用return传回数值。</li>
+<li>数据整洁性处理(去噪简化)。</li>
+</ol>
 
                 
               </div>
@@ -431,8 +441,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Day-09</div>
-      <div>https://wang-xw-code.github.io/2026/04/24/Day-09/</div>
+      <div>Day-10</div>
+      <div>https://wang-xw-code.github.io/2026/04/26/Day-10/</div>
     </div>
     <div class="license-meta">
       
@@ -444,7 +454,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>April 24, 2026</div>
+          <div>April 26, 2026</div>
         </div>
       
       
@@ -476,18 +486,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/04/26/Day-10/" title="Day-10">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Day-10</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/04/23/Day-08/" title="Day-08">
-                        <span class="hidden-mobile">Day-08</span>
+                      <a href="/2026/04/24/Day-09/" title="Day-09">
+                        <span class="hidden-mobile">Day-09</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
