@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>Day-13</title>
+    <link href="/2026/05/01/Day-13/"/>
+    <url>/2026/05/01/Day-13/</url>
+    
+    <content type="html"><![CDATA[<h2 id="dec-py函数"><a href="#dec-py函数" class="headerlink" title="dec.py函数"></a>dec.py函数</h2><h3 id="relevance函数"><a href="#relevance函数" class="headerlink" title="relevance函数"></a>relevance函数</h3><p>整体上是在计算点的重要性，如果点的重要性低就摘出多边形中。这里的keep是一个布尔数组，判断哪些点需要判断，不需要的就是必须留存下来的。</p><p><code>n=s.shape[0]</code>，np数组中的shape是关于每一个维度上数组的元素个数，返回的数据类型为元组，可用嵌套列表理解。所以这里是获取这个数组里又多少个点(这边传入的数据应该是一个图形，不是多个图形的集合)。</p><p>先判断keep里这个点需不需要强制保留，不用的话再进行计算。这边我有个疑惑是不应该对s里的每一个点进行keep判断吗？这个函数内部其实判断的是index这个点的重要性，s只是为了知道它的邻居。如果判断要求留下，返回inf(无限大)。</p><p>关于重要性需要三个点(前，本身，后)，所以前面要获取这个图形的点的总数s.shape[0]，并判断是否大于等于三。那这里又有一个疑惑，既然三点不行，为什么不直接return呢？回答是说return 0或者inf会和其他情况混在一起。那为什么不设置一个特殊标志记录，比如字符呢？这样会导致这个np数组的数据类型不干净。但是这里提出了一个蛮好的想法，通过raise-except异常处理把这个情况当报错处理掉，可以选择用except跳过这个计算，或者不用直接终止程序。</p><p>之后记录这三个点的index，然后将第一个点和最后一点这个特殊情况给孤立出来，第一个点前一个是最后一个。疑问：难道不用区别是不是闭合曲线吗？或许在调用这部分的时候是单独判断完闭合曲线之后吧。</p><p>后续把三点之间的两个向量横纵坐标表示出来，然后计算长度。通过余弦函数计算角度<code>av=(np.dot(np.hstack([seg1x,seg1y]),np.vstack([seg2x,seg2y])))/l1/l2</code>，vstack和hstack是垂直堆叠和水平堆叠的英文缩写。</p><p>再用<code>if np.isnan(av)</code>判断av是不是数字，不是则说明有两个点的坐标一样，这样l1或者l2就是0.这个时候就直接返回0夹角。不然就通过反三角函数于补角求出夹角。</p><p>最终这里有一个价值评估环节<code>v=a*l1*l2/(l1+l2)</code>和<code>v=v/peri</code>。</p><h3 id="seglength函数"><a href="#seglength函数" class="headerlink" title="seglength函数"></a>seglength函数</h3><p>接收两个点的坐标，计算向量长度。</p><h3 id="blocked函数"><a href="#blocked函数" class="headerlink" title="blocked函数"></a>blocked函数</h3><p>判断第i个点能否进行删除操作，防止删点把图删坏了。</p><p>首先还是图形点的数量<code>n=s.shape[0]</code>与前后坐标i<sub>0</sub>和i<sub>1</sub>，并进行端点判断。</p><p>后续minx、miny…四个数据是在求把这三个点包围起来的最小矩形的坐标的相应数据。先声明下什么情况不能删除，三个点，去掉中间的，两端连起来自交与其他线段，比如两个镶嵌的M形。这里就是把影响范围(矩形)的数据算出来。<code>if...elif...else</code>对索引进行排序，不然后续pop删除的时候先删除1，再删除4，如果长度只有4，删除1后长度一共就3会报错。</p><p><code>v=list(range(n))</code>生成一个包含所有点索引的列表，异常判断。这里具体是对索引越界报错，既然上面排序了为什么还要呢？如果有重复点的话就可能会出问题。至于这里的删除是为了判断其他点在不在之前提到的矩形里，是否会出现自交之类的情况，所以要把自己给剔除出去。</p><p><code>for k in range(len(v))</code>遍历每一个点，获取其x与y坐标数据。通过<code>if ((px&lt;minx)or(py&lt;miny)or...==False)</code>判断是不是在前面的最小矩形之中，在的话进行后续计算，否则跳过。后面一堆计算就是判断在不在矩形里面，如果得到一个点在里面，立即跳出循环返回True(不可以删除).</p><h2 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h2><ol><li>首先是为什么图形数据喜欢用向量，向量表示的是相对关系，坐标有局限，是在具体的坐标系中的位置。</li><li>在设计的过程尽量保证一个数据空间的类型纯洁性，为了追求某一步骤(特殊标记)损失纯洁性需要慎重点。</li><li>对于数据删除，不同的顺序可能会引发索引越界的问题(删除之后容器长度变化了)。</li></ol>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Day-12</title>
     <link href="/2026/04/28/Day-12/"/>
     <url>/2026/04/28/Day-12/</url>

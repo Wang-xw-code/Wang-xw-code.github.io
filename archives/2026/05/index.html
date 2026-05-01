@@ -21,8 +21,8 @@
   
     <meta name="description" content="Study for calligraph.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Wang-xw-code">
-<meta property="og:url" content="https://wang-xw-code.github.io/page/2/index.html">
+<meta property="og:title" content="Archives">
+<meta property="og:url" content="https://wang-xw-code.github.io/archives/2026/05/index.html">
 <meta property="og:site_name" content="Wang-xw-code">
 <meta property="og:description" content="Study for calligraph.">
 <meta property="og:locale" content="en_US">
@@ -31,7 +31,7 @@
   
   
   
-  <title>Wang-xw-code</title>
+  <title>Archives - Wang-xw-code</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -85,7 +85,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 100vh;">
+<div class="header-inner" style="height: 60vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -294,17 +294,13 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="An elegant Material-Design theme for Hexo"></span>
+            <span id="subtitle" data-typed-text="Archives"></span>
           
         </div>
 
         
       </div>
 
-      
-        <div class="scroll-down-bar">
-          <i class="iconfont icon-arrowdown"></i>
-        </div>
       
     </div>
   </div>
@@ -320,121 +316,30 @@
     
       <div class="container nopadding-x-md">
         <div id="board"
-          style="margin-top: 0">
+          >
           
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
 
-<h1 style="display: none">Wang-xw-code</h1>
-
-  <div class="row mx-auto index-card">
+<div class="list-group">
+  <p class="h4">13 posts in total</p>
+  <hr>
+  
+  
     
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2026/04/15/Day-03/" target="_self">
-          Day-03
-        </a>
-      </h2>
-
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/04/15/Day-03/" target="_self">
-        <div>
-          回顾昨天2个小时看了29行代码，我感觉也没有太深究，整体应该是因为对B样条还是不太了解，我一直以为是传入几个点就直接成线，但是昨天了解要先得到曲线刻度位置再生成，包括什么偏移量kt这个概念，也不知道为什么要有这个东西存在，总的来说还是不懂。老师你看下这边有没有必要学下这个内容还是先放着单知道是在生成刻度位置就行。 tc函数整体分析首先这个tc是knots节点向量和control points控制点
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-04-15 10:29" pubdate>
-              2026-04-15
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
+      <p class="h5">2026</p>
     
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2026/04/14/Day-02/" target="_self">
-          Day-02
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/04/14/Day-02/" target="_self">
-        <div>
-          keypoint_times函数首先对形参做了一定的了解，，不知道这些有啥意义，所以了解了下。P首先传入一堆点的位置列表，代表我想让曲线经过这些点。关于阶数k，曲线次数&#x3D;阶数-1，如果2阶线条就是一条直线。三阶如抛物线，故高阶的话整体曲线更平滑。t的话便是某个点在这个曲线上的位置，可以理解为坐标，用来定位的。mult关键点重复度就是前面加噪点时kron所克隆的份数，重复度越高曲线在该关键
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-04-14 20:13" pubdate>
-              2026-04-14
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2026/04/13/Day-01/" target="_self">
-          Day-01
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/04/13/Day-01/" target="_self">
-        <div>
-          B样条和贝塞尔曲线的浅入理解和第三部分代码前几个函数本次在读代码的过程中发现整体涉及到B样条的相关知识，于是在B站上寻找相关视频学习。 贝塞尔曲线对于贝塞尔曲线，其根本的逻辑在于点的插值，即在一条线段上取一点，按照比例求点（类似等比分点）。通过对多个点不断确定两点之间线段上一定比例的点，得到第一轮n-1个点，后续按照此规则循环迭代得到为一点。按照该方法把0-1之间所对应的所有t值的最终点连接起来便
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-04-13 20:10" pubdate>
-              2026-04-13
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
+    <a href="/2026/05/01/Day-13/" class="list-group-item list-group-item-action">
+      <time>05-01</time>
+      <div class="list-group-item-title">Day-13</div>
+    </a>
+  
+</div>
 
 
-
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-    </span>
-  </nav>
 
 
 

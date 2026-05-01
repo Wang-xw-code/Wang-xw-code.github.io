@@ -19,21 +19,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="congfig.py主体函数if Fasle这里是手动让这行代码作废，程序运行上会有问题，所以不用这个方法。 else中的if询问NVIDIA显卡能不能用，可以的话就把device_name命名为cuda，同时用has_gpu进行标记，torch_dtype&#x3D;torch&gt;float32规定计算精度。 else里的else如果NVIDIA显卡不能用，就使用普通的CPU慢速模式，对device_">
+    <meta name="description" content="dec.py函数relevance函数整体上是在计算点的重要性，如果点的重要性低就摘出多边形中。这里的keep是一个布尔数组，判断哪些点需要判断，不需要的就是必须留存下来的。 n&#x3D;s.shape[0]，np数组中的shape是关于每一个维度上数组的元素个数，返回的数据类型为元组，可用嵌套列表理解。所以这里是获取这个数组里又多少个点(这边传入的数据应该是一个图形，不是多个图形的集合)。 先判断kee">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Day-12">
-<meta property="og:url" content="https://wang-xw-code.github.io/2026/04/28/Day-12/index.html">
+<meta property="og:title" content="Day-13">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/05/01/Day-13/index.html">
 <meta property="og:site_name" content="Wang-xw-code">
-<meta property="og:description" content="congfig.py主体函数if Fasle这里是手动让这行代码作废，程序运行上会有问题，所以不用这个方法。 else中的if询问NVIDIA显卡能不能用，可以的话就把device_name命名为cuda，同时用has_gpu进行标记，torch_dtype&#x3D;torch&gt;float32规定计算精度。 else里的else如果NVIDIA显卡不能用，就使用普通的CPU慢速模式，对device_">
+<meta property="og:description" content="dec.py函数relevance函数整体上是在计算点的重要性，如果点的重要性低就摘出多边形中。这里的keep是一个布尔数组，判断哪些点需要判断，不需要的就是必须留存下来的。 n&#x3D;s.shape[0]，np数组中的shape是关于每一个维度上数组的元素个数，返回的数据类型为元组，可用嵌套列表理解。所以这里是获取这个数组里又多少个点(这边传入的数据应该是一个图形，不是多个图形的集合)。 先判断kee">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-04-28T11:33:41.000Z">
-<meta property="article:modified_time" content="2026-04-29T13:46:31.007Z">
+<meta property="article:published_time" content="2026-05-01T12:13:49.000Z">
+<meta property="article:modified_time" content="2026-05-01T15:40:42.932Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Day-12 - Wang-xw-code</title>
+  <title>Day-13 - Wang-xw-code</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -302,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Day-12"></span>
+            <span id="subtitle" data-typed-text="Day-13"></span>
           
         </div>
 
@@ -313,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-04-28 19:33" pubdate>
-          April 28, 2026 pm
+        <time datetime="2026-05-01 20:13" pubdate>
+          May 1, 2026 pm
         </time>
       </span>
     
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          907 words
+          1.6k words
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          8 mins
+          14 mins
         
       </span>
     
@@ -375,26 +375,29 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Day-12</h1>
+            <h1 id="seo-header">Day-13</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="congfig-py"><a href="#congfig-py" class="headerlink" title="congfig.py"></a>congfig.py</h2><h3 id="主体函数"><a href="#主体函数" class="headerlink" title="主体函数"></a>主体函数</h3><p><code>if Fasle</code>这里是手动让这行代码作废，程序运行上会有问题，所以不用这个方法。</p>
-<p><code>else</code>中的if询问NVIDIA显卡能不能用，可以的话就把device_name命名为cuda，同时用has_gpu进行标记，<code>torch_dtype=torch&gt;float32</code>规定计算精度。</p>
-<p><code>else</code>里的else如果NVIDIA显卡不能用，就使用普通的CPU慢速模式，对device_name进行标记。如果用户不清楚使用了什么模式，这里也使用了print进行模式返回。</p>
-<p>后续通过一些内置方法把数据传给CPU。</p>
-<h3 id="clear-memory函数"><a href="#clear-memory函数" class="headerlink" title="clear_memory函数"></a>clear_memory函数</h3><p>这里说是很有趣的一个步骤，通常显卡的内存比较小，不清理直接跑完的话会爆掉。</p>
-<p><code>if has_gpu</code>判断是否单独用显卡，如果是的话导入Python里的清理工具gc，后续可能运行一会就调用这个函数进行缓存的清理。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>识别电脑性能，选择不同模式进行工作，同时清理运行的缓存，提高运行性能。</p>
-<h2 id="dec-py"><a href="#dec-py" class="headerlink" title="dec.py"></a>dec.py</h2><h3 id="chord-lengths函数"><a href="#chord-lengths函数" class="headerlink" title="chord_lengths函数"></a>chord_lengths函数</h3><p>计算两个点之间的距离。<code>if closed</code>的话，就将第一个点加在最后一个点后面，用于计算最后一条边的距离，不然最后一个点理论上是和第一个连，但np数据并不会这样理解。</p>
-<p>这里用<code>np.diff(Paxis=0)</code>计算相邻两点坐标的差值(x<sub>2</sub>-x<sub>1</sub>,y<sub>2</sub>-y<sub>1</sub>)，然后通过<code>np.sqrt(D[:,0]**2+D[:,1]**2)</code>进行勾股定理的计算，得出两点距离。这里[:,0]代表我要D里的所有行，且第0列的数据，也就是(x<sub>2</sub>-x<sub>1</sub>)。</p>
-<h3 id="acos函数"><a href="#acos函数" class="headerlink" title="acos函数"></a>acos函数</h3><p>用于计算角度，出于计算精度的考虑，用np.clip将v的范围框在[-1,1]之间，因为计算机在计算的时候容易出现个类似1.00000000002这种的数据。然后通过<code>np.arccos</code>进行全体数据的反三角函数计算。</p>
-<p><code>if np.isnan...</code>这里是如果真的出问题，将出问题的部分给出来</p>
+                <h2 id="dec-py函数"><a href="#dec-py函数" class="headerlink" title="dec.py函数"></a>dec.py函数</h2><h3 id="relevance函数"><a href="#relevance函数" class="headerlink" title="relevance函数"></a>relevance函数</h3><p>整体上是在计算点的重要性，如果点的重要性低就摘出多边形中。这里的keep是一个布尔数组，判断哪些点需要判断，不需要的就是必须留存下来的。</p>
+<p><code>n=s.shape[0]</code>，np数组中的shape是关于每一个维度上数组的元素个数，返回的数据类型为元组，可用嵌套列表理解。所以这里是获取这个数组里又多少个点(这边传入的数据应该是一个图形，不是多个图形的集合)。</p>
+<p>先判断keep里这个点需不需要强制保留，不用的话再进行计算。这边我有个疑惑是不应该对s里的每一个点进行keep判断吗？这个函数内部其实判断的是index这个点的重要性，s只是为了知道它的邻居。如果判断要求留下，返回inf(无限大)。</p>
+<p>关于重要性需要三个点(前，本身，后)，所以前面要获取这个图形的点的总数s.shape[0]，并判断是否大于等于三。那这里又有一个疑惑，既然三点不行，为什么不直接return呢？回答是说return 0或者inf会和其他情况混在一起。那为什么不设置一个特殊标志记录，比如字符呢？这样会导致这个np数组的数据类型不干净。但是这里提出了一个蛮好的想法，通过raise-except异常处理把这个情况当报错处理掉，可以选择用except跳过这个计算，或者不用直接终止程序。</p>
+<p>之后记录这三个点的index，然后将第一个点和最后一点这个特殊情况给孤立出来，第一个点前一个是最后一个。疑问：难道不用区别是不是闭合曲线吗？或许在调用这部分的时候是单独判断完闭合曲线之后吧。</p>
+<p>后续把三点之间的两个向量横纵坐标表示出来，然后计算长度。通过余弦函数计算角度<code>av=(np.dot(np.hstack([seg1x,seg1y]),np.vstack([seg2x,seg2y])))/l1/l2</code>，vstack和hstack是垂直堆叠和水平堆叠的英文缩写。</p>
+<p>再用<code>if np.isnan(av)</code>判断av是不是数字，不是则说明有两个点的坐标一样，这样l1或者l2就是0.这个时候就直接返回0夹角。不然就通过反三角函数于补角求出夹角。</p>
+<p>最终这里有一个价值评估环节<code>v=a*l1*l2/(l1+l2)</code>和<code>v=v/peri</code>。</p>
+<h3 id="seglength函数"><a href="#seglength函数" class="headerlink" title="seglength函数"></a>seglength函数</h3><p>接收两个点的坐标，计算向量长度。</p>
+<h3 id="blocked函数"><a href="#blocked函数" class="headerlink" title="blocked函数"></a>blocked函数</h3><p>判断第i个点能否进行删除操作，防止删点把图删坏了。</p>
+<p>首先还是图形点的数量<code>n=s.shape[0]</code>与前后坐标i<sub>0</sub>和i<sub>1</sub>，并进行端点判断。</p>
+<p>后续minx、miny…四个数据是在求把这三个点包围起来的最小矩形的坐标的相应数据。先声明下什么情况不能删除，三个点，去掉中间的，两端连起来自交与其他线段，比如两个镶嵌的M形。这里就是把影响范围(矩形)的数据算出来。<code>if...elif...else</code>对索引进行排序，不然后续pop删除的时候先删除1，再删除4，如果长度只有4，删除1后长度一共就3会报错。</p>
+<p><code>v=list(range(n))</code>生成一个包含所有点索引的列表，异常判断。这里具体是对索引越界报错，既然上面排序了为什么还要呢？如果有重复点的话就可能会出问题。至于这里的删除是为了判断其他点在不在之前提到的矩形里，是否会出现自交之类的情况，所以要把自己给剔除出去。</p>
+<p><code>for k in range(len(v))</code>遍历每一个点，获取其x与y坐标数据。通过<code>if ((px&lt;minx)or(py&lt;miny)or...==False)</code>判断是不是在前面的最小矩形之中，在的话进行后续计算，否则跳过。后面一堆计算就是判断在不在矩形里面，如果得到一个点在里面，立即跳出循环返回True(不可以删除).</p>
 <h2 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h2><ol>
-<li>计算的时候不仅在输入数据的时候统一格式，计算时的精度或者小数位数也需要考虑。</li>
-<li>在设计程序的时候这边考虑用户电脑性能是个不错的问题，代码更健硕。</li>
-<li>目前有蛮多是依据计算机在浮点数计算的精度问题所做出的一些设计，这方面或许是比较常见需要考虑的。</li>
+<li>首先是为什么图形数据喜欢用向量，向量表示的是相对关系，坐标有局限，是在具体的坐标系中的位置。</li>
+<li>在设计的过程尽量保证一个数据空间的类型纯洁性，为了追求某一步骤(特殊标记)损失纯洁性需要慎重点。</li>
+<li>对于数据删除，不同的顺序可能会引发索引越界的问题(删除之后容器长度变化了)。</li>
 </ol>
 
                 
@@ -413,8 +416,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Day-12</div>
-      <div>https://wang-xw-code.github.io/2026/04/28/Day-12/</div>
+      <div>Day-13</div>
+      <div>https://wang-xw-code.github.io/2026/05/01/Day-13/</div>
     </div>
     <div class="license-meta">
       
@@ -426,7 +429,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>April 28, 2026</div>
+          <div>May 1, 2026</div>
         </div>
       
       
@@ -458,18 +461,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/05/01/Day-13/" title="Day-13">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Day-13</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/04/27/Day-11/" title="Day-11">
-                        <span class="hidden-mobile">Day-11</span>
+                      <a href="/2026/04/28/Day-12/" title="Day-12">
+                        <span class="hidden-mobile">Day-12</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
