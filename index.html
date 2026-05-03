@@ -335,6 +335,39 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2026/05/03/Day-15/" target="_self">
+          Day-15
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/05/03/Day-15/" target="_self">
+        <div>
+          diffvg_utils.py函数分析开头部分device=config.diffvg_device是从前面分析过的config.py文件里后去用户的计算设备。然后pydiffvg.set_use_gpu(config.has_gpu)是根据用户设备是否有gpu去判断要不要打开加速开关，从而加快渲染速度。cfg=lambda:None定义了一个空对象。cfg.one_channel_is_alph
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-05-03 13:13" pubdate>
+              2026-05-03
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2026/05/02/Day-14/" target="_self">
           Day-14
         </a>
@@ -617,39 +650,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2026-04-20 15:22" pubdate>
               2026-04-20
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2026/04/18/Day-05/" target="_self">
-          Day-05
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/04/18/Day-05/" target="_self">
-        <div>
-          关于前文bspline_samples里output的分析在不破坏函数返回值(采样点)的前提下带出中间数据。如果这里要正常return的话返回值太繁琐，所以提前设置一个字典“储物柜”作为参数偷渡数据。 uniform_gramian函数这里提到是为了解决平滑问题里的能量代价。在平滑算法中，对于不同的der希望其越小越好。 参数的分析，nbasis是控制点的总数，k是B样条阶数，der是要计算的导数
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-04-18 20:11" pubdate>
-              2026-04-18
             </time>
           </div>
         

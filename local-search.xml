@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>Day-15</title>
+    <link href="/2026/05/03/Day-15/"/>
+    <url>/2026/05/03/Day-15/</url>
+    
+    <content type="html"><![CDATA[<h2 id="diffvg-utils-py函数"><a href="#diffvg-utils-py函数" class="headerlink" title="diffvg_utils.py函数"></a>diffvg_utils.py函数</h2><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="开头部分"><a href="#开头部分" class="headerlink" title="开头部分"></a>开头部分</h4><p><code>device=config.diffvg_device</code>是从前面分析过的config.py文件里后去用户的计算设备。然后<code>pydiffvg.set_use_gpu(config.has_gpu)</code>是根据用户设备是否有gpu去判断要不要打开加速开关，从而加快渲染速度。<code>cfg=lambda:None</code>定义了一个空对象。<code>cfg.one_channel_is_alpha=True</code>定义一个开关，如果图片只有一层颜色，当成透明度处理，通常来讲3层颜色就是红绿蓝，4层是红绿蓝加Alpha(透明度)。<code>shape_classes=&#123;&#125;</code>创建一个字典用于存储形状的类字典。</p><h4 id="skip-kwargs函数"><a href="#skip-kwargs函数" class="headerlink" title="skip_kwargs函数"></a>skip_kwargs函数</h4><p>接收两个参数：黑名单列表skip和行李箱字典kwargs，<code>return&#123;k:v for k,v in kwargs.items()if k not in skip&#125;</code>这里的kwargs.itens()的.items是将字典里所有的键值对拎出来，如果k不在黑名单skip里就将k:v键值对存入一个新的字典里。</p><h4 id="load-and-render函数"><a href="#load-and-render函数" class="headerlink" title="load_and_render函数"></a>load_and_render函数</h4><p>将电脑里的数学公式转换成图片文件。</p><p><code>from PIL import Image</code>导入Python处理图片的标准库。这一部分是在进行导入，读稿到出片的三个过程。</p><h4 id="load-scene函数"><a href="#load-scene函数" class="headerlink" title="load_scene函数"></a>load_scene函数</h4><p>用来加载场景，path是画稿的路径，**kwargs为备用的口袋参数。通过<code>scene=Scene()</code>创建一个空的画架，&#96;scene.load_json(path,**kwargs)按照参数要求将内容摆到画架上然后返回摆好画稿的画架。如果不想立刻看图而是继续修改下画稿就需要用这个函数。</p><h4 id="load-stroke-control-points函数"><a href="#load-stroke-control-points函数" class="headerlink" title="load_stroke_control_points函数"></a>load_stroke_control_points函数</h4><p>将画稿上的表示变成画板上的笔触。</p><p>path是JSON画稿文件的路径；subd是将曲线切分成多少份；get_scene和get_centerlines是询问要不要返回画架和骨架；clip_w是对笔触宽度的微调数值；**kwargs是备用的存储奇奇怪怪参数的口袋。</p><p><code>scene=Scene()</code>搬出空白画架，<code>scene.load_json(...)</code>将path指向的画稿读进去，<code>strokes=[]</code>准备一个空盒子用来装制作完成的笔画，<code>centerlines=[]</code>再创建一个盒子装笔画的骨架。<code>for group in scene.shape_groups:</code>开始遍历每一个画稿，<code>for shape in group.shapes</code>在每一组的画稿里一个形状一个形状的处理(先处理第一笔再处理第二笔…)。<code>n=shape.num_points</code>获取这个形状有多少个控制点。<code>X=shape.samples(n*subd).detach().cpu().numpy()</code>把平滑的数学曲线均分地切成n*20段小的直线点。</p><p><code>if not shape.has_varying_width()</code>判断这个形状是不是头粗尾细还是粗细均匀的。<code>w=shape.param(&quot;stroke_width&quot;).detach().cpu().numpy()</code>拿到它预设的线宽。<code>X=np.hstack([X,np.ones((len(X),1))*w])</code>把宽度信息w贴在采样的坐标X后面，这里的hstack是水平拼接，把(x,y)变成(x,y,w)。</p><p><code>centerlines.append(X[:,:2])</code>拿到坐标后将骨架存进建立的骨架盒子——centerlines里。<code>if clip_w&gt;0:</code>如果想让线条变瘦一点的话<br>就将所有点的宽度都减去clip_w<code>X[:,:2]=np.maximum(0,X[:,2]-clip_w)</code>,这边的maximum是确保宽度至少是0，<code>S=geom.thick_curve(X)</code>调用几何工具，根据坐标和宽度把线条两边充气，变成有厚度的多边形。然后通过<code>strokes.append(S)</code>将设置好的笔画存到strokes里。</p><p>如果想要骨架或者画架，就将特定数据传回去。</p><h3 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h3><ol><li><code>cfg=None</code>vs<code>cfg=lambda:None</code>，前者是创建空变量，后者是创建空对象，这样创建空对象可以避免给一堆只用几次的对象占用很大一部分代码去声明。</li></ol>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Day-14</title>
     <link href="/2026/05/02/Day-14/"/>
     <url>/2026/05/02/Day-14/</url>

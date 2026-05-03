@@ -19,21 +19,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="dec.py函数dec函数这部分为dec.py的主函数，用于调用之前的函数进行循环，删掉不重要的点。 参数分析P为一个小图块的原始点集；maxvalue为重要性阈值，这边的删除逻辑是进行多轮，每一轮中将最小的影响值记录下来(删除这个点对图形的影响)，如果大于这个阈值就停止，不再进行下一轮删点；除了这个去限制删点环节之外还有最小点数num兜底，至少要保留这个数目的坐标点；keep_end开关是否要保">
+    <meta name="description" content="diffvg_utils.py函数分析开头部分device&#x3D;config.diffvg_device是从前面分析过的config.py文件里后去用户的计算设备。然后pydiffvg.set_use_gpu(config.has_gpu)是根据用户设备是否有gpu去判断要不要打开加速开关，从而加快渲染速度。cfg&#x3D;lambda:None定义了一个空对象。cfg.one_channel_is_alph">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Day-14">
-<meta property="og:url" content="https://wang-xw-code.github.io/2026/05/02/Day-14/index.html">
+<meta property="og:title" content="Day-15">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/05/03/Day-15/index.html">
 <meta property="og:site_name" content="Wang-xw-code">
-<meta property="og:description" content="dec.py函数dec函数这部分为dec.py的主函数，用于调用之前的函数进行循环，删掉不重要的点。 参数分析P为一个小图块的原始点集；maxvalue为重要性阈值，这边的删除逻辑是进行多轮，每一轮中将最小的影响值记录下来(删除这个点对图形的影响)，如果大于这个阈值就停止，不再进行下一轮删点；除了这个去限制删点环节之外还有最小点数num兜底，至少要保留这个数目的坐标点；keep_end开关是否要保">
+<meta property="og:description" content="diffvg_utils.py函数分析开头部分device&#x3D;config.diffvg_device是从前面分析过的config.py文件里后去用户的计算设备。然后pydiffvg.set_use_gpu(config.has_gpu)是根据用户设备是否有gpu去判断要不要打开加速开关，从而加快渲染速度。cfg&#x3D;lambda:None定义了一个空对象。cfg.one_channel_is_alph">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-05-02T10:47:03.000Z">
-<meta property="article:modified_time" content="2026-05-02T13:31:33.815Z">
+<meta property="article:published_time" content="2026-05-03T05:13:29.000Z">
+<meta property="article:modified_time" content="2026-05-03T10:30:55.417Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Day-14 - Wang-xw-code</title>
+  <title>Day-15 - Wang-xw-code</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -302,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Day-14"></span>
+            <span id="subtitle" data-typed-text="Day-15"></span>
           
         </div>
 
@@ -313,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-05-02 18:47" pubdate>
-          May 2, 2026 pm
+        <time datetime="2026-05-03 13:13" pubdate>
+          May 3, 2026 pm
         </time>
       </span>
     
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.7k words
+          1.7k words
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          23 mins
+          15 mins
         
       </span>
     
@@ -375,31 +375,24 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Day-14</h1>
+            <h1 id="seo-header">Day-15</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="dec-py函数"><a href="#dec-py函数" class="headerlink" title="dec.py函数"></a>dec.py函数</h2><h3 id="dec函数"><a href="#dec函数" class="headerlink" title="dec函数"></a>dec函数</h3><p>这部分为dec.py的主函数，用于调用之前的函数进行循环，删掉不重要的点。</p>
-<h2 id="参数分析"><a href="#参数分析" class="headerlink" title="参数分析"></a>参数分析</h2><p>P为一个小图块的原始点集；maxvalue为重要性阈值，这边的删除逻辑是进行多轮，每一轮中将最小的影响值记录下来(删除这个点对图形的影响)，如果大于这个阈值就停止，不再进行下一轮删点；除了这个去限制删点环节之外还有最小点数num兜底，至少要保留这个数目的坐标点；keep_end开关是否要保持曲线的起点和终点；closed告诉是不是闭合曲线；get_indices&#x2F;get_flags决定是否要返回这个过程中的一些数据点；keep是不能动的点的集合；perimeter是类似弹簧系数的东西，将图形做一个缩放操作，从而和maxvalue比较。</p>
-<p><code>if num==0:num=2</code>如果没设置最少点数，默认为2，其实感觉这边用默认参数的函数会好一点。哦！它这里可能传入的是动态变量，比如一个方程，可能计算结果也是0，所有这里用if会更好。<code>s=np.arry(P)</code>将点集转换成np矩阵，提高计算的效率。为什么要用&#96;I&#x3D;list(range(s.shape[0]))记录原来每个点的工号呢，np不是会给下标？因为删除的时候下标都在变化，np索引是动态的。</p>
-<p><code>delval=[]</code>准备空列表，记录被删除的点的relevance分数(点的重要性)。如果没有传入perimeter参数就将所有点之间的距离加起来(周长)作为标尺，如果传了就用perimeter。<code>if closed</code>则将第一个点复制一份到末尾，原始点集也进行同样操作，因为计算重要性的时候需要前后两个邻居。同时用<code>n=s.shape[0]</code>记录总点数，不然一直在变，记录个标准。</p>
-<p><code>if keep</code>判断有没有点比较特殊，有的话则把特殊位置记为True，这里keep是所有数据点，不特殊的话在<code>keep=[k&gt;0 for k in keep]</code>判断里就是False，如果没有keep，则都是False。</p>
-<p><code>if keep_end</code>保留终点就将其设置为True。然后<code>np.zero(n)</code>是创建n个0数据点，如果是(n,2)则是生成n行2列的零矩阵。这个用来记录每个点的重要性。然后<code>value[i]=relevance(s,...)</code>调用，获取数据。</p>
-<p>其次进去核心删点环节，<code>while True</code>先套个无限循环，同时这个也是确保每一轮只删除一个点，因为不知道要删除多少个点，所以这样会更好。虽然可以判断，但要多写代码。内部如果说剩余点数小于预设<code>if num&gt;=n:</code>则退出循环，<code>i=np.argmin(value)</code>得到重要性最低的点，和预设比较。<code>bf=blocked(s,i)</code>判断这个点能不能删除，如果blocked(阻碍)，就进入下面代码找备胎。<code>ind=np.argsort(value)</code>得到按分数从小到大排列时从小到大的数据对应的原始下标，这个类型是数组。<code>rel=value[ind]</code>是np里的花式索引，通过索引列表获取数据，所以rel现在是从小到大的排好序的数据列表。<code>j=1</code>从第二个下标开始找，因为第一个点通过blocked判断不能删。然后<code>while j&lt;n:</code>这一部分是循环直到下一个通过blocked判断的点查找出来。</p>
-<p>然后获取删除点的坐标数据x和y<code>px=s[i,0] py=s[i,1]</code>，通过<code>s=np.delte(s,i,0)</code>和<code>I=np.delete(I,i,0)</code>将这个能够删除的点从原始点集和工号点集之中删掉，例如删掉s里第i个数据这一行(0)，每个点的数据占一行。同时在keep里弹出i这个数据的布尔值，在value重要性数据中也删掉这个东西。将这个点存在delval这个删除数据表之中。</p>
-<p>之后<code>i&lt;sub&gt;0&lt;/sub&gt;=i-1</code>和<code>i&lt;sub&gt;1&lt;/sub&gt;=i</code>定位被删点的邻居，通过<code>if i&lt;sub&gt;0&lt;/sub&gt;==-1</code>和<code>elif i&lt;sub&gt;1&lt;/sub&gt;=0</code>这两个处理首尾越界问题。</p>
-<p>然后<code>value[i&lt;sub&gt;0&lt;/sub&gt;]</code>这个重新获取邻居的重要性(因为前后邻居变了)，另外一个邻居也是这么计算。</p>
-<p>整个删点循环判断完之后，如果是闭合图形，裁掉原始点集P、计算矩阵s和工号列表I中增加的终点数据。</p>
-<p><code>flags=[1,if i in I else 0 for i in range(P.shape[0])]</code>是得到原始点集P里每个点是被删除还是留存下来了。<code>if get_flags</code>就是判断用户需不需要这个数据。<code>if get_indices:</code>如果用户需要简化后的坐标还有原来排第几就返回S和I。</p>
-<h2 id="疑惑"><a href="#疑惑" class="headerlink" title="疑惑"></a>疑惑</h2><p>在他的这个删点循环判断过程中，如果说在判断这个点删除后会自交，然后找备胎的时候找到特别后面。那他把这个备胎删掉之后计算完备胎的邻居重要性还要再返回到之前不能够删除的这个点上。那假如说这个备胎删掉之后他还是会自交。还要再进行一大堆的判断。 我感觉会是比较冗余的。 </p>
-<p>然后他这里给了一个优化思路，就是在进行循环判断的过程中，如果说会自交，就给他一个标签——新建立一个列表数据来存储这个点它能不能够删除。他给的思路是说如果这个点他的邻居没有变化，他这个标签就一直不变，那这边会有一个疏漏就是。 决定他会不会自交的这个点，不仅仅是他的邻居。 </p>
-<p>然后我让他优化了，结果就是在判断能不能够删除的时候返回它会和哪条线段自交。那如果说动了这些线的点，再去进行状态的调整。 </p>
-<p>这边还有一个细节就不一定是所有的点它都需要进行blocked的判断。如果说在获取到这个点，它是重要性最小的点，这个时候才需要去进行blocked判断。 同时呢，在删掉点的之后，不仅需要对他的邻居进行blocked状态的重置(如果说不是safe的时候)。还要呢去把那个会和经过这个点的线段自交的点的blocked进行重测。 </p>
-<h2 id="dec-py函数总结"><a href="#dec-py函数总结" class="headerlink" title="dec.py函数总结"></a>dec.py函数总结</h2><p>在保持图形基本特征不变的前提下把不重要的点进行删除，实现图形的简化。</p>
-<h2 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h2><ol>
-<li>带默认参数的函数的使用场景如果是<code>if num==0:num=2</code>这样的时候要慎用，因为调用的时候或许会是动态变量，要具体分析。</li>
-<li><code>if maxvalue==0.0</code>则就不进行删点操作，为什么不在外面判断，等于零的时候就不调用不进入这一个逻辑呢？在大工程的程序设计中各个板块负责的代码不同，不能将判断是否进行本函数的逻辑给到外部去判断，或者说这样就很依赖于主函数逻辑的健全性，可以是可以，但对于这个部分设计者来讲，这一步算是兜底，将主函数的依赖性降低。算是代码的健壮性。</li>
+                <h2 id="diffvg-utils-py函数"><a href="#diffvg-utils-py函数" class="headerlink" title="diffvg_utils.py函数"></a>diffvg_utils.py函数</h2><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="开头部分"><a href="#开头部分" class="headerlink" title="开头部分"></a>开头部分</h4><p><code>device=config.diffvg_device</code>是从前面分析过的config.py文件里后去用户的计算设备。然后<code>pydiffvg.set_use_gpu(config.has_gpu)</code>是根据用户设备是否有gpu去判断要不要打开加速开关，从而加快渲染速度。<code>cfg=lambda:None</code>定义了一个空对象。<code>cfg.one_channel_is_alpha=True</code>定义一个开关，如果图片只有一层颜色，当成透明度处理，通常来讲3层颜色就是红绿蓝，4层是红绿蓝加Alpha(透明度)。<code>shape_classes=&#123;&#125;</code>创建一个字典用于存储形状的类字典。</p>
+<h4 id="skip-kwargs函数"><a href="#skip-kwargs函数" class="headerlink" title="skip_kwargs函数"></a>skip_kwargs函数</h4><p>接收两个参数：黑名单列表skip和行李箱字典kwargs，<code>return&#123;k:v for k,v in kwargs.items()if k not in skip&#125;</code>这里的kwargs.itens()的.items是将字典里所有的键值对拎出来，如果k不在黑名单skip里就将k:v键值对存入一个新的字典里。</p>
+<h4 id="load-and-render函数"><a href="#load-and-render函数" class="headerlink" title="load_and_render函数"></a>load_and_render函数</h4><p>将电脑里的数学公式转换成图片文件。</p>
+<p><code>from PIL import Image</code>导入Python处理图片的标准库。这一部分是在进行导入，读稿到出片的三个过程。</p>
+<h4 id="load-scene函数"><a href="#load-scene函数" class="headerlink" title="load_scene函数"></a>load_scene函数</h4><p>用来加载场景，path是画稿的路径，**kwargs为备用的口袋参数。通过<code>scene=Scene()</code>创建一个空的画架，&#96;scene.load_json(path,**kwargs)按照参数要求将内容摆到画架上然后返回摆好画稿的画架。如果不想立刻看图而是继续修改下画稿就需要用这个函数。</p>
+<h4 id="load-stroke-control-points函数"><a href="#load-stroke-control-points函数" class="headerlink" title="load_stroke_control_points函数"></a>load_stroke_control_points函数</h4><p>将画稿上的表示变成画板上的笔触。</p>
+<p>path是JSON画稿文件的路径；subd是将曲线切分成多少份；get_scene和get_centerlines是询问要不要返回画架和骨架；clip_w是对笔触宽度的微调数值；**kwargs是备用的存储奇奇怪怪参数的口袋。</p>
+<p><code>scene=Scene()</code>搬出空白画架，<code>scene.load_json(...)</code>将path指向的画稿读进去，<code>strokes=[]</code>准备一个空盒子用来装制作完成的笔画，<code>centerlines=[]</code>再创建一个盒子装笔画的骨架。<code>for group in scene.shape_groups:</code>开始遍历每一个画稿，<code>for shape in group.shapes</code>在每一组的画稿里一个形状一个形状的处理(先处理第一笔再处理第二笔…)。<code>n=shape.num_points</code>获取这个形状有多少个控制点。<code>X=shape.samples(n*subd).detach().cpu().numpy()</code>把平滑的数学曲线均分地切成n*20段小的直线点。</p>
+<p><code>if not shape.has_varying_width()</code>判断这个形状是不是头粗尾细还是粗细均匀的。<code>w=shape.param(&quot;stroke_width&quot;).detach().cpu().numpy()</code>拿到它预设的线宽。<code>X=np.hstack([X,np.ones((len(X),1))*w])</code>把宽度信息w贴在采样的坐标X后面，这里的hstack是水平拼接，把(x,y)变成(x,y,w)。</p>
+<p><code>centerlines.append(X[:,:2])</code>拿到坐标后将骨架存进建立的骨架盒子——centerlines里。<code>if clip_w&gt;0:</code>如果想让线条变瘦一点的话<br>就将所有点的宽度都减去clip_w<code>X[:,:2]=np.maximum(0,X[:,2]-clip_w)</code>,这边的maximum是确保宽度至少是0，<code>S=geom.thick_curve(X)</code>调用几何工具，根据坐标和宽度把线条两边充气，变成有厚度的多边形。然后通过<code>strokes.append(S)</code>将设置好的笔画存到strokes里。</p>
+<p>如果想要骨架或者画架，就将特定数据传回去。</p>
+<h3 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h3><ol>
+<li><code>cfg=None</code>vs<code>cfg=lambda:None</code>，前者是创建空变量，后者是创建空对象，这样创建空对象可以避免给一堆只用几次的对象占用很大一部分代码去声明。</li>
 </ol>
 
                 
@@ -418,8 +411,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Day-14</div>
-      <div>https://wang-xw-code.github.io/2026/05/02/Day-14/</div>
+      <div>Day-15</div>
+      <div>https://wang-xw-code.github.io/2026/05/03/Day-15/</div>
     </div>
     <div class="license-meta">
       
@@ -431,7 +424,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>May 2, 2026</div>
+          <div>May 3, 2026</div>
         </div>
       
       
@@ -463,18 +456,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/05/03/Day-15/" title="Day-15">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Day-15</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/05/01/Day-13/" title="Day-13">
-                        <span class="hidden-mobile">Day-13</span>
+                      <a href="/2026/05/02/Day-14/" title="Day-14">
+                        <span class="hidden-mobile">Day-14</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
