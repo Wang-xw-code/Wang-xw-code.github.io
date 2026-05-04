@@ -19,21 +19,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="diffvg_utils.py函数分析开头部分device&#x3D;config.diffvg_device是从前面分析过的config.py文件里后去用户的计算设备。然后pydiffvg.set_use_gpu(config.has_gpu)是根据用户设备是否有gpu去判断要不要打开加速开关，从而加快渲染速度。cfg&#x3D;lambda:None定义了一个空对象。cfg.one_channel_is_alph">
+    <meta name="description" content="diffvg_utils.py分析load_strokes函数用来加载笔触。 path为图纸路径；subd为精细度数值，分割成多少份；get_scene&#x2F;get_centerlines是否需要返回整个画架或线条的骨架；clip_w为瘦身参数，将线条细化； 既然有了线条，为什么还要对线条切分？类似于将一条线段增加一些控制点，使得线条画的更圆滑。 scene&#x3D;Scene()设置空画架；sce">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Day-15">
-<meta property="og:url" content="https://wang-xw-code.github.io/2026/05/03/Day-15/index.html">
+<meta property="og:title" content="Day-16">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/05/04/Day-16/index.html">
 <meta property="og:site_name" content="Wang-xw-code">
-<meta property="og:description" content="diffvg_utils.py函数分析开头部分device&#x3D;config.diffvg_device是从前面分析过的config.py文件里后去用户的计算设备。然后pydiffvg.set_use_gpu(config.has_gpu)是根据用户设备是否有gpu去判断要不要打开加速开关，从而加快渲染速度。cfg&#x3D;lambda:None定义了一个空对象。cfg.one_channel_is_alph">
+<meta property="og:description" content="diffvg_utils.py分析load_strokes函数用来加载笔触。 path为图纸路径；subd为精细度数值，分割成多少份；get_scene&#x2F;get_centerlines是否需要返回整个画架或线条的骨架；clip_w为瘦身参数，将线条细化； 既然有了线条，为什么还要对线条切分？类似于将一条线段增加一些控制点，使得线条画的更圆滑。 scene&#x3D;Scene()设置空画架；sce">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-05-03T05:13:29.000Z">
-<meta property="article:modified_time" content="2026-05-03T10:30:55.417Z">
+<meta property="article:published_time" content="2026-05-04T03:44:38.000Z">
+<meta property="article:modified_time" content="2026-05-04T09:03:58.308Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Day-15 - Wang-xw-code</title>
+  <title>Day-16 - Wang-xw-code</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -302,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Day-15"></span>
+            <span id="subtitle" data-typed-text="Day-16"></span>
           
         </div>
 
@@ -313,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-05-03 13:13" pubdate>
-          May 3, 2026 pm
+        <time datetime="2026-05-04 11:44" pubdate>
+          May 4, 2026 am
         </time>
       </span>
     
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k words
+          2.9k words
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          15 mins
+          25 mins
         
       </span>
     
@@ -375,24 +375,38 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Day-15</h1>
+            <h1 id="seo-header">Day-16</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="diffvg-utils-py函数"><a href="#diffvg-utils-py函数" class="headerlink" title="diffvg_utils.py函数"></a>diffvg_utils.py函数</h2><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="开头部分"><a href="#开头部分" class="headerlink" title="开头部分"></a>开头部分</h4><p><code>device=config.diffvg_device</code>是从前面分析过的config.py文件里后去用户的计算设备。然后<code>pydiffvg.set_use_gpu(config.has_gpu)</code>是根据用户设备是否有gpu去判断要不要打开加速开关，从而加快渲染速度。<code>cfg=lambda:None</code>定义了一个空对象。<code>cfg.one_channel_is_alpha=True</code>定义一个开关，如果图片只有一层颜色，当成透明度处理，通常来讲3层颜色就是红绿蓝，4层是红绿蓝加Alpha(透明度)。<code>shape_classes=&#123;&#125;</code>创建一个字典用于存储形状的类字典。</p>
-<h4 id="skip-kwargs函数"><a href="#skip-kwargs函数" class="headerlink" title="skip_kwargs函数"></a>skip_kwargs函数</h4><p>接收两个参数：黑名单列表skip和行李箱字典kwargs，<code>return&#123;k:v for k,v in kwargs.items()if k not in skip&#125;</code>这里的kwargs.itens()的.items是将字典里所有的键值对拎出来，如果k不在黑名单skip里就将k:v键值对存入一个新的字典里。</p>
-<h4 id="load-and-render函数"><a href="#load-and-render函数" class="headerlink" title="load_and_render函数"></a>load_and_render函数</h4><p>将电脑里的数学公式转换成图片文件。</p>
-<p><code>from PIL import Image</code>导入Python处理图片的标准库。这一部分是在进行导入，读稿到出片的三个过程。</p>
-<h4 id="load-scene函数"><a href="#load-scene函数" class="headerlink" title="load_scene函数"></a>load_scene函数</h4><p>用来加载场景，path是画稿的路径，**kwargs为备用的口袋参数。通过<code>scene=Scene()</code>创建一个空的画架，&#96;scene.load_json(path,**kwargs)按照参数要求将内容摆到画架上然后返回摆好画稿的画架。如果不想立刻看图而是继续修改下画稿就需要用这个函数。</p>
-<h4 id="load-stroke-control-points函数"><a href="#load-stroke-control-points函数" class="headerlink" title="load_stroke_control_points函数"></a>load_stroke_control_points函数</h4><p>将画稿上的表示变成画板上的笔触。</p>
-<p>path是JSON画稿文件的路径；subd是将曲线切分成多少份；get_scene和get_centerlines是询问要不要返回画架和骨架；clip_w是对笔触宽度的微调数值；**kwargs是备用的存储奇奇怪怪参数的口袋。</p>
-<p><code>scene=Scene()</code>搬出空白画架，<code>scene.load_json(...)</code>将path指向的画稿读进去，<code>strokes=[]</code>准备一个空盒子用来装制作完成的笔画，<code>centerlines=[]</code>再创建一个盒子装笔画的骨架。<code>for group in scene.shape_groups:</code>开始遍历每一个画稿，<code>for shape in group.shapes</code>在每一组的画稿里一个形状一个形状的处理(先处理第一笔再处理第二笔…)。<code>n=shape.num_points</code>获取这个形状有多少个控制点。<code>X=shape.samples(n*subd).detach().cpu().numpy()</code>把平滑的数学曲线均分地切成n*20段小的直线点。</p>
-<p><code>if not shape.has_varying_width()</code>判断这个形状是不是头粗尾细还是粗细均匀的。<code>w=shape.param(&quot;stroke_width&quot;).detach().cpu().numpy()</code>拿到它预设的线宽。<code>X=np.hstack([X,np.ones((len(X),1))*w])</code>把宽度信息w贴在采样的坐标X后面，这里的hstack是水平拼接，把(x,y)变成(x,y,w)。</p>
-<p><code>centerlines.append(X[:,:2])</code>拿到坐标后将骨架存进建立的骨架盒子——centerlines里。<code>if clip_w&gt;0:</code>如果想让线条变瘦一点的话<br>就将所有点的宽度都减去clip_w<code>X[:,:2]=np.maximum(0,X[:,2]-clip_w)</code>,这边的maximum是确保宽度至少是0，<code>S=geom.thick_curve(X)</code>调用几何工具，根据坐标和宽度把线条两边充气，变成有厚度的多边形。然后通过<code>strokes.append(S)</code>将设置好的笔画存到strokes里。</p>
-<p>如果想要骨架或者画架，就将特定数据传回去。</p>
-<h3 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h3><ol>
-<li><code>cfg=None</code>vs<code>cfg=lambda:None</code>，前者是创建空变量，后者是创建空对象，这样创建空对象可以避免给一堆只用几次的对象占用很大一部分代码去声明。</li>
+                <h2 id="diffvg-utils-py"><a href="#diffvg-utils-py" class="headerlink" title="diffvg_utils.py"></a>diffvg_utils.py</h2><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="load-strokes函数"><a href="#load-strokes函数" class="headerlink" title="load_strokes函数"></a>load_strokes函数</h4><p>用来加载笔触。</p>
+<p>path为图纸路径；subd为精细度数值，分割成多少份；get_scene&#x2F;get_centerlines是否需要返回整个画架或线条的骨架；clip_w为瘦身参数，将线条细化；</p>
+<p>既然有了线条，为什么还要对线条切分？类似于将一条线段增加一些控制点，使得线条画的更圆滑。</p>
+<p><code>scene=Scene()</code>设置空画架；<code>scene.load_json(path,**kwargs)</code>将JSON图纸读到画架上；<code>strokes=[]</code>准备空盒子用于装笔画；<code>centerlines=[]</code>准备空盒子装骨架。</p>
+<p><code>for group in scene.shape_groups:</code>遍历每一组形状，然后通过<code>for shape in group.shapes:</code>遍历每一个线条，同时用<code>n=shape.num_points</code>获取关键点个数；<code>X=shape.samples(n*subd).detach().cpu().numpy()</code>按照subd要求将线切分成坐标点；<code>if not shape.has_varying_width()</code>如果线一样粗，就添加宽度。因为一样粗的话没有宽度信息。进行一堆操作后<code>centerlines.append(X[:,:2]</code>存进centerlines里，这边的X[:,:2]是X里所有行的前两列(这里没有把宽度存进去)；</p>
+<p>如果需要瘦身，<code>X[:,2]=np.maximum(0,X[:,2]-clip_w)</code>确保既将宽度减去clip_w，同时又用maximum保证最终数据不会是负的；<code>S=geom.thick_curve(X)</code>根据宽度和坐标把细线变厚，然后存进strokes列表里，不然就是单纯很细很细的一条线，如此给出左右边界涂颜色，称为“厚度”。</p>
+<p>最后根据需要返回对应数据。</p>
+<p>其中上文的shape是从JSON图纸里读取出来的，自动生成shape对象；像是shape.num_points是pydiffvg库里的成员函数，可以直接获取控制点数目；</p>
+<h4 id="sample-strokes函数"><a href="#sample-strokes函数" class="headerlink" title="sample_strokes函数"></a>sample_strokes函数</h4><p>只负责采样坐标，不对线条变厚处理，得到的是一堆点而不是完整的笔触。</p>
+<p>大抵代码和之前相同，<code>X=shape.samples(n*subd).detach().cpu().numpy())</code>通过切碎数学曲线来提取坐标，并将其从“显卡计算态”转换为“内存数据态”。<code>if X.shape[1]&gt;2</code>如果有三列数据(第三列为宽度)，则进行瘦身操作。</p>
+<p>至于为什么要这个函数，这部分是专注于获取笔画的位置，画厚度需要消耗很多资源，如果只用于碰撞检测或计算路径等就不需要画厚度。</p>
+<h5 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h5><p>这个和之前load_strokes函数有很大一部分代码是重叠的，虽然可以复制粘贴提高编写效率，但如果后面需要更改的话两部分都要进行，容易有疏漏，所以load_strokes调用sample_strokes是比较好的方法。</p>
+<h4 id="load-areas函数"><a href="#load-areas函数" class="headerlink" title="load_areas函数"></a>load_areas函数</h4><p>获取坐标，不要宽度。后面可能用于对这个坐标区域倒油漆、判断区域是否需要平移缩放等操作。</p>
+<h4 id="SceneOptimizer类"><a href="#SceneOptimizer类" class="headerlink" title="SceneOptimizer类"></a>SceneOptimizer类</h4><h5 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h5><p>def <strong>init</strong>(self,scene,params,num_steps,anneal&#x3D;True,schedule_start&#x3D;0.0,lr_min_scale&#x3D;0.2,verbose&#x3D;False,opt&#x3D;lambda params,lr:torch.optim.Adam(params,lr,betas(0.9,0.999)))</p>
+<p>scene是Scene类的实例，存着所有的shape_groups，包含了笔画、图层、颜色等信息；params为能够修改的参数，如坐标点、RGBA颜色值或宽度值等，内包含了修改的灵敏度，成为每个内嵌列表的一二数据；num_steps为修改&#x2F;画多少轮的次数；anneal&#x3D;True决定是否模拟画图过程，一开始快速定轮廓，之后动作幅度之间变小，细节填补；schedule_start为程序跑到多少的时候开始前面的anneal减速；Ir_min_scale定义了最后一步的程度为初始的多少百分比；verbose决定是否要在运行的过程中打印调试信息，便于寻找程序漏洞；opt调用合适的自动调优算法进行参数修改；</p>
+<p><code>self.scene=scene</code>获取传进来的画架，据为己有，增加存储此信息的画架；<code>self.optimizers=[]</code>为管理中心，后续会将所有用于优化的部分放进去；<code>for p,lr in params:</code>一一对应地获取修改参数和修改灵敏度；<br><code>self.optimizers.append(opt(p,lr))</code>这里调用了Adam函数，创建优化器对象，如此后optimizers列表里就存放了修改不同参数的专家。</p>
+<p>如果需要模拟画图过程，<code>self.schedulers=[util.step_cosine_lr_scheduler(...)]</code>会对每一个调整参数的专家配上一个预先减速调度器——每当优化器修改一次参数后调度器都会根据…里的参数适当调整灵敏度。这里的schedulers存放的就是灵敏控制器。</p>
+<p><code>self.num_steps=num_steps/self.verbose=verbose</code>新建属性将数据存起来存档；<code>self.losses=util.MultiLoss(verbose)</code>建立一个综合评分器(类)，后续<code>self.loss_inputs=&#123;&#125;</code>就是建立键值对字典去存储不同参数的评分所需要的材料。</p>
+<h5 id="add-loss方法"><a href="#add-loss方法" class="headerlink" title="add_loss方法"></a>add_loss方法</h5><p><code>add loss(self,name,loss,weight,inputs=None)</code>，整体是调用name的专家，其评判准则为loss公式，给它的评分打个weight的折扣，同时将inputs里的资料准确传递给name专家。</p>
+<p>name为评分的类目，比如颜色、形状等；loss则是评分标准；weight为结果分数的权重；inputs为相应资料。</p>
+<p><code>self.losses.add(name,loss,weight)</code>调用losses(MultiLoss)类的添加的成员方法，将这个name参数的评分公式记录进去。<code>self.loss_inpts[name]=inputs</code>把name这个评判需要的材料存进去，比如草图+目标图。</p>
+<p>这两行解决了怎么算(公式)，拿谁算(材料)的问题。</p>
+<h5 id="zero-grad方法"><a href="#zero-grad方法" class="headerlink" title="zero_grad方法"></a>zero_grad方法</h5><p>每一次打分之后，程序会给出修改方案(梯度)，这里是进行内存清理的过程，不然给出的修改方案会一直叠加之前的。</p>
+<p><code>for opt in self.optimizers:</code>遍历每一个打分专家，通过<code>opt.zero_grad()</code>调用每一个专家的清理工具清理掉遗留梯度。注意区分<code>self.zero_grad()</code>，一个是调用opt里的成员方法，一个是自我迭代调用。</p>
+<h2 id="留存的问题"><a href="#留存的问题" class="headerlink" title="留存的问题"></a>留存的问题</h2><ol>
+<li>这部分关于怎样将画稿导入进入了解的不是很清晰。</li>
+<li>它说为什么zero_grad不写在step函数里是为了灵活调用梯度，首先step还没分析，然后怎么个灵活法有待解决。</li>
 </ol>
 
                 
@@ -411,8 +425,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Day-15</div>
-      <div>https://wang-xw-code.github.io/2026/05/03/Day-15/</div>
+      <div>Day-16</div>
+      <div>https://wang-xw-code.github.io/2026/05/04/Day-16/</div>
     </div>
     <div class="license-meta">
       
@@ -424,7 +438,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>May 3, 2026</div>
+          <div>May 4, 2026</div>
         </div>
       
       
@@ -456,18 +470,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/05/04/Day-16/" title="Day-16">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Day-16</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/05/02/Day-14/" title="Day-14">
-                        <span class="hidden-mobile">Day-14</span>
+                      <a href="/2026/05/03/Day-15/" title="Day-15">
+                        <span class="hidden-mobile">Day-15</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
