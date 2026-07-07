@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>the first day | fluid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="关于随机数的生成使用stdlib.h和time.h头文件，前面的是使用rand和srand两个函数的头文件，后面则是使用time函数的头文件，关键函数为srand((unsigned int)time(NULL)) 关于输出中的占位符 整数：%d 浮点数：%f 字符：&amp;c  关于for循环中数组长度的便捷遍历for(int i&#x3D;0;i&lt;sizeof(arr)&#x2F;sizeof(arr[0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="the first day">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/07/06/%E9%93%BE%E8%A1%A8/index.html">
+<meta property="og:site_name" content="fluid">
+<meta property="og:description" content="关于随机数的生成使用stdlib.h和time.h头文件，前面的是使用rand和srand两个函数的头文件，后面则是使用time函数的头文件，关键函数为srand((unsigned int)time(NULL)) 关于输出中的占位符 整数：%d 浮点数：%f 字符：&amp;c  关于for循环中数组长度的便捷遍历for(int i&#x3D;0;i&lt;sizeof(arr)&#x2F;sizeof(arr[0">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-07-06T06:49:41.000Z">
+<meta property="article:modified_time" content="2026-07-06T08:02:12.705Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="fluid" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">fluid</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wang-xw-code.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-链表" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/06/%E9%93%BE%E8%A1%A8/" class="article-date">
+  <time class="dt-published" datetime="2026-07-06T06:49:41.000Z" itemprop="datePublished">2026-07-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      the first day
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="关于随机数的生成"><a href="#关于随机数的生成" class="headerlink" title="关于随机数的生成"></a>关于随机数的生成</h1><p>使用stdlib.h和time.h头文件，前面的是使用rand和srand两个函数的头文件，后面则是使用time函数的头文件，关键函数为<code>srand((unsigned int)time(NULL))</code></p>
+<h1 id="关于输出中的占位符"><a href="#关于输出中的占位符" class="headerlink" title="关于输出中的占位符"></a>关于输出中的占位符</h1><ol>
+<li>整数：%d</li>
+<li>浮点数：%f</li>
+<li>字符：&amp;c</li>
+</ol>
+<h1 id="关于for循环中数组长度的便捷遍历"><a href="#关于for循环中数组长度的便捷遍历" class="headerlink" title="关于for循环中数组长度的便捷遍历"></a>关于for循环中数组长度的便捷遍历</h1><p><code>for(int i=0;i&lt;sizeof(arr)/sizeof(arr[0]);i++)</code></p>
+<h1 id="关于链表"><a href="#关于链表" class="headerlink" title="关于链表"></a>关于链表</h1><ol>
+<li>在构造函数中划内存给新的链表结构体的时候，需要使用到malloc关键字，而malloc存在于stdlib.h头文件之中</li>
+<li>可以使用typedef对struct ListNode进行重命名</li>
+</ol>
+<h1 id="函数内部改动的影响"><a href="#函数内部改动的影响" class="headerlink" title="函数内部改动的影响"></a>函数内部改动的影响</h1><p>如果参数传递的是值，则内部改动不影响外面；如果是指针的话则会影响外部</p>
+<h1 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h1><p>如果函数不传回值的话则为void类型，不然则需根据返回的类型去判断函数类型</p>
+<h1 id="数据获取-缓冲区"><a href="#数据获取-缓冲区" class="headerlink" title="数据获取(缓冲区)"></a>数据获取(缓冲区)</h1><ol>
+<li>scanf跳过空格与回车，取其他的数据</li>
+<li>getchar直接获取缓冲区最前面的东西，可以是空格或者回车<br>如果说1 2 3这样先scanf再getchar的话前者最后为数值，后面则是空格或者最后的回车，两个配合的”类时间差”可以单独处理一次性一行输入的数据，getchar用于判断这一个行是否结束，结束则不再进行处理</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wang-xw-code.github.io/2026/07/06/%E9%93%BE%E8%A1%A8/" data-id="cuidJffeCw3rcXn-7BonJbUt9" data-title="the first day" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/07/06/%E9%93%BE%E8%A1%A8/">the first day</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
