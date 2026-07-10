@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>4th | fluid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="free的使用方法使用malloc开辟了一块内存地址，在之后的释放过程中可以free(arr)，而不能是free(arr[i])，应为arr[i]是某个数据类型的数据，并不是动态开辟的内存空间。 栈和队列的链表与数组实现 栈和队列均会存储数据，不过数据的形式以链表的单个节点或数组的一个内存空间为载体，故在栈或队列的结构体声明中会存储链表节点或者数组的地址，用来存放数据。 数组实现时内存的释放可用s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4th">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/07/09/4th/index.html">
+<meta property="og:site_name" content="fluid">
+<meta property="og:description" content="free的使用方法使用malloc开辟了一块内存地址，在之后的释放过程中可以free(arr)，而不能是free(arr[i])，应为arr[i]是某个数据类型的数据，并不是动态开辟的内存空间。 栈和队列的链表与数组实现 栈和队列均会存储数据，不过数据的形式以链表的单个节点或数组的一个内存空间为载体，故在栈或队列的结构体声明中会存储链表节点或者数组的地址，用来存放数据。 数组实现时内存的释放可用s">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-07-09T01:36:20.000Z">
+<meta property="article:modified_time" content="2026-07-09T07:10:40.785Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="fluid" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">fluid</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wang-xw-code.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-4th" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/09/4th/" class="article-date">
+  <time class="dt-published" datetime="2026-07-09T01:36:20.000Z" itemprop="datePublished">2026-07-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      4th
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="free的使用方法"><a href="#free的使用方法" class="headerlink" title="free的使用方法"></a>free的使用方法</h1><p>使用malloc开辟了一块内存地址，在之后的释放过程中可以free(arr)，而不能是free(arr[i])，应为arr[i]是某个数据类型的数据，并不是动态开辟的内存空间。</p>
+<h1 id="栈和队列的链表与数组实现"><a href="#栈和队列的链表与数组实现" class="headerlink" title="栈和队列的链表与数组实现"></a>栈和队列的链表与数组实现</h1><ol>
+<li>栈和队列均会存储数据，不过数据的形式以链表的单个节点或数组的一个内存空间为载体，故在栈或队列的结构体声明中会存储链表节点或者数组的地址，用来存放数据。</li>
+<li>数组实现时内存的释放可用size是否等于-1判断，如果是链表则和NULL进行判断，两个是否为空的判断条件有所不同。</li>
+</ol>
+<h1 id="链表与数组的区别"><a href="#链表与数组的区别" class="headerlink" title="链表与数组的区别"></a>链表与数组的区别</h1><p>数组元素内存空间连续，链表分散；数组长度不可变，链表长度灵活扩展；数组元素占用内存少，但可能会浪费空间，链表不会浪费空间，但占用的内存多。</p>
+<h1 id="链表类型"><a href="#链表类型" class="headerlink" title="链表类型"></a>链表类型</h1><ol>
+<li>单向链表。</li>
+<li>环形链表：尾节点指向头节点(首尾相接)，任意节点可视为头节点。</li>
+<li>双向链表；既记录next也记录front，可朝两个方向遍历链表(浏览器的上一页与下一页)。</li>
+</ol>
+<h1 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h1><p>约等于动态数组，可存在扩容操作。</p>
+<h1 id="栈和堆"><a href="#栈和堆" class="headerlink" title="栈和堆"></a>栈和堆</h1><ol>
+<li>栈内存的特点为快但是小，普通变量的声明在栈内存上<code>int a=10</code>，当函数运行结束，大括号<code>{}</code>闭合的时候此函数所有的栈变量均会全部销毁。</li>
+<li>堆内存的特点为大但需手动管理，在调用<code>malloc()</code>或<code>calloc()</code>的时候会在堆内存中划出一定的内存。但堆内存不会自动销毁，只有使用free()的时候才会消失。故使用以上函数一定要注意堆内存的释放，避免产生大量垃圾内存。同时堆内存是通过指针来间接访问的。</li>
+</ol>
+<h1 id="队列与栈的数组实现的区别"><a href="#队列与栈的数组实现的区别" class="headerlink" title="队列与栈的数组实现的区别"></a>队列与栈的数组实现的区别</h1><p>队列在pop操作上队列会通过front指向队首元素的索引，同时用size记录队列长度，定义rear&#x3D;front+size，这里计算出来的rear指向队尾元素之后的下一个位置。故数组中元素的有效区间为<code>[front,rear-1]</code>，故在出入队的时候要考虑front、size、rear的更新。但若到数组尾部，则无法继续移动，故引入环形数组，当front或rear越过数组的尾部时，回到数组头部重新遍历(通过取余操作实现)。</p>
+<p>产生这个的问题在于栈只有尾巴在动(先进后出)，数组的头不动，只有尾巴增减；而队列(先进先出)可能头减，又或者尾增，实际存储元素的范围需要定义，同时数组内存的占用率不是100%，从而引入环形数组。</p>
+<p><code>int rear=(q-&gt;front+q-&gt;size)%q-&gt;capacity;</code>为push中的核心操作，依靠取余操作，当rear走到数组尽头时能自动绕回数组头部，从而实现环形数组。</p>
+<p><code>q-&gt;front=(q-&gt;front+1)%q-&gt;capacity;</code>也是pop中的不同操作。</p>
+<h1 id="双向队列"><a href="#双向队列" class="headerlink" title="双向队列"></a>双向队列</h1><p>即可以在头部添加删除也可以在尾部进行上述操作。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wang-xw-code.github.io/2026/07/09/4th/" data-id="cuid54ta9eBmrqG5y5nMnaBrm" data-title="4th" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/07/08/3rd/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">3rd</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/07/09/4th/">4th</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/08/3rd/">3rd</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/07/2nd/">2nd</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/06/1st/">1st</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
