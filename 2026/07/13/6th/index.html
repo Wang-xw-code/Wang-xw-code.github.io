@@ -13,10 +13,12 @@
 <meta property="og:site_name" content="fluid">
 <meta property="og:description" content="哈希表对于很长的key，可以使用取模操作将之缩减到几位数之中，避免存储两个11位的key，要开辟一个很大的数组存放，但只存储两个，空间浪费严重。 结构体构造函数一般先使用malloc动态分布一个结构体外壳，然后对内部数据进行初始化。 二叉树的分类 完美二叉树：所有层的节点都被完全填满，也被称为满二叉树。 完全二叉树：仅允许最底层的节点不完全填满，且最底层的节点必须从左至右依次连续填充。 完满二叉树">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wang-xw-code.github.io/images/%E4%B8%89%E7%A7%8D%E9%81%8D%E5%8E%86%E7%9A%84%E5%9B%BE%E5%BD%A2%E6%8F%8F%E8%BF%B0.png">
 <meta property="article:published_time" content="2026-07-13T01:12:05.000Z">
-<meta property="article:modified_time" content="2026-07-14T01:25:04.540Z">
+<meta property="article:modified_time" content="2026-07-14T02:04:34.569Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wang-xw-code.github.io/images/%E4%B8%89%E7%A7%8D%E9%81%8D%E5%8E%86%E7%9A%84%E5%9B%BE%E5%BD%A2%E6%8F%8F%E8%BF%B0.png">
   
     <link rel="alternate" href="/atom.xml" title="fluid" type="application/atom+xml">
   
@@ -105,14 +107,14 @@
 </ol>
 <h1 id="二叉树的遍历方式"><a href="#二叉树的遍历方式" class="headerlink" title="二叉树的遍历方式"></a>二叉树的遍历方式</h1><ol>
 <li>层序遍历：根左右根左右，类广度优先搜索，通常使用队列实现。</li>
-<li>前序遍历、中序遍历、后序遍历：绕着二叉树的外围走一圈，类深度优先搜索。根据走到一个节点的访问时的位置分为前中后，左边是前，下面是中，右边是后。根左右、左根右、左右根。![三种遍历的图形描述](images\屏幕截图 2026-07-13 152924.png)</li>
+<li>前序遍历、中序遍历、后序遍历：绕着二叉树的外围走一圈，类深度优先搜索。根据走到一个节点的访问时的位置分为前中后，左边是前，下面是中，右边是后。根左右、左根右、左右根。<img src="/images/%E4%B8%89%E7%A7%8D%E9%81%8D%E5%8E%86%E7%9A%84%E5%9B%BE%E5%BD%A2%E6%8F%8F%E8%BF%B0.png" alt="三种遍历的图形描述"></li>
 </ol>
 <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>对于类深度优先搜索，根的代码一般为<code>arr[(*size)++] = root-&gt;val</code>；左的代码为<code>Order(root-&gt;left, size)</code>；右的代码为<code>Order(root-&gt;right, size)</code>。三种遍历的区别在于这三个的相对位置的不同。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/13/6th/" data-id="cuidtnJ4OWSScCSJu9-_m7Ga7" data-title="6th" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/13/6th/" data-id="cuidL3QD9ugxlb6gxc1s4ChpM" data-title="6th" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

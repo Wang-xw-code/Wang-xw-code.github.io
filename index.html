@@ -98,11 +98,12 @@
 <p>数组表示的缺点在于增删节点需要通过数组插入与删除操作实现，效率低；当二叉树存在大量None的时候，内存利用率低；同时因为其存储于连续的空间之中，也不适用于存储数据量过大的树。</p>
 <h1 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>其值按照左根右的顺序增大，因此可以按照值的大小关系进行查找。查找原理与二分查找算法一致。如可以使用cur表临时节点，<code>cur.val &lt; num</code>代表目标节点在cur的右子树之中，执行<code>cur=cur.right</code>。</p>
 <h2 id="增加"><a href="#增加" class="headerlink" title="增加"></a>增加</h2><p>二叉搜索树只要满足于左右根的递增就可以，新增加的元素永远在最底层，在cur.val比较的时候小于往左跑，大于往右跑，直到遇到NULL替代掉。</p>
-<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>二叉搜索树的中序遍历出来的数据是按照从小到大的顺序排列的。删除时如果度为0直接删；度为1直接用叶节点替换掉；度为2的时候可以选择二叉搜索树中序遍历里这个删除节点左右的任意一个值，删掉后替换到这个位置。</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/14/7th/" data-id="cuidUvQwZ3UMP3-N5SnKK3r5H" data-title="7th" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/14/7th/" data-id="cuidNqK_WTq05nE6fiNAYnxCG" data-title="7th" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -146,14 +147,14 @@
 </ol>
 <h1 id="二叉树的遍历方式"><a href="#二叉树的遍历方式" class="headerlink" title="二叉树的遍历方式"></a>二叉树的遍历方式</h1><ol>
 <li>层序遍历：根左右根左右，类广度优先搜索，通常使用队列实现。</li>
-<li>前序遍历、中序遍历、后序遍历：绕着二叉树的外围走一圈，类深度优先搜索。根据走到一个节点的访问时的位置分为前中后，左边是前，下面是中，右边是后。根左右、左根右、左右根。![三种遍历的图形描述](images\屏幕截图 2026-07-13 152924.png)</li>
+<li>前序遍历、中序遍历、后序遍历：绕着二叉树的外围走一圈，类深度优先搜索。根据走到一个节点的访问时的位置分为前中后，左边是前，下面是中，右边是后。根左右、左根右、左右根。<img src="/images/%E4%B8%89%E7%A7%8D%E9%81%8D%E5%8E%86%E7%9A%84%E5%9B%BE%E5%BD%A2%E6%8F%8F%E8%BF%B0.png" alt="三种遍历的图形描述"></li>
 </ol>
 <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>对于类深度优先搜索，根的代码一般为<code>arr[(*size)++] = root-&gt;val</code>；左的代码为<code>Order(root-&gt;left, size)</code>；右的代码为<code>Order(root-&gt;right, size)</code>。三种遍历的区别在于这三个的相对位置的不同。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/13/6th/" data-id="cuidtnJ4OWSScCSJu9-_m7Ga7" data-title="6th" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/13/6th/" data-id="cuidL3QD9ugxlb6gxc1s4ChpM" data-title="6th" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -221,7 +222,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/10/5th/" data-id="cuid-WxvePNluPVohFvvRvmdk" data-title="5th" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/10/5th/" data-id="cuidDFWF-UqcO-UQ7kuRrIfMJ" data-title="5th" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -280,7 +281,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/09/4th/" data-id="cuidKPJJavIb9nVkBPIL3TZ-8" data-title="4th" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/09/4th/" data-id="cuidOHkV7hsib70IEXTkAH3iu" data-title="4th" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -330,7 +331,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/08/3rd/" data-id="cuid3yZvwqXZnU0DbwF4zM7AH" data-title="3rd" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/08/3rd/" data-id="cuidXFMxEvPQmVd9tfCiNViU0" data-title="3rd" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -383,7 +384,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/07/2nd/" data-id="cuidQeDldFdddg-JWDVnLcRNN" data-title="2nd" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/07/2nd/" data-id="cuidOvf-Ela8VoWHJI-mrePGY" data-title="2nd" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -438,7 +439,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/06/1st/" data-id="cuidL2wLqh6smyRYPLP1F3yRQ" data-title="1st" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/06/1st/" data-id="cuidvmCJv6Ico8jLsyiDTfUy2" data-title="1st" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
