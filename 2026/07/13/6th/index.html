@@ -15,7 +15,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="c:\Users\25321\Cstudy\source_posts\images\%E4%B8%89%E7%A7%8D%E9%81%8D%E5%8E%86%E7%9A%84%E5%9B%BE%E5%BD%A2%E6%8F%8F%E8%BF%B0.png">
 <meta property="article:published_time" content="2026-07-13T01:12:05.000Z">
-<meta property="article:modified_time" content="2026-07-14T02:35:52.350Z">
+<meta property="article:modified_time" content="2026-07-14T03:49:49.921Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="c:\Users\25321\Cstudy\source_posts\images\%E4%B8%89%E7%A7%8D%E9%81%8D%E5%8E%86%E7%9A%84%E5%9B%BE%E5%BD%A2%E6%8F%8F%E8%BF%B0.png">
@@ -110,11 +110,21 @@
 <li>前序遍历、中序遍历、后序遍历：绕着二叉树的外围走一圈，类深度优先搜索。根据走到一个节点的访问时的位置分为前中后，左边是前，下面是中，右边是后。根左右、左根右、左右根。<img src="C:\Users\25321\Cstudy\source_posts\images\三种遍历的图形描述.png" alt="三种遍历的图形描述"></li>
 </ol>
 <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>对于类深度优先搜索，根的代码一般为<code>arr[(*size)++] = root-&gt;val</code>；左的代码为<code>Order(root-&gt;left, size)</code>；右的代码为<code>Order(root-&gt;right, size)</code>。三种遍历的区别在于这三个的相对位置的不同。</p>
+<h1 id="AVL树"><a href="#AVL树" class="headerlink" title="AVL树"></a>AVL树</h1><h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><p>平衡二叉树增删后可能变成一条“&#x2F;”，退化成链表，AVL树可以通过旋转操作，使其能够保持二叉搜索树的性质，也能重新变成平衡二叉树</p>
+<h2 id="核心要素"><a href="#核心要素" class="headerlink" title="核心要素"></a>核心要素</h2><p>节点高度：从该节点到最远叶节点的距离，即所经过的边的数量叶节点的高度为0，空节点高度为-1；</p>
+<p>节点平衡因子：节点左子树高度减去右子树高度，空节点的平衡因子为0。</p>
+<h2 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h2><p>从下到上第一个失衡节点记为node，其子节点记为child。将中间平衡的节点提拔成新的当家的，失衡的节点压下去。</p>
+<ol>
+<li>左旋：失衡节点右边成一条斜线“\”，node变成child的左节点(如果原本有左节点，将之变为node右节点)，child代替node的位置。</li>
+<li>右旋：失衡节点左边成一条斜线“&#x2F;”，node变成chlid的右节点(如果原本有右节点，将之变为node左节点)，child代替node的位置。</li>
+<li>先左旋再右旋：向左突出来的拐角“&lt;”，对child左旋，变成一条斜线“&#x2F;”，然后进行右旋。</li>
+<li>先右旋再左旋：向右突出来的拐角“&gt;”，对child右旋，变成一条斜线“\”，然后进行左旋。</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/13/6th/" data-id="cuidE5QREnV02fvdIHPsfKQj2" data-title="6th" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/13/6th/" data-id="cuidm93dAqP1WLenaAD3RfChK" data-title="6th" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
