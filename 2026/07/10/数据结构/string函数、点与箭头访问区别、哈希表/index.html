@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>5th | fluid</title>
+  <title>string函数、.与-&gt;区别、哈希表 | fluid</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="关于string.h头文件 strlen(...)获取字符串长度。只关注在某一片内存之中从开始到\0这一块的长度，故传入一个字符串的首地址的char*类型的参数也能够达到获取这个字符串长度的作用。 strcpy(...，...)将后者赋值给前者，包括字符串结束标志符\0。但并不会检查目的地的内存是否能够完全存储后者的数据，所以在之前的哈希表代码之中通过malloc(strlen(val)+1)动态">
 <meta property="og:type" content="article">
-<meta property="og:title" content="5th">
-<meta property="og:url" content="https://wang-xw-code.github.io/2026/07/10/5th/index.html">
+<meta property="og:title" content="string函数、.与-&gt;区别、哈希表">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/index.html">
 <meta property="og:site_name" content="fluid">
 <meta property="og:description" content="关于string.h头文件 strlen(...)获取字符串长度。只关注在某一片内存之中从开始到\0这一块的长度，故传入一个字符串的首地址的char*类型的参数也能够达到获取这个字符串长度的作用。 strcpy(...，...)将后者赋值给前者，包括字符串结束标志符\0。但并不会检查目的地的内存是否能够完全存储后者的数据，所以在之前的哈希表代码之中通过malloc(strlen(val)+1)动态">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-07-10T01:30:14.000Z">
-<meta property="article:modified_time" content="2026-07-10T07:43:08.601Z">
+<meta property="article:modified_time" content="2026-07-16T02:44:42.084Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -73,12 +73,16 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-5th" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-数据结构/string函数、点与箭头访问区别、哈希表" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/10/5th/" class="article-date">
+    <a href="/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/" class="article-date">
   <time class="dt-published" datetime="2026-07-10T01:30:14.000Z" itemprop="datePublished">2026-07-10</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -87,7 +91,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      5th
+      string函数、.与-&gt;区别、哈希表
     </h1>
   
 
@@ -108,6 +112,7 @@
 <p>负载因子判断是否需要进行哈希扩容，通过哈希表元素数量数以桶数量，在java中超过0.75就会触发哈希扩容。</p>
 <p>当哈希表容量增大时多个键被分配到同一个值的概率降低，类似与数组的扩容，在数据迁移的时候效率低下，且需要重新计算键值对的存储位置。</p>
 <p>链式地址本质将原本存储Pair的桶数组换成存储链表，将相同索引的数据依次链接下去，查找的时候先根据哈希函数访问到头节点，然后对比键key，进而找到目标键值对。缺点在于占用空间大(指针)，同时查询效率低(链表)。</p>
+<h1 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h1><p>对于很长的key，可以使用取模操作将之缩减到几位数之中，避免存储两个11位的key，要开辟一个很大的数组存放，但只存储两个，空间浪费严重。</p>
 <h1 id="懒删除、开放寻址-都不能删除"><a href="#懒删除、开放寻址-都不能删除" class="headerlink" title="懒删除、开放寻址(都不能删除)"></a>懒删除、开放寻址(都不能删除)</h1><ol>
 <li>线性探测：</li>
 </ol>
@@ -129,7 +134,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/10/5th/" data-id="cuidBTmz4JViwBl3ty2KEiXrY" data-title="5th" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="cuidsJlfQcES6QTxT-RWZvZAR" data-title="string函数、.与-&gt;区别、哈希表" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -139,19 +144,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2026/07/13/6th/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          6th
+          二叉树、AVL树
         
       </div>
     </a>
   
   
-    <a href="/2026/07/09/4th/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2026/07/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/free%E3%80%81%E6%A0%88%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E6%A0%88%E5%A0%86%E5%86%85%E5%AD%98%E3%80%81%E9%98%9F%E5%88%97/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">4th</div>
+      <div class="article-nav-title">free、栈、列表、栈堆内存、队列</div>
     </a>
   
 </nav>
@@ -165,6 +170,13 @@
           <aside id="sidebar">
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li></ul>
+    </div>
+  </div>
+
 
   
     
@@ -189,23 +201,23 @@
       <ul>
         
           <li>
-            <a href="/2026/07/15/8th/">8th</a>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/2nd/">2nd</a>
           </li>
         
           <li>
-            <a href="/2026/07/14/7th/">7th</a>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/1st/">1st</a>
           </li>
         
           <li>
-            <a href="/2026/07/13/6th/">6th</a>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/">堆</a>
           </li>
         
           <li>
-            <a href="/2026/07/10/5th/">5th</a>
+            <a href="/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/">二叉树、AVL树</a>
           </li>
         
           <li>
-            <a href="/2026/07/09/4th/">4th</a>
+            <a href="/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/">string函数、.与-&gt;区别、哈希表</a>
           </li>
         
       </ul>

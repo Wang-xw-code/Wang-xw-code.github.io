@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>二叉树、AVL树 | fluid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="结构体构造函数一般先使用malloc动态分布一个结构体外壳，然后对内部数据进行初始化。 二叉树的分类 完美二叉树：所有层的节点都被完全填满，也被称为满二叉树。 完全二叉树：仅允许最底层的节点不完全填满，且最底层的节点必须从左至右依次连续填充。 完满二叉树：除了叶节点之外，每个节点都有两个子节点。 平衡二叉树：任意节点的左子树和右子树的高度之差的绝对值不超过1。  二叉树的遍历方式 层序遍历：根左右">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉树、AVL树">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/index.html">
+<meta property="og:site_name" content="fluid">
+<meta property="og:description" content="结构体构造函数一般先使用malloc动态分布一个结构体外壳，然后对内部数据进行初始化。 二叉树的分类 完美二叉树：所有层的节点都被完全填满，也被称为满二叉树。 完全二叉树：仅允许最底层的节点不完全填满，且最底层的节点必须从左至右依次连续填充。 完满二叉树：除了叶节点之外，每个节点都有两个子节点。 平衡二叉树：任意节点的左子树和右子树的高度之差的绝对值不超过1。  二叉树的遍历方式 层序遍历：根左右">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:\Users\25321\Cstudy\source_posts\images\%E4%B8%89%E7%A7%8D%E9%81%8D%E5%8E%86%E7%9A%84%E5%9B%BE%E5%BD%A2%E6%8F%8F%E8%BF%B0.png">
+<meta property="article:published_time" content="2026-07-13T01:12:05.000Z">
+<meta property="article:modified_time" content="2026-07-16T02:45:55.489Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:\Users\25321\Cstudy\source_posts\images\%E4%B8%89%E7%A7%8D%E9%81%8D%E5%8E%86%E7%9A%84%E5%9B%BE%E5%BD%A2%E6%8F%8F%E8%BF%B0.png">
+  
+    <link rel="alternate" href="/atom.xml" title="fluid" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">fluid</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wang-xw-code.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-数据结构/二叉树、AVL树" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/" class="article-date">
+  <time class="dt-published" datetime="2026-07-13T01:12:05.000Z" itemprop="datePublished">2026-07-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      二叉树、AVL树
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="结构体构造函数"><a href="#结构体构造函数" class="headerlink" title="结构体构造函数"></a>结构体构造函数</h1><p>一般先使用malloc动态分布一个结构体外壳，然后对内部数据进行初始化。</p>
+<h1 id="二叉树的分类"><a href="#二叉树的分类" class="headerlink" title="二叉树的分类"></a>二叉树的分类</h1><ol>
+<li>完美二叉树：所有层的节点都被完全填满，也被称为满二叉树。</li>
+<li>完全二叉树：仅允许最底层的节点不完全填满，且最底层的节点必须从左至右依次连续填充。</li>
+<li>完满二叉树：除了叶节点之外，每个节点都有两个子节点。</li>
+<li>平衡二叉树：任意节点的左子树和右子树的高度之差的绝对值不超过1。</li>
+</ol>
+<h1 id="二叉树的遍历方式"><a href="#二叉树的遍历方式" class="headerlink" title="二叉树的遍历方式"></a>二叉树的遍历方式</h1><ol>
+<li>层序遍历：根左右根左右，类广度优先搜索，通常使用队列实现。</li>
+<li>前序遍历、中序遍历、后序遍历：绕着二叉树的外围走一圈，类深度优先搜索。根据走到一个节点的访问时的位置分为前中后，左边是前，下面是中，右边是后。根左右、左根右、左右根。<img src="C:\Users\25321\Cstudy\source_posts\images\三种遍历的图形描述.png" alt="三种遍历的图形描述"></li>
+</ol>
+<h1 id="二叉树的实现形式"><a href="#二叉树的实现形式" class="headerlink" title="二叉树的实现形式"></a>二叉树的实现形式</h1><p>通过链表存储，节点之间通过指针连接；通过数组存储的时候，如果不是完美二叉树，则数组无法唯一表示二叉树，可以考虑在遍历中显式地写出所有的None，如用INT_MAX代替。</p>
+<p>相比之下数组表示的优点在于其存储在连续的内存空间中，对缓存友好，访问与遍历速度较快；不需要存储指针，节省空间；可以通过rand()函数随机访问节点。</p>
+<p>数组表示的缺点在于增删节点需要通过数组插入与删除操作实现，效率低；当二叉树存在大量None的时候，内存利用率低；同时因为其存储于连续的空间之中，也不适用于存储数据量过大的树。</p>
+<h1 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>其值按照左根右的顺序增大，因此可以按照值的大小关系进行查找。查找原理与二分查找算法一致。如可以使用cur表临时节点，<code>cur.val &lt; num</code>代表目标节点在cur的右子树之中，执行<code>cur=cur.right</code>。</p>
+<h2 id="增加"><a href="#增加" class="headerlink" title="增加"></a>增加</h2><p>二叉搜索树只要满足于左右根的递增就可以，新增加的元素永远在最底层，在cur.val比较的时候小于往左跑，大于往右跑，直到遇到NULL替代掉。</p>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>二叉搜索树的中序遍历出来的数据是按照从小到大的顺序排列的。删除时如果度为0直接删；度为1直接用叶节点替换掉；度为2的时候可以选择二叉搜索树中序遍历里这个删除节点左右的任意一个值，删掉后替换到这个位置。</p>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>对于类深度优先搜索，根的代码一般为<code>arr[(*size)++] = root-&gt;val</code>；左的代码为<code>Order(root-&gt;left, size)</code>；右的代码为<code>Order(root-&gt;right, size)</code>。三种遍历的区别在于这三个的相对位置的不同。</p>
+<h1 id="AVL树"><a href="#AVL树" class="headerlink" title="AVL树"></a>AVL树</h1><h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><p>平衡二叉树增删后可能变成一条“&#x2F;”，退化成链表，AVL树可以通过旋转操作，使其能够保持二叉搜索树的性质，也能重新变成平衡二叉树</p>
+<h2 id="核心要素"><a href="#核心要素" class="headerlink" title="核心要素"></a>核心要素</h2><p>节点高度：从该节点到最远叶节点的距离，即所经过的边的数量叶节点的高度为0，空节点高度为-1；</p>
+<p>节点平衡因子：节点左子树高度减去右子树高度，空节点的平衡因子为0。</p>
+<h2 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h2><p>从下到上第一个失衡节点记为node，其子节点记为child。将中间平衡的节点提拔成新的当家的，失衡的节点压下去。</p>
+<ol>
+<li>左旋：失衡节点右边成一条斜线“\”，node变成child的左节点(如果原本有左节点，将之变为node右节点)，child代替node的位置。</li>
+<li>右旋：失衡节点左边成一条斜线“&#x2F;”，node变成chlid的右节点(如果原本有右节点，将之变为node左节点)，child代替node的位置。</li>
+<li>先左旋再右旋：向左突出来的拐角“&lt;”，对child左旋，变成一条斜线“&#x2F;”，然后进行右旋。</li>
+<li>先右旋再左旋：向右突出来的拐角“&gt;”，对child右旋，变成一条斜线“\”，然后进行左旋。</li>
+</ol>
+<h1 id="AVL树-1"><a href="#AVL树-1" class="headerlink" title="AVL树"></a>AVL树</h1><ol>
+<li>插入元素：循环递归至最下面的NULL区域添加，同时返回时自底向上更新节点高度，执行旋转操作</li>
+<li>删除元素：依旧循环自底向上更新节点高度，执行旋转操作。</li>
+<li>旋转操作避免退化成链表。</li>
+<li>叶子节点高度为0，空节点高度为-1。</li>
+<li>节点平衡因子由左子树高度减去右子树高度。</li>
+</ol>
+<h1 id="树相关概念"><a href="#树相关概念" class="headerlink" title="树相关概念"></a>树相关概念</h1><p>二叉树 || 二叉搜索树 || AVL树</p>
+<p>因实现方式的选择差异(链表、数组)，导致在遍历或增删查改的操作会有差异</p>
+<h1 id="AVL树的旋转场景-大佐小右"><a href="#AVL树的旋转场景-大佐小右" class="headerlink" title="AVL树的旋转场景(大佐小右)"></a>AVL树的旋转场景(大佐小右)</h1><h2 id="节点平衡因子大于1-左子树偏高"><a href="#节点平衡因子大于1-左子树偏高" class="headerlink" title="节点平衡因子大于1(左子树偏高)"></a>节点平衡因子大于1(左子树偏高)</h2><ol>
+<li>左子节点节点平衡因子大于等于0-&gt;单次右旋</li>
+<li>左子节点节点平衡因子小于0-&gt;先左旋再右旋</li>
+</ol>
+<h2 id="节点平衡因子小于-1-右子树偏高"><a href="#节点平衡因子小于-1-右子树偏高" class="headerlink" title="节点平衡因子小于-1(右子树偏高)"></a>节点平衡因子小于-1(右子树偏高)</h2><ol>
+<li>右子节点节点平衡因子小于等于0-&gt;单次左旋</li>
+<li>右子节点节点平衡因子大于0-&gt;先右旋再左旋</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wang-xw-code.github.io/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/" data-id="cuid9B8r5OhwqexEtYyNGTCrU" data-title="二叉树、AVL树" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          堆
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">string函数、.与-&gt;区别、哈希表</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/2nd/">2nd</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/1st/">1st</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/">堆</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/">二叉树、AVL树</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/">string函数、.与-&gt;区别、哈希表</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -71,10 +71,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-8th" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-数据库/2nd" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/15/8th/" class="article-date">
-  <time class="dt-published" datetime="2026-07-15T01:22:21.000Z" itemprop="datePublished">2026-07-15</time>
+    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/2nd/" class="article-date">
+  <time class="dt-published" datetime="2026-07-16T08:37:36.000Z" itemprop="datePublished">2026-07-16</time>
 </a>
     
   </div>
@@ -85,7 +85,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/15/8th/">8th</a>
+      <a class="p-name article-title" href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/2nd/">2nd</a>
     </h1>
   
 
@@ -93,7 +93,246 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="AVL树"><a href="#AVL树" class="headerlink" title="AVL树"></a>AVL树</h1><ol>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/2nd/" data-id="cuid5JTctCaEIv895KTAzil_k" data-title="2nd" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-数据库/1st" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/1st/" class="article-date">
+  <time class="dt-published" datetime="2026-07-16T02:51:42.000Z" itemprop="datePublished">2026-07-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/1st/">1st</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="相关概述"><a href="#相关概述" class="headerlink" title="相关概述"></a>相关概述</h1><ol>
+<li>数据库：数据存储的仓库。</li>
+<li>数据库管理系统：操纵和管理数据库的大型软件。</li>
+<li>SQL：操作关系型数据库的编程语言，为统一标准。</li>
+</ol>
+<h1 id="SQL通用语法"><a href="#SQL通用语法" class="headerlink" title="SQL通用语法"></a>SQL通用语法</h1><ol>
+<li>SQL语句可以单行或多行书写，以分号结尾。</li>
+<li>SQL语句不区分大小写，关键字建议大写。</li>
+<li>单行注释为“–”或“#”，多行注释为“&#x2F;**&#x2F;” 。</li>
+</ol>
+<h1 id="SQL语句分-Data-Definition-Manipulation-Query-Control-language"><a href="#SQL语句分-Data-Definition-Manipulation-Query-Control-language" class="headerlink" title="SQL语句分(Data Definition&#x2F;Manipulation&#x2F;Query&#x2F;Control language)"></a>SQL语句分(Data Definition&#x2F;Manipulation&#x2F;Query&#x2F;Control language)</h1><ol>
+<li>DDL数据定义语言，用来定义数据库对象(数据库、表、字段)。</li>
+<li>DML数据操作语言，用来对数据库中的数据进行增删改。</li>
+<li>DQL数据查询语言，用来查询数据库中表的记录。</li>
+<li>DCL数据控制语言，用来创建数据库用户、控制数据库的访问权限。</li>
+</ol>
+<h1 id="DDL语句-库操作"><a href="#DDL语句-库操作" class="headerlink" title="DDL语句(库操作)"></a>DDL语句(库操作)</h1><h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><ol>
+<li><code>SHOW DATABASES;</code> – 查询所有数据库</li>
+<li><code>SELECT DATABASE();</code> – 查询当前数据库</li>
+</ol>
+<h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><ol>
+<li><code>CREATE DATABASE[IF NOT EXISTS] 数据库名 [DEFAULT CHARSER 字符集] [COLLATE排列规则];</code> – 创建新的数据库</li>
+</ol>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><ol>
+<li><code>DROP DATABASE[IF EXISTS] 数据库名;</code> – 删除数据库</li>
+</ol>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li><code>USE 数据库名;</code> – 使用数据库</li>
+</ol>
+<h1 id="DDL语句-表操作"><a href="#DDL语句-表操作" class="headerlink" title="DDL语句(表操作)"></a>DDL语句(表操作)</h1><h2 id="查询-1"><a href="#查询-1" class="headerlink" title="查询"></a>查询</h2><ol>
+<li><code>SHOW TABLES;</code> – 查询当前数据库所有表格</li>
+<li><code>DESC 表名;</code> – 查询表结构</li>
+<li><code>SHOW CREATE TABLE 表名;</code> – 查询指定表的建表语句</li>
+</ol>
+<h2 id="创建-1"><a href="#创建-1" class="headerlink" title="创建"></a>创建</h2><p>1. </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">CREATE TABLE</span> 表名(</span><br><span class="line">  字段<span class="number">1</span> 字段<span class="number">1</span>类型[COMMENT 字段<span class="number">1</span>注释],</span><br><span class="line">  字段<span class="number">2</span> 字段<span class="number">2</span>类型[COMMENT 字段<span class="number">2</span>注释],</span><br><span class="line">  字段<span class="number">3</span> 字段<span class="number">3</span>类型[COMMENT 字段<span class="number">3</span>注释]</span><br><span class="line">)[COMMENT 表注释];</span><br></pre></td></tr></table></figure>
+<p> – 创建表结构(最后一个字段不需要分号，外层需要)</p>
+<h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><ol>
+<li><code>ALTER TABLE 表名 ADD 字段名 类型(长度) [COMMENT注释][约束];</code> – 对表添加字段 </li>
+<li><code>ALTER TABLE 表名 MODIFY 字段名 新数据类型(长度);</code> – 修改数据类型</li>
+<li><code>ALTER TABLE 表名 CHANGE 旧字段名 新字段名 类型(长度) [COMMENT 注释][约束];</code> – 修改字段名和字段类型</li>
+<li><code>ALTER TABLE 表名 RENAME TO 新表名;</code> – 修改表的名称</li>
+</ol>
+<h2 id="删除-1"><a href="#删除-1" class="headerlink" title="删除"></a>删除</h2><ol>
+<li><code>ALTER TABLE 表名 DROP 字段名;</code> – 删除字段</li>
+<li><code>DROP TABLE [IF EXISTS] 表名;</code> – 删除表</li>
+<li><code>TRUNCATE TABLE 表名;</code> – 删除指定表，并重新创建该表</li>
+</ol>
+<h1 id="表的数据类型"><a href="#表的数据类型" class="headerlink" title="表的数据类型"></a>表的数据类型</h1><h2 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h2><h3 id="整型类型"><a href="#整型类型" class="headerlink" title="整型类型"></a>整型类型</h3><ol>
+<li>TINYINT – 1字节</li>
+<li>SMALLINT – 2字节</li>
+<li>MEDIUMINT – 3字节</li>
+<li>INT – 4字节</li>
+<li>BIGINT – 8字节</li>
+</ol>
+<h3 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h3><ol>
+<li>FLOAT</li>
+<li>DOUBLE</li>
+<li>DECIMAL – 需要指定精度(数字长度)和标度(小数位数)</li>
+</ol>
+<h2 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h2><h3 id="字符串数据"><a href="#字符串数据" class="headerlink" title="字符串数据"></a>字符串数据</h3><ol>
+<li>CHAR(存储的最大长度) – 10个位置只存储1个，其他用空格补位。性能高。</li>
+<li>VARCHAR(存储的最大长度) – 根据实际情况动态调整存储长度。性能较差。</li>
+</ol>
+<h3 id="二进制数据-音频、图片…"><a href="#二进制数据-音频、图片…" class="headerlink" title="二进制数据(音频、图片…)"></a>二进制数据(音频、图片…)</h3><ol>
+<li>TINYBLOB</li>
+<li>BLOB</li>
+<li>MEDIUMBLOB</li>
+<li>LONGBLOB</li>
+</ol>
+<h3 id="文本数据"><a href="#文本数据" class="headerlink" title="文本数据"></a>文本数据</h3><ol>
+<li>TINYTEXT</li>
+<li>TEXT</li>
+<li>MEDIUMTEXT</li>
+<li>LONGTEXT</li>
+</ol>
+<h2 id="日期类型"><a href="#日期类型" class="headerlink" title="日期类型"></a>日期类型</h2><ol>
+<li>DATE – 日期值(年月日)</li>
+<li>TIME – 时间值(时分秒)</li>
+<li>YEAR – 年份值</li>
+<li>DATETIME – 混合日期和时间值</li>
+<li>TIMESTAMP – 混合日期和时间值、时间戳</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/1st/" data-id="cuidH3b3bME-yAfEGtCxwUMav" data-title="1st" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-数据结构/堆" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/" class="article-date">
+  <time class="dt-published" datetime="2026-07-16T01:25:04.000Z" itemprop="datePublished">2026-07-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/">堆</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h1><p>满足特定条件的完全二叉树，可分为小顶堆(任意节点的值&lt;&#x3D;子节点的值)和大顶堆(任意节点的值&gt;&#x3D;子节点的值)。根节点称为堆顶，底层最靠右的为堆低。大顶堆的堆顶元素最大，小顶堆的堆顶值最小。</p>
+<p>堆通常用于实现优先队列，即具有优先级排序的队列。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/" data-id="cuidoMucsgwfGzoFGVc_auDWz" data-title="堆" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-数据结构/二叉树、AVL树" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/" class="article-date">
+  <time class="dt-published" datetime="2026-07-13T01:12:05.000Z" itemprop="datePublished">2026-07-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/">二叉树、AVL树</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="结构体构造函数"><a href="#结构体构造函数" class="headerlink" title="结构体构造函数"></a>结构体构造函数</h1><p>一般先使用malloc动态分布一个结构体外壳，然后对内部数据进行初始化。</p>
+<h1 id="二叉树的分类"><a href="#二叉树的分类" class="headerlink" title="二叉树的分类"></a>二叉树的分类</h1><ol>
+<li>完美二叉树：所有层的节点都被完全填满，也被称为满二叉树。</li>
+<li>完全二叉树：仅允许最底层的节点不完全填满，且最底层的节点必须从左至右依次连续填充。</li>
+<li>完满二叉树：除了叶节点之外，每个节点都有两个子节点。</li>
+<li>平衡二叉树：任意节点的左子树和右子树的高度之差的绝对值不超过1。</li>
+</ol>
+<h1 id="二叉树的遍历方式"><a href="#二叉树的遍历方式" class="headerlink" title="二叉树的遍历方式"></a>二叉树的遍历方式</h1><ol>
+<li>层序遍历：根左右根左右，类广度优先搜索，通常使用队列实现。</li>
+<li>前序遍历、中序遍历、后序遍历：绕着二叉树的外围走一圈，类深度优先搜索。根据走到一个节点的访问时的位置分为前中后，左边是前，下面是中，右边是后。根左右、左根右、左右根。<img src="C:\Users\25321\Cstudy\source_posts\images\三种遍历的图形描述.png" alt="三种遍历的图形描述"></li>
+</ol>
+<h1 id="二叉树的实现形式"><a href="#二叉树的实现形式" class="headerlink" title="二叉树的实现形式"></a>二叉树的实现形式</h1><p>通过链表存储，节点之间通过指针连接；通过数组存储的时候，如果不是完美二叉树，则数组无法唯一表示二叉树，可以考虑在遍历中显式地写出所有的None，如用INT_MAX代替。</p>
+<p>相比之下数组表示的优点在于其存储在连续的内存空间中，对缓存友好，访问与遍历速度较快；不需要存储指针，节省空间；可以通过rand()函数随机访问节点。</p>
+<p>数组表示的缺点在于增删节点需要通过数组插入与删除操作实现，效率低；当二叉树存在大量None的时候，内存利用率低；同时因为其存储于连续的空间之中，也不适用于存储数据量过大的树。</p>
+<h1 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>其值按照左根右的顺序增大，因此可以按照值的大小关系进行查找。查找原理与二分查找算法一致。如可以使用cur表临时节点，<code>cur.val &lt; num</code>代表目标节点在cur的右子树之中，执行<code>cur=cur.right</code>。</p>
+<h2 id="增加"><a href="#增加" class="headerlink" title="增加"></a>增加</h2><p>二叉搜索树只要满足于左右根的递增就可以，新增加的元素永远在最底层，在cur.val比较的时候小于往左跑，大于往右跑，直到遇到NULL替代掉。</p>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>二叉搜索树的中序遍历出来的数据是按照从小到大的顺序排列的。删除时如果度为0直接删；度为1直接用叶节点替换掉；度为2的时候可以选择二叉搜索树中序遍历里这个删除节点左右的任意一个值，删掉后替换到这个位置。</p>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>对于类深度优先搜索，根的代码一般为<code>arr[(*size)++] = root-&gt;val</code>；左的代码为<code>Order(root-&gt;left, size)</code>；右的代码为<code>Order(root-&gt;right, size)</code>。三种遍历的区别在于这三个的相对位置的不同。</p>
+<h1 id="AVL树"><a href="#AVL树" class="headerlink" title="AVL树"></a>AVL树</h1><h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><p>平衡二叉树增删后可能变成一条“&#x2F;”，退化成链表，AVL树可以通过旋转操作，使其能够保持二叉搜索树的性质，也能重新变成平衡二叉树</p>
+<h2 id="核心要素"><a href="#核心要素" class="headerlink" title="核心要素"></a>核心要素</h2><p>节点高度：从该节点到最远叶节点的距离，即所经过的边的数量叶节点的高度为0，空节点高度为-1；</p>
+<p>节点平衡因子：节点左子树高度减去右子树高度，空节点的平衡因子为0。</p>
+<h2 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h2><p>从下到上第一个失衡节点记为node，其子节点记为child。将中间平衡的节点提拔成新的当家的，失衡的节点压下去。</p>
+<ol>
+<li>左旋：失衡节点右边成一条斜线“\”，node变成child的左节点(如果原本有左节点，将之变为node右节点)，child代替node的位置。</li>
+<li>右旋：失衡节点左边成一条斜线“&#x2F;”，node变成chlid的右节点(如果原本有右节点，将之变为node左节点)，child代替node的位置。</li>
+<li>先左旋再右旋：向左突出来的拐角“&lt;”，对child左旋，变成一条斜线“&#x2F;”，然后进行右旋。</li>
+<li>先右旋再左旋：向右突出来的拐角“&gt;”，对child右旋，变成一条斜线“\”，然后进行左旋。</li>
+</ol>
+<h1 id="AVL树-1"><a href="#AVL树-1" class="headerlink" title="AVL树"></a>AVL树</h1><ol>
 <li>插入元素：循环递归至最下面的NULL区域添加，同时返回时自底向上更新节点高度，执行旋转操作</li>
 <li>删除元素：依旧循环自底向上更新节点高度，执行旋转操作。</li>
 <li>旋转操作避免退化成链表。</li>
@@ -114,7 +353,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/15/8th/" data-id="cuidlSB6Y8g3A_9Z0Z4cEbHTq" data-title="8th" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/" data-id="cuid9B8r5OhwqexEtYyNGTCrU" data-title="二叉树、AVL树" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -126,117 +365,16 @@
 
 
   
-    <article id="post-7th" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-数据结构/string函数、点与箭头访问区别、哈希表" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/14/7th/" class="article-date">
-  <time class="dt-published" datetime="2026-07-14T01:25:33.000Z" itemprop="datePublished">2026-07-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/14/7th/">7th</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="二叉树的实现形式"><a href="#二叉树的实现形式" class="headerlink" title="二叉树的实现形式"></a>二叉树的实现形式</h1><p>通过链表存储，节点之间通过指针连接；通过数组存储的时候，如果不是完美二叉树，则数组无法唯一表示二叉树，可以考虑在遍历中显式地写出所有的None，如用INT_MAX代替。</p>
-<p>相比之下数组表示的优点在于其存储在连续的内存空间中，对缓存友好，访问与遍历速度较快；不需要存储指针，节省空间；可以通过rand()函数随机访问节点。</p>
-<p>数组表示的缺点在于增删节点需要通过数组插入与删除操作实现，效率低；当二叉树存在大量None的时候，内存利用率低；同时因为其存储于连续的空间之中，也不适用于存储数据量过大的树。</p>
-<h1 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>其值按照左根右的顺序增大，因此可以按照值的大小关系进行查找。查找原理与二分查找算法一致。如可以使用cur表临时节点，<code>cur.val &lt; num</code>代表目标节点在cur的右子树之中，执行<code>cur=cur.right</code>。</p>
-<h2 id="增加"><a href="#增加" class="headerlink" title="增加"></a>增加</h2><p>二叉搜索树只要满足于左右根的递增就可以，新增加的元素永远在最底层，在cur.val比较的时候小于往左跑，大于往右跑，直到遇到NULL替代掉。</p>
-<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>二叉搜索树的中序遍历出来的数据是按照从小到大的顺序排列的。删除时如果度为0直接删；度为1直接用叶节点替换掉；度为2的时候可以选择二叉搜索树中序遍历里这个删除节点左右的任意一个值，删掉后替换到这个位置。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/14/7th/" data-id="cuid26k-EpMfHrS0R9ttXhgc9" data-title="7th" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-6th" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/07/13/6th/" class="article-date">
-  <time class="dt-published" datetime="2026-07-13T01:12:05.000Z" itemprop="datePublished">2026-07-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/13/6th/">6th</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h1><p>对于很长的key，可以使用取模操作将之缩减到几位数之中，避免存储两个11位的key，要开辟一个很大的数组存放，但只存储两个，空间浪费严重。</p>
-<h1 id="结构体构造函数"><a href="#结构体构造函数" class="headerlink" title="结构体构造函数"></a>结构体构造函数</h1><p>一般先使用malloc动态分布一个结构体外壳，然后对内部数据进行初始化。</p>
-<h1 id="二叉树的分类"><a href="#二叉树的分类" class="headerlink" title="二叉树的分类"></a>二叉树的分类</h1><ol>
-<li>完美二叉树：所有层的节点都被完全填满，也被称为满二叉树。</li>
-<li>完全二叉树：仅允许最底层的节点不完全填满，且最底层的节点必须从左至右依次连续填充。</li>
-<li>完满二叉树：除了叶节点之外，每个节点都有两个子节点。</li>
-<li>平衡二叉树：任意节点的左子树和右子树的高度之差的绝对值不超过1。</li>
-</ol>
-<h1 id="二叉树的遍历方式"><a href="#二叉树的遍历方式" class="headerlink" title="二叉树的遍历方式"></a>二叉树的遍历方式</h1><ol>
-<li>层序遍历：根左右根左右，类广度优先搜索，通常使用队列实现。</li>
-<li>前序遍历、中序遍历、后序遍历：绕着二叉树的外围走一圈，类深度优先搜索。根据走到一个节点的访问时的位置分为前中后，左边是前，下面是中，右边是后。根左右、左根右、左右根。<img src="C:\Users\25321\Cstudy\source_posts\images\三种遍历的图形描述.png" alt="三种遍历的图形描述"></li>
-</ol>
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>对于类深度优先搜索，根的代码一般为<code>arr[(*size)++] = root-&gt;val</code>；左的代码为<code>Order(root-&gt;left, size)</code>；右的代码为<code>Order(root-&gt;right, size)</code>。三种遍历的区别在于这三个的相对位置的不同。</p>
-<h1 id="AVL树"><a href="#AVL树" class="headerlink" title="AVL树"></a>AVL树</h1><h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><p>平衡二叉树增删后可能变成一条“&#x2F;”，退化成链表，AVL树可以通过旋转操作，使其能够保持二叉搜索树的性质，也能重新变成平衡二叉树</p>
-<h2 id="核心要素"><a href="#核心要素" class="headerlink" title="核心要素"></a>核心要素</h2><p>节点高度：从该节点到最远叶节点的距离，即所经过的边的数量叶节点的高度为0，空节点高度为-1；</p>
-<p>节点平衡因子：节点左子树高度减去右子树高度，空节点的平衡因子为0。</p>
-<h2 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h2><p>从下到上第一个失衡节点记为node，其子节点记为child。将中间平衡的节点提拔成新的当家的，失衡的节点压下去。</p>
-<ol>
-<li>左旋：失衡节点右边成一条斜线“\”，node变成child的左节点(如果原本有左节点，将之变为node右节点)，child代替node的位置。</li>
-<li>右旋：失衡节点左边成一条斜线“&#x2F;”，node变成chlid的右节点(如果原本有右节点，将之变为node左节点)，child代替node的位置。</li>
-<li>先左旋再右旋：向左突出来的拐角“&lt;”，对child左旋，变成一条斜线“&#x2F;”，然后进行右旋。</li>
-<li>先右旋再左旋：向右突出来的拐角“&gt;”，对child右旋，变成一条斜线“\”，然后进行左旋。</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/13/6th/" data-id="cuidt9hEDT51mBStb-yh8m7jX" data-title="6th" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-5th" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/07/10/5th/" class="article-date">
+    <a href="/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/" class="article-date">
   <time class="dt-published" datetime="2026-07-10T01:30:14.000Z" itemprop="datePublished">2026-07-10</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -245,7 +383,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/10/5th/">5th</a>
+      <a class="p-name article-title" href="/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/">string函数、.与-&gt;区别、哈希表</a>
     </h1>
   
 
@@ -266,6 +404,7 @@
 <p>负载因子判断是否需要进行哈希扩容，通过哈希表元素数量数以桶数量，在java中超过0.75就会触发哈希扩容。</p>
 <p>当哈希表容量增大时多个键被分配到同一个值的概率降低，类似与数组的扩容，在数据迁移的时候效率低下，且需要重新计算键值对的存储位置。</p>
 <p>链式地址本质将原本存储Pair的桶数组换成存储链表，将相同索引的数据依次链接下去，查找的时候先根据哈希函数访问到头节点，然后对比键key，进而找到目标键值对。缺点在于占用空间大(指针)，同时查询效率低(链表)。</p>
+<h1 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h1><p>对于很长的key，可以使用取模操作将之缩减到几位数之中，避免存储两个11位的key，要开辟一个很大的数组存放，但只存储两个，空间浪费严重。</p>
 <h1 id="懒删除、开放寻址-都不能删除"><a href="#懒删除、开放寻址-都不能删除" class="headerlink" title="懒删除、开放寻址(都不能删除)"></a>懒删除、开放寻址(都不能删除)</h1><ol>
 <li>线性探测：</li>
 </ol>
@@ -287,7 +426,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/10/5th/" data-id="cuidBTmz4JViwBl3ty2KEiXrY" data-title="5th" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="cuidsJlfQcES6QTxT-RWZvZAR" data-title="string函数、.与-&gt;区别、哈希表" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -299,12 +438,16 @@
 
 
   
-    <article id="post-4th" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-数据结构/free、栈、列表、栈堆内存、队列" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/09/4th/" class="article-date">
+    <a href="/2026/07/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/free%E3%80%81%E6%A0%88%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E6%A0%88%E5%A0%86%E5%86%85%E5%AD%98%E3%80%81%E9%98%9F%E5%88%97/" class="article-date">
   <time class="dt-published" datetime="2026-07-09T01:36:20.000Z" itemprop="datePublished">2026-07-09</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -313,7 +456,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/09/4th/">4th</a>
+      <a class="p-name article-title" href="/2026/07/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/free%E3%80%81%E6%A0%88%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E6%A0%88%E5%A0%86%E5%86%85%E5%AD%98%E3%80%81%E9%98%9F%E5%88%97/">free、栈、列表、栈堆内存、队列</a>
     </h1>
   
 
@@ -325,12 +468,6 @@
 <h1 id="栈和队列的链表与数组实现"><a href="#栈和队列的链表与数组实现" class="headerlink" title="栈和队列的链表与数组实现"></a>栈和队列的链表与数组实现</h1><ol>
 <li>栈和队列均会存储数据，不过数据的形式以链表的单个节点或数组的一个内存空间为载体，故在栈或队列的结构体声明中会存储链表节点或者数组的地址，用来存放数据。</li>
 <li>数组实现时内存的释放可用size是否等于-1判断，如果是链表则和NULL进行判断，两个是否为空的判断条件有所不同。</li>
-</ol>
-<h1 id="链表与数组的区别"><a href="#链表与数组的区别" class="headerlink" title="链表与数组的区别"></a>链表与数组的区别</h1><p>数组元素内存空间连续，链表分散；数组长度不可变，链表长度灵活扩展；数组元素占用内存少，但可能会浪费空间，链表不会浪费空间，但占用的内存多。</p>
-<h1 id="链表类型"><a href="#链表类型" class="headerlink" title="链表类型"></a>链表类型</h1><ol>
-<li>单向链表。</li>
-<li>环形链表：尾节点指向头节点(首尾相接)，任意节点可视为头节点。</li>
-<li>双向链表；既记录next也记录front，可朝两个方向遍历链表(浏览器的上一页与下一页)。</li>
 </ol>
 <h1 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h1><p>约等于动态数组，可存在扩容操作。</p>
 <h1 id="栈和堆"><a href="#栈和堆" class="headerlink" title="栈和堆"></a>栈和堆</h1><ol>
@@ -346,7 +483,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/09/4th/" data-id="cuido3yXUFLHltF99pNBGP7yw" data-title="4th" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/free%E3%80%81%E6%A0%88%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E6%A0%88%E5%A0%86%E5%86%85%E5%AD%98%E3%80%81%E9%98%9F%E5%88%97/" data-id="cuidZXsXfxWbJKvrl7bqAfLv3" data-title="free、栈、列表、栈堆内存、队列" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -358,12 +495,16 @@
 
 
   
-    <article id="post-3rd" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-数据结构/数组索引、scanf、回车符清理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/08/3rd/" class="article-date">
+    <a href="/2026/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95%E3%80%81scanf%E3%80%81%E5%9B%9E%E8%BD%A6%E7%AC%A6%E6%B8%85%E7%90%86/" class="article-date">
   <time class="dt-published" datetime="2026-07-08T01:23:09.000Z" itemprop="datePublished">2026-07-08</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -372,7 +513,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/08/3rd/">3rd</a>
+      <a class="p-name article-title" href="/2026/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95%E3%80%81scanf%E3%80%81%E5%9B%9E%E8%BD%A6%E7%AC%A6%E6%B8%85%E7%90%86/">数组索引、scanf、回车符清理</a>
     </h1>
   
 
@@ -388,15 +529,13 @@
 </ol>
 <h1 id="scanf数据的获取"><a href="#scanf数据的获取" class="headerlink" title="scanf数据的获取"></a>scanf数据的获取</h1><p>scanf(“%d”,&amp;num)</p>
 <h1 id="NULL"><a href="#NULL" class="headerlink" title="NULL"></a>NULL</h1><p>用于清空指针，对于字符数据不能赋值与其。</p>
-<h1 id="缓冲区"><a href="#缓冲区" class="headerlink" title="缓冲区"></a>缓冲区</h1><p>scanf不会获取回车，导致回车符一直堆叠在缓冲区，如果此时使用getchar会误获取到回车符。可使用<code>while (getchar() != &#39;\n&#39;);</code>对存在的回车符清空。但是但是！！！！！！只能一次清空一个。纯傻逼。</p>
-<h1 id="rewind-stdin"><a href="#rewind-stdin" class="headerlink" title="rewind(stdin)"></a>rewind(stdin)</h1><p>直接就是引用stdio.h头文件，代码写法为<code>rewind(stdin);</code>。</p>
 <h1 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h1><p>需要注意进行操作的时候栈是否为空.</p>
 <h1 id="布尔bool"><a href="#布尔bool" class="headerlink" title="布尔bool"></a>布尔bool</h1><p>需要使用头文件stdbool.h</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/08/3rd/" data-id="cuidKGR_PN2kBa-vAgf4P7oUg" data-title="3rd" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95%E3%80%81scanf%E3%80%81%E5%9B%9E%E8%BD%A6%E7%AC%A6%E6%B8%85%E7%90%86/" data-id="cuid_YEuzRDq2y8bAJMArcNZr" data-title="数组索引、scanf、回车符清理" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -408,12 +547,16 @@
 
 
   
-    <article id="post-2nd" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-数据结构/动态分配、输入、链表、数组、assert、结构体" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/07/2nd/" class="article-date">
+    <a href="/2026/07/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E3%80%81%E8%BE%93%E5%85%A5%E3%80%81%E9%93%BE%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84%E3%80%81assert%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93/" class="article-date">
   <time class="dt-published" datetime="2026-07-07T01:36:48.000Z" itemprop="datePublished">2026-07-07</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -422,7 +565,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/07/2nd/">2nd</a>
+      <a class="p-name article-title" href="/2026/07/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E3%80%81%E8%BE%93%E5%85%A5%E3%80%81%E9%93%BE%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84%E3%80%81assert%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93/">动态分配、输入、链表、数组、assert、结构体</a>
     </h1>
   
 
@@ -434,6 +577,16 @@
 <h1 id="值的输入"><a href="#值的输入" class="headerlink" title="值的输入"></a>值的输入</h1><p>scanf(“&amp;d”,&amp;mode)后面有个取地址符&amp;，因为在C语言中函数如果传入的参数是值，内部改动外面不变，如果是地址的时候则会变换，这里scanf就是一个已经编写好的函数，只有传入的是mode的地址，才能读到用户输入的数据。</p>
 <p>如果想要处理一行内输入的多个数据，可以通过while+scanf+getchar进行判断，scanf用于获取有效数据，getchar用来判断这一行是否结束。</p>
 <h1 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h1><p>头插法和尾插法的区别在于，尾插法需要判断head是不是NULL，是的话需要将head变成新创建的节点。</p>
+<h1 id="链表与数组的区别"><a href="#链表与数组的区别" class="headerlink" title="链表与数组的区别"></a>链表与数组的区别</h1><p>数组元素内存空间连续，链表分散；数组长度不可变，链表长度灵活扩展；数组元素占用内存少，但可能会浪费空间，链表不会浪费空间，但占用的内存多。</p>
+<h1 id="链表类型"><a href="#链表类型" class="headerlink" title="链表类型"></a>链表类型</h1><ol>
+<li>单向链表。</li>
+<li>环形链表：尾节点指向头节点(首尾相接)，任意节点可视为头节点。</li>
+<li>双向链表；既记录next也记录front，可朝两个方向遍历链表(浏览器的上一页与下一页)。</li>
+</ol>
+<h1 id="关于链表"><a href="#关于链表" class="headerlink" title="关于链表"></a>关于链表</h1><ol>
+<li>在构造函数中划内存给新的链表结构体的时候，需要使用到malloc关键字，而malloc存在于stdlib.h头文件之中</li>
+<li>可以使用typedef对struct ListNode进行重命名</li>
+</ol>
 <h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><ol>
 <li>数组名本质上是一个地址，arr[10]类似从arr的地址加上10*存储元素的字节数之后的地址。</li>
 <li>arr[4]拥有四个元素，但实际上最大索引是3不是4。</li>
@@ -449,7 +602,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/07/2nd/" data-id="cuidCePyIvrppF3VzQgB8LZhP" data-title="2nd" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E3%80%81%E8%BE%93%E5%85%A5%E3%80%81%E9%93%BE%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84%E3%80%81assert%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93/" data-id="cuidwsEPPPqN4CN-z5VkLVXrL" data-title="动态分配、输入、链表、数组、assert、结构体" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -461,12 +614,16 @@
 
 
   
-    <article id="post-1st" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-数据结构/随机数、占位符、缓冲区(数据获取)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/06/1st/" class="article-date">
+    <a href="/2026/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9A%8F%E6%9C%BA%E6%95%B0%E3%80%81%E5%8D%A0%E4%BD%8D%E7%AC%A6%E3%80%81%E7%BC%93%E5%86%B2%E5%8C%BA(%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96)/" class="article-date">
   <time class="dt-published" datetime="2026-07-06T06:49:41.000Z" itemprop="datePublished">2026-07-06</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -475,7 +632,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/06/1st/">1st</a>
+      <a class="p-name article-title" href="/2026/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9A%8F%E6%9C%BA%E6%95%B0%E3%80%81%E5%8D%A0%E4%BD%8D%E7%AC%A6%E3%80%81%E7%BC%93%E5%86%B2%E5%8C%BA(%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96)/">随机数、占位符、缓冲区(数据获取)</a>
     </h1>
   
 
@@ -490,21 +647,19 @@
 <li>字符：&amp;c</li>
 </ol>
 <h1 id="关于for循环中数组长度的便捷遍历"><a href="#关于for循环中数组长度的便捷遍历" class="headerlink" title="关于for循环中数组长度的便捷遍历"></a>关于for循环中数组长度的便捷遍历</h1><p><code>for(int i=0;i&lt;sizeof(arr)/sizeof(arr[0]);i++)</code></p>
-<h1 id="关于链表"><a href="#关于链表" class="headerlink" title="关于链表"></a>关于链表</h1><ol>
-<li>在构造函数中划内存给新的链表结构体的时候，需要使用到malloc关键字，而malloc存在于stdlib.h头文件之中</li>
-<li>可以使用typedef对struct ListNode进行重命名</li>
-</ol>
 <h1 id="函数内部改动的影响"><a href="#函数内部改动的影响" class="headerlink" title="函数内部改动的影响"></a>函数内部改动的影响</h1><p>如果参数传递的是值，则内部改动不影响外面；如果是指针的话则会影响外部</p>
 <h1 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h1><p>如果函数不传回值的话则为void类型，不然则需根据返回的类型去判断函数类型</p>
 <h1 id="数据获取-缓冲区"><a href="#数据获取-缓冲区" class="headerlink" title="数据获取(缓冲区)"></a>数据获取(缓冲区)</h1><ol>
 <li>scanf跳过空格与回车，取其他的数据</li>
 <li>getchar直接获取缓冲区最前面的东西，可以是空格或者回车<br>如果说1 2 3这样先scanf再getchar的话前者最后为数值，后面则是空格或者最后的回车，两个配合的”类时间差”可以单独处理一次性一行输入的数据，getchar用于判断这一个行是否结束，结束则不再进行处理</li>
 </ol>
+<h1 id="缓冲区"><a href="#缓冲区" class="headerlink" title="缓冲区"></a>缓冲区</h1><p>scanf不会获取回车，导致回车符一直堆叠在缓冲区，如果此时使用getchar会误获取到回车符。可使用<code>while (getchar() != &#39;\n&#39;);</code>对存在的回车符清空。但是但是！！！！！！只能一次清空一个。纯傻逼。</p>
+<h1 id="回车符清理rewind-stdin"><a href="#回车符清理rewind-stdin" class="headerlink" title="回车符清理rewind(stdin)"></a>回车符清理rewind(stdin)</h1><p>直接就是引用stdio.h头文件，代码写法为<code>rewind(stdin);</code>。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/06/1st/" data-id="cuidEr0SGStSbTgZxOn0RNhBl" data-title="1st" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9A%8F%E6%9C%BA%E6%95%B0%E3%80%81%E5%8D%A0%E4%BD%8D%E7%AC%A6%E3%80%81%E7%BC%93%E5%86%B2%E5%8C%BA(%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96)/" data-id="cuideMqaNDec1c7K7rGXgwKEu" data-title="随机数、占位符、缓冲区(数据获取)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -523,6 +678,13 @@
           <aside id="sidebar">
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li></ul>
+    </div>
+  </div>
+
 
   
     
@@ -547,23 +709,23 @@
       <ul>
         
           <li>
-            <a href="/2026/07/15/8th/">8th</a>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/2nd/">2nd</a>
           </li>
         
           <li>
-            <a href="/2026/07/14/7th/">7th</a>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/1st/">1st</a>
           </li>
         
           <li>
-            <a href="/2026/07/13/6th/">6th</a>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/">堆</a>
           </li>
         
           <li>
-            <a href="/2026/07/10/5th/">5th</a>
+            <a href="/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/">二叉树、AVL树</a>
           </li>
         
           <li>
-            <a href="/2026/07/09/4th/">4th</a>
+            <a href="/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/">string函数、.与-&gt;区别、哈希表</a>
           </li>
         
       </ul>
