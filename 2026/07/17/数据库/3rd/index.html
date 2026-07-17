@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>DCL语句(权限控制)、函数 | fluid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="DCL语句管理用户 查询用户  12USE mysql;SELECT * FROM USER;  CREATE USER &#39;用户名&#39;@&#39;主机名&#39; IDENTIFIED BY &#39;密码&#39;; – 创建用户，如果主机名为通配符‘@’，则任意主机都能通过该账户访问数据库 ALTER USER &#39;用户名&#39;@&#39;主机名&#39; IDENTI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DCL语句(权限控制)、函数">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/3rd/index.html">
+<meta property="og:site_name" content="fluid">
+<meta property="og:description" content="DCL语句管理用户 查询用户  12USE mysql;SELECT * FROM USER;  CREATE USER &#39;用户名&#39;@&#39;主机名&#39; IDENTIFIED BY &#39;密码&#39;; – 创建用户，如果主机名为通配符‘@’，则任意主机都能通过该账户访问数据库 ALTER USER &#39;用户名&#39;@&#39;主机名&#39; IDENTI">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-07-17T06:30:14.000Z">
+<meta property="article:modified_time" content="2026-07-17T07:32:42.034Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="fluid" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">fluid</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wang-xw-code.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-数据库/3rd" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/3rd/" class="article-date">
+  <time class="dt-published" datetime="2026-07-17T06:30:14.000Z" itemprop="datePublished">2026-07-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      DCL语句(权限控制)、函数
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="DCL语句"><a href="#DCL语句" class="headerlink" title="DCL语句"></a>DCL语句</h1><h2 id="管理用户"><a href="#管理用户" class="headerlink" title="管理用户"></a>管理用户</h2><ol>
+<li>查询用户</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">USE mysql;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">USER</span>;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><code>CREATE USER &#39;用户名&#39;@&#39;主机名&#39; IDENTIFIED BY &#39;密码&#39;;</code> – 创建用户，如果主机名为通配符‘@’，则任意主机都能通过该账户访问数据库</li>
+<li><code>ALTER USER &#39;用户名&#39;@&#39;主机名&#39; IDENTIFIED WITH mysql_native_password BY &#39;新密码&#39;;</code> – 修改用户密码</li>
+<li><code>DROP USER &#39;用户名&#39;@&#39;主机名&#39;;</code> – 删除用户</li>
+</ol>
+<h2 id="控制权限"><a href="#控制权限" class="headerlink" title="控制权限"></a>控制权限</h2><ol>
+<li><code>SHOW GRANTS FOR &#39;用户名&#39;@&#39;主机名&#39;;</code> – 查询用户权限</li>
+<li><code>GRANT 权限列表 ON 数据库名,表名 TO &#39;用户名&#39;@&#39;主机名&#39;;</code> – 授予用户权限</li>
+<li><code>REVOKE 权限列表 ON 数据库名,表名 FROM &#39;用户名&#39;@&#39;主机名&#39;;</code> – 撤销用户权限</li>
+<li>权限说明<ol>
+<li>ALL – 所有权限</li>
+<li>SELECT – 查询数据权限</li>
+<li>INSERT – 插入数据权限</li>
+<li>UPDATE – 修改数据权限</li>
+<li>DELETE – 删除数据权限</li>
+<li>ALTER – 修改表权限</li>
+<li>DROP – 删除数据库&#x2F;表&#x2F;视图权限</li>
+<li>CERATE – 创建数据库&#x2F;表权限</li>
+</ol>
+</li>
+<li>tips<ol>
+<li>可以在数据库或表处使用通配符*代表所有的数据</li>
+<li>多个权限之中使用逗号”,”分离</li>
+</ol>
+</li>
+</ol>
+<h1 id="函数-–-一段可以直接被调用的代码"><a href="#函数-–-一段可以直接被调用的代码" class="headerlink" title="函数 – 一段可以直接被调用的代码"></a>函数 – 一段可以直接被调用的代码</h1><h2 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h2><ol>
+<li><code>CONCAT(S1,S2,S3...)</code> – 字符串拼接</li>
+<li><code>LOWER(S1)</code> – 将字符串转为小写</li>
+<li><code>UPPER(S1)</code> – 将字符串转为大写</li>
+<li><code>LPAD(S1,n,pad)</code> – 左填充，用字符串pad对S1左边进行填充，达到n个字符串长度</li>
+<li><code>RPAD(S1,n,pad)</code> – 右填充，用字符串pad对S1右边进行填充，达到n个字符串长度</li>
+<li><code>TRIM(S1)</code> – 去掉字符串头部和尾部的空格</li>
+<li><code>SUBSTRING(S1,start,len)</code> – 返回从字符串S1从start位置起的len个长度的字符串</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wang-xw-code.github.io/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/3rd/" data-id="cuid5YzWuxGXVw5NzbERtu1JL" data-title="DCL语句(权限控制)、函数" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/DML%E8%AF%AD%E5%8F%A5(%E5%AD%97%E6%AE%B5)%E3%80%81DQL%E8%AF%AD%E5%8F%A5(%E6%9F%A5%E8%AF%A2)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">DML语句(字段)、DQL语句(查询)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/3rd/">DCL语句(权限控制)、函数</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/DML%E8%AF%AD%E5%8F%A5(%E5%AD%97%E6%AE%B5)%E3%80%81DQL%E8%AF%AD%E5%8F%A5(%E6%9F%A5%E8%AF%A2)/">DML语句(字段)、DQL语句(查询)</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/SQL%E7%9B%B8%E5%85%B3%E6%A6%82%E8%BF%B0%E3%80%81DDL%E8%AF%AD%E5%8F%A5(%E5%BA%93%E3%80%81%E8%A1%A8)/">SQL相关概述、DDL语句(库、表)</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/">堆</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/">二叉树、AVL树</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

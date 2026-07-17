@@ -71,12 +71,16 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-数据库/2nd" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-数据库/3rd" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/2nd/" class="article-date">
-  <time class="dt-published" datetime="2026-07-16T08:37:36.000Z" itemprop="datePublished">2026-07-16</time>
+    <a href="/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/3rd/" class="article-date">
+  <time class="dt-published" datetime="2026-07-17T06:30:14.000Z" itemprop="datePublished">2026-07-17</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -85,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/2nd/">2nd</a>
+      <a class="p-name article-title" href="/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/3rd/">DCL语句(权限控制)、函数</a>
     </h1>
   
 
@@ -93,11 +97,50 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <h1 id="DCL语句"><a href="#DCL语句" class="headerlink" title="DCL语句"></a>DCL语句</h1><h2 id="管理用户"><a href="#管理用户" class="headerlink" title="管理用户"></a>管理用户</h2><ol>
+<li>查询用户</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">USE mysql;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">USER</span>;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><code>CREATE USER &#39;用户名&#39;@&#39;主机名&#39; IDENTIFIED BY &#39;密码&#39;;</code> – 创建用户，如果主机名为通配符‘@’，则任意主机都能通过该账户访问数据库</li>
+<li><code>ALTER USER &#39;用户名&#39;@&#39;主机名&#39; IDENTIFIED WITH mysql_native_password BY &#39;新密码&#39;;</code> – 修改用户密码</li>
+<li><code>DROP USER &#39;用户名&#39;@&#39;主机名&#39;;</code> – 删除用户</li>
+</ol>
+<h2 id="控制权限"><a href="#控制权限" class="headerlink" title="控制权限"></a>控制权限</h2><ol>
+<li><code>SHOW GRANTS FOR &#39;用户名&#39;@&#39;主机名&#39;;</code> – 查询用户权限</li>
+<li><code>GRANT 权限列表 ON 数据库名,表名 TO &#39;用户名&#39;@&#39;主机名&#39;;</code> – 授予用户权限</li>
+<li><code>REVOKE 权限列表 ON 数据库名,表名 FROM &#39;用户名&#39;@&#39;主机名&#39;;</code> – 撤销用户权限</li>
+<li>权限说明<ol>
+<li>ALL – 所有权限</li>
+<li>SELECT – 查询数据权限</li>
+<li>INSERT – 插入数据权限</li>
+<li>UPDATE – 修改数据权限</li>
+<li>DELETE – 删除数据权限</li>
+<li>ALTER – 修改表权限</li>
+<li>DROP – 删除数据库&#x2F;表&#x2F;视图权限</li>
+<li>CERATE – 创建数据库&#x2F;表权限</li>
+</ol>
+</li>
+<li>tips<ol>
+<li>可以在数据库或表处使用通配符*代表所有的数据</li>
+<li>多个权限之中使用逗号”,”分离</li>
+</ol>
+</li>
+</ol>
+<h1 id="函数-–-一段可以直接被调用的代码"><a href="#函数-–-一段可以直接被调用的代码" class="headerlink" title="函数 – 一段可以直接被调用的代码"></a>函数 – 一段可以直接被调用的代码</h1><h2 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h2><ol>
+<li><code>CONCAT(S1,S2,S3...)</code> – 字符串拼接</li>
+<li><code>LOWER(S1)</code> – 将字符串转为小写</li>
+<li><code>UPPER(S1)</code> – 将字符串转为大写</li>
+<li><code>LPAD(S1,n,pad)</code> – 左填充，用字符串pad对S1左边进行填充，达到n个字符串长度</li>
+<li><code>RPAD(S1,n,pad)</code> – 右填充，用字符串pad对S1右边进行填充，达到n个字符串长度</li>
+<li><code>TRIM(S1)</code> – 去掉字符串头部和尾部的空格</li>
+<li><code>SUBSTRING(S1,start,len)</code> – 返回从字符串S1从start位置起的len个长度的字符串</li>
+</ol>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/2nd/" data-id="cuid5JTctCaEIv895KTAzil_k" data-title="2nd" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/3rd/" data-id="cuid5YzWuxGXVw5NzbERtu1JL" data-title="DCL语句(权限控制)、函数" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -109,9 +152,131 @@
 
 
   
-    <article id="post-数据库/1st" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-数据库/DML语句(字段)、DQL语句(查询)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/1st/" class="article-date">
+    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/DML%E8%AF%AD%E5%8F%A5(%E5%AD%97%E6%AE%B5)%E3%80%81DQL%E8%AF%AD%E5%8F%A5(%E6%9F%A5%E8%AF%A2)/" class="article-date">
+  <time class="dt-published" datetime="2026-07-16T08:37:36.000Z" itemprop="datePublished">2026-07-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/DML%E8%AF%AD%E5%8F%A5(%E5%AD%97%E6%AE%B5)%E3%80%81DQL%E8%AF%AD%E5%8F%A5(%E6%9F%A5%E8%AF%A2)/">DML语句(字段)、DQL语句(查询)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="DML语句-–-对数据库中表的数据记录进行增删改操作"><a href="#DML语句-–-对数据库中表的数据记录进行增删改操作" class="headerlink" title="DML语句 – 对数据库中表的数据记录进行增删改操作"></a>DML语句 – 对数据库中表的数据记录进行增删改操作</h1><h2 id="插入数据操作-–-值是字符串或日期型数据需要包含在单引号之中"><a href="#插入数据操作-–-值是字符串或日期型数据需要包含在单引号之中" class="headerlink" title="插入数据操作 – 值是字符串或日期型数据需要包含在单引号之中"></a>插入数据操作 – 值是字符串或日期型数据需要包含在单引号之中</h2><ol>
+<li><code>INSERT INTO 表名 (字段1,字段2...) VALUES (值1,值2...);</code> – 给指定字段添加数据</li>
+<li><code>INSER INTO 表名 VALUES (值1,值2...);</code> – 给全部字段添加数据</li>
+<li><code>INSERT INTO 表名 VALUES (值1,值2...),(值1,值2...),(值1,值2...);</code> – 给指定表批量添加数据</li>
+</ol>
+<h2 id="更新数据操作"><a href="#更新数据操作" class="headerlink" title="更新数据操作"></a>更新数据操作</h2><ol>
+<li><code>UPDATE 表名 SET 字段名1 = 值1,字段名2 = 值2,...[WHERE 条件]</code> – 修改数据，如果没有条件，则会修改整张表的所有数据</li>
+</ol>
+<h2 id="删除数据操作"><a href="#删除数据操作" class="headerlink" title="删除数据操作"></a>删除数据操作</h2><ol>
+<li><code>DELETE FROM 表名 [WHERE 条件]</code> – 删除数据，没有WHERE条件则会删除整个表的数据，且不能删除某一个字段的值(可以使用UPDATE)</li>
+</ol>
+<h1 id="DQL语句-–-用来查询数据库中表的记录"><a href="#DQL语句-–-用来查询数据库中表的记录" class="headerlink" title="DQL语句 – 用来查询数据库中表的记录"></a>DQL语句 – 用来查询数据库中表的记录</h1><h2 id="代码模板-–-编写顺序！！！"><a href="#代码模板-–-编写顺序！！！" class="headerlink" title="代码模板 – 编写顺序！！！"></a>代码模板 – 编写顺序！！！</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">        字段列表</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">        表名列表</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">        条件列表</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span></span><br><span class="line">        分组字段列表</span><br><span class="line"><span class="keyword">HAVING</span></span><br><span class="line">        分组后条件列表</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> </span><br><span class="line">        排序字段列表</span><br><span class="line">LIMIT</span><br><span class="line">        分页参数</span><br></pre></td></tr></table></figure>
+
+<h2 id="基本查询"><a href="#基本查询" class="headerlink" title="基本查询"></a>基本查询</h2><ol>
+<li><code>SELECT 字段1,字段2,字段3... FROM 表名;</code> – 查询多个字段</li>
+<li><code>SELECT 字段1 [AS 别名1], 字段2 [AS 别名2] ... FROM 表名;</code> – 设置别名</li>
+<li><code>SELECT DISTINGCT 字段列表 FROM 表名;</code> – 去除重复记录</li>
+</ol>
+<h2 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h2><ol>
+<li><code>SELECT 字段列表 FROM 表名 WHERE 条件列表</code></li>
+<li>常见条件<ol>
+<li><blockquote>
+<p>– 大于</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>&#x3D; – 大于等于</p>
+</blockquote>
+</li>
+<li>&lt; – 小于</li>
+<li>&lt;&#x3D; – 小于等于</li>
+<li>&lt;&gt;或!&#x3D; – 不等于</li>
+<li>BETWEEN … AND … – 在某个范围之内(包含边界值)</li>
+<li>IN(…) – 值在IN之内的符合某一个就行</li>
+<li>LIKE 占位符 – 模糊匹配(_匹配单个字符，%匹配任意个字符，比如__代表查找长度为二的字符数据，%x代表以x结尾的数据)</li>
+<li>IS NULL – 是NULL</li>
+<li>AND或&amp;&amp; – 并且</li>
+<li>OR或|| – 或者</li>
+<li>NOT或! – 非、不是</li>
+</ol>
+</li>
+</ol>
+<h2 id="聚合函数查询-–-偏计算"><a href="#聚合函数查询-–-偏计算" class="headerlink" title="聚合函数查询 – 偏计算"></a>聚合函数查询 – 偏计算</h2><ol>
+<li>聚合函数 – 将一列数据作为一个整体，进行纵向计算(所有的NULL值不参与计算)<ol>
+<li>count – 统计数量</li>
+<li>max – 最大值</li>
+<li>min – 最小值</li>
+<li>avg – 平均值</li>
+<li>sum – 求和</li>
+</ol>
+</li>
+<li><code>SELECT 聚合函数(字段列表) FROM 表名;</code> – 根据函数查找数据</li>
+</ol>
+<h2 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h2><ol>
+<li><code>SELECT 字段列表 FROM 表名 [WHERE 条件] GROUP BY 分组字段名 [HAVING 分组后的过滤条件];</code> – WHERE在分组之前进行过滤，不满足WHERE条件则不参与分组；而HAVING是分组之后对结果进行过滤<ol>
+<li><code>SELECT gender, count(*) FROM employee GROUP BY gender</code> – 根据性别分组，统计男性员工和女性员工的数量</li>
+<li><code>SELECT worKaddress,count(*) FROM emp WHERE age &lt; 45 GROUP BY workaddress HAVING count(*)&gt;=3;</code> – 查询年龄小于45的员工，并根据工作地址分组，获取员工数量大于等于3的工作地址</li>
+</ol>
+</li>
+<li>执行顺序<br>WHERE &gt; 聚合函数 &gt; HAVING</li>
+</ol>
+<h2 id="排序查询"><a href="#排序查询" class="headerlink" title="排序查询"></a>排序查询</h2><ol>
+<li><code>SELECCT 字段列表 FROM 表名 ORDER BY 字段1 排序方式1, 字段2 排序方式2;</code> – 如果是多字段排序，当第一个字段值相同时，才会根据第二个字段进行排序</li>
+<li>排序方式<ol>
+<li>ASC – 升序(默认) </li>
+<li>DECE – 降序</li>
+</ol>
+</li>
+</ol>
+<h2 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h2><ol>
+<li><code>SELECT 字段列表 FROM 表名 LIMIT 起始索引,需要查询个数;</code> – 浏览器中的第几页的这一整页的数据依此在数据库中查询，或者说从第几个查询到第几个</li>
+<li>tips<ol>
+<li>起始索引从0开始，起始索引&#x3D;(查询页码数-1)*每页显示记录数</li>
+<li>分页查询是数据库的方言，不同的数据库有不同的实现，MySQL中是LIMIT</li>
+<li>如果查询的是第一页数据，起始索引可以省略，直接简写为LIMIT 10</li>
+</ol>
+</li>
+</ol>
+<h2 id="DQL的执行顺序-–-了解就好，在简写as之中需要知道"><a href="#DQL的执行顺序-–-了解就好，在简写as之中需要知道" class="headerlink" title="DQL的执行顺序 – 了解就好，在简写as之中需要知道"></a>DQL的执行顺序 – 了解就好，在简写as之中需要知道</h2><p>FROM从哪个表查询 -&gt; WHERE选取表中的哪些数据 -&gt; GROUP BY进行分组查询 -&gt; SELECT选取需要展示的字段 -&gt; ORDER BY进行顺序的排序 -&gt; LIMIT分页显示个数 </p>
+<p><code>SELECT name,age FROM emp e where e.age&gt;15 order by age asc;</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/DML%E8%AF%AD%E5%8F%A5(%E5%AD%97%E6%AE%B5)%E3%80%81DQL%E8%AF%AD%E5%8F%A5(%E6%9F%A5%E8%AF%A2)/" data-id="cuidF6TB1eg-VC2_6obFn6I_4" data-title="DML语句(字段)、DQL语句(查询)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-数据库/SQL相关概述、DDL语句(库、表)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/SQL%E7%9B%B8%E5%85%B3%E6%A6%82%E8%BF%B0%E3%80%81DDL%E8%AF%AD%E5%8F%A5(%E5%BA%93%E3%80%81%E8%A1%A8)/" class="article-date">
   <time class="dt-published" datetime="2026-07-16T02:51:42.000Z" itemprop="datePublished">2026-07-16</time>
 </a>
     
@@ -127,7 +292,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/1st/">1st</a>
+      <a class="p-name article-title" href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/SQL%E7%9B%B8%E5%85%B3%E6%A6%82%E8%BF%B0%E3%80%81DDL%E8%AF%AD%E5%8F%A5(%E5%BA%93%E3%80%81%E8%A1%A8)/">SQL相关概述、DDL语句(库、表)</a>
     </h1>
   
 
@@ -135,7 +300,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="相关概述"><a href="#相关概述" class="headerlink" title="相关概述"></a>相关概述</h1><ol>
+        <h1 id="SQL相关概述"><a href="#SQL相关概述" class="headerlink" title="SQL相关概述"></a>SQL相关概述</h1><ol>
 <li>数据库：数据存储的仓库。</li>
 <li>数据库管理系统：操纵和管理数据库的大型软件。</li>
 <li>SQL：操作关系型数据库的编程语言，为统一标准。</li>
@@ -222,7 +387,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/1st/" data-id="cuidH3b3bME-yAfEGtCxwUMav" data-title="1st" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/SQL%E7%9B%B8%E5%85%B3%E6%A6%82%E8%BF%B0%E3%80%81DDL%E8%AF%AD%E5%8F%A5(%E5%BA%93%E3%80%81%E8%A1%A8)/" data-id="cuidChiP2Gq9OO2qrCBaa-Q5-" data-title="SQL相关概述、DDL语句(库、表)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -266,7 +431,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/" data-id="cuidoMucsgwfGzoFGVc_auDWz" data-title="堆" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/" data-id="cuidmG9ENqdefLDkzkjDgrQHm" data-title="堆" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -353,7 +518,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/" data-id="cuid9B8r5OhwqexEtYyNGTCrU" data-title="二叉树、AVL树" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/" data-id="cuid7kduescDBfZ4jlZw7Fy_o" data-title="二叉树、AVL树" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -426,7 +591,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="cuidsJlfQcES6QTxT-RWZvZAR" data-title="string函数、.与-&gt;区别、哈希表" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="cuidpjtGituSvI8q8jw57kn5g" data-title="string函数、.与-&gt;区别、哈希表" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -483,7 +648,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/free%E3%80%81%E6%A0%88%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E6%A0%88%E5%A0%86%E5%86%85%E5%AD%98%E3%80%81%E9%98%9F%E5%88%97/" data-id="cuidZXsXfxWbJKvrl7bqAfLv3" data-title="free、栈、列表、栈堆内存、队列" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/free%E3%80%81%E6%A0%88%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E6%A0%88%E5%A0%86%E5%86%85%E5%AD%98%E3%80%81%E9%98%9F%E5%88%97/" data-id="cuid0V0ELTBNIKID9yS5NLaAX" data-title="free、栈、列表、栈堆内存、队列" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -535,7 +700,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95%E3%80%81scanf%E3%80%81%E5%9B%9E%E8%BD%A6%E7%AC%A6%E6%B8%85%E7%90%86/" data-id="cuid_YEuzRDq2y8bAJMArcNZr" data-title="数组索引、scanf、回车符清理" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95%E3%80%81scanf%E3%80%81%E5%9B%9E%E8%BD%A6%E7%AC%A6%E6%B8%85%E7%90%86/" data-id="cuidfox0mIoWK30f2UChpjeTy" data-title="数组索引、scanf、回车符清理" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -602,7 +767,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E3%80%81%E8%BE%93%E5%85%A5%E3%80%81%E9%93%BE%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84%E3%80%81assert%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93/" data-id="cuidwsEPPPqN4CN-z5VkLVXrL" data-title="动态分配、输入、链表、数组、assert、结构体" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E3%80%81%E8%BE%93%E5%85%A5%E3%80%81%E9%93%BE%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84%E3%80%81assert%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93/" data-id="cuidUYXUTjdqxzjc7KnV2emuQ" data-title="动态分配、输入、链表、数组、assert、结构体" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -659,7 +824,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9A%8F%E6%9C%BA%E6%95%B0%E3%80%81%E5%8D%A0%E4%BD%8D%E7%AC%A6%E3%80%81%E7%BC%93%E5%86%B2%E5%8C%BA(%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96)/" data-id="cuideMqaNDec1c7K7rGXgwKEu" data-title="随机数、占位符、缓冲区(数据获取)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9A%8F%E6%9C%BA%E6%95%B0%E3%80%81%E5%8D%A0%E4%BD%8D%E7%AC%A6%E3%80%81%E7%BC%93%E5%86%B2%E5%8C%BA(%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96)/" data-id="cuid6ZxDb1v_ISGBpHKngJSot" data-title="随机数、占位符、缓冲区(数据获取)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -709,11 +874,15 @@
       <ul>
         
           <li>
-            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/2nd/">2nd</a>
+            <a href="/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/3rd/">DCL语句(权限控制)、函数</a>
           </li>
         
           <li>
-            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/1st/">1st</a>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/DML%E8%AF%AD%E5%8F%A5(%E5%AD%97%E6%AE%B5)%E3%80%81DQL%E8%AF%AD%E5%8F%A5(%E6%9F%A5%E8%AF%A2)/">DML语句(字段)、DQL语句(查询)</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/SQL%E7%9B%B8%E5%85%B3%E6%A6%82%E8%BF%B0%E3%80%81DDL%E8%AF%AD%E5%8F%A5(%E5%BA%93%E3%80%81%E8%A1%A8)/">SQL相关概述、DDL语句(库、表)</a>
           </li>
         
           <li>
@@ -722,10 +891,6 @@
         
           <li>
             <a href="/2026/07/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91%E3%80%81AVL%E6%A0%91/">二叉树、AVL树</a>
-          </li>
-        
-          <li>
-            <a href="/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/">string函数、.与-&gt;区别、哈希表</a>
           </li>
         
       </ul>
