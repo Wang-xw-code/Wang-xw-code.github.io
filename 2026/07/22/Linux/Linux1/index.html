@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Linux1 | fluid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="查找命令which命令which 命令 – 查看所使用的一系列命令的程序文件的存放位置 find命令 find 起始路径 -name &quot;被查找文件名&quot; – 查找指定的文件(按照文件名) find  起始路径 -size +&#x2F;- n[K&#x2F;M&#x2F;G] +&#x2F;-表示大于或小于 n表示大小数字 K&#x2F;M&#x2F;G表示大小单位 – KB&#x2F;MB&#x2F;GB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux1">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/07/22/Linux/Linux1/index.html">
+<meta property="og:site_name" content="fluid">
+<meta property="og:description" content="查找命令which命令which 命令 – 查看所使用的一系列命令的程序文件的存放位置 find命令 find 起始路径 -name &quot;被查找文件名&quot; – 查找指定的文件(按照文件名) find  起始路径 -size +&#x2F;- n[K&#x2F;M&#x2F;G] +&#x2F;-表示大于或小于 n表示大小数字 K&#x2F;M&#x2F;G表示大小单位 – KB&#x2F;MB&#x2F;GB">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-07-22T01:32:03.000Z">
+<meta property="article:modified_time" content="2026-07-22T03:23:38.591Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="fluid" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">fluid</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wang-xw-code.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Linux/Linux1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/22/Linux/Linux1/" class="article-date">
+  <time class="dt-published" datetime="2026-07-22T01:32:03.000Z" itemprop="datePublished">2026-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Linux1
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="查找命令"><a href="#查找命令" class="headerlink" title="查找命令"></a>查找命令</h1><h2 id="which命令"><a href="#which命令" class="headerlink" title="which命令"></a>which命令</h2><p><code>which 命令</code> – 查看所使用的一系列命令的程序文件的存放位置</p>
+<h2 id="find命令"><a href="#find命令" class="headerlink" title="find命令"></a>find命令</h2><ol>
+<li><code>find 起始路径 -name &quot;被查找文件名&quot;</code> – 查找指定的文件(按照文件名)</li>
+<li><code>find  起始路径 -size +/- n[K/M/G]</code><ul>
+<li>+&#x2F;-表示大于或小于</li>
+<li>n表示大小数字</li>
+<li>K&#x2F;M&#x2F;G表示大小单位 – KB&#x2F;MB&#x2F;GB</li>
+</ul>
+</li>
+</ol>
+<h1 id="grep命令-–-过滤文件行"><a href="#grep命令-–-过滤文件行" class="headerlink" title="grep命令 – 过滤文件行"></a>grep命令 – 过滤文件行</h1><p><code>grep [-n] 关键字 文件路径</code> – 从文件中通过关键字过滤文件行</p>
+<ul>
+<li>选项-n可选，表示在结果中显示匹配的行的行号</li>
+<li>关键字必填，表示要包含的关键字，使用双引号(“”)圈起来</li>
+<li>文件路径必填，表示要过滤内容的文件路径</li>
+</ul>
+<h1 id="wc命令-–-用于数量统计"><a href="#wc命令-–-用于数量统计" class="headerlink" title="wc命令 – 用于数量统计"></a>wc命令 – 用于数量统计</h1><p><code>wc [-c/-m/-l/-w] 文件路径</code> – 不选选项则显示行数、单词数、字节数+文件名</p>
+<ul>
+<li>-c – 统计bytes数量</li>
+<li>-m – 统计字符数量</li>
+<li>-l – 统计行数</li>
+<li>-w – 统计单词数量</li>
+</ul>
+<h1 id="管道符”-”"><a href="#管道符”-”" class="headerlink" title="管道符”|”"></a>管道符”|”</h1><p>将管道符左边命令的结果作为右边命令的输入，例<code>cat test.txt | grep itheima</code></p>
+<h1 id="echo命令"><a href="#echo命令" class="headerlink" title="echo命令"></a>echo命令</h1><p><code>echo &quot;输出的内容&quot;</code> — 在命令行内输出指定内容</p>
+<h1 id="反引号符"><a href="#反引号符" class="headerlink" title="反引号符(&#96;&#96;)"></a>反引号符(&#96;&#96;)</h1><p>将反引号包围的内容作为命令执行，而非普通字符，如<code>echo pwd</code>vs<code>echo `pwd` </code></p>
+<h1 id="重定向符-与"><a href="#重定向符-与" class="headerlink" title="重定向符(&gt;与&gt;&gt;)"></a>重定向符(&gt;与&gt;&gt;)</h1><ol>
+<li>&gt; – 将左侧命令的结果，覆盖写入到符号右侧指定的文件之中</li>
+<li>&gt;&gt; – 将左侧命令的结果，追加写入到符号右侧指定的文件之中</li>
+</ol>
+<h1 id="tail命令"><a href="#tail命令" class="headerlink" title="tail命令"></a>tail命令</h1><p><code>tail [-f -num] Linux路径</code> – 查看文件尾部内容，跟踪文件的最新更改</p>
+<ul>
+<li>参数Linux表示被跟踪的文件路径</li>
+<li>-f表示持续跟踪 – 开了多个命令提示行，自动更新尾部内容</li>
+<li>-num指定查看尾部多少行，不填默认10行 – num是一个具体的数字，不是单词num</li>
+</ul>
+<h1 id="vi-vim编辑器"><a href="#vi-vim编辑器" class="headerlink" title="vi&#x2F;vim编辑器"></a>vi&#x2F;vim编辑器</h1><h2 id="三种工作模式"><a href="#三种工作模式" class="headerlink" title="三种工作模式"></a>三种工作模式</h2><ol>
+<li><p>模式简介</p>
+<ol>
+<li>命令模式:所有敲击的按键编辑器都理解为命令，以命令驱动执行不同的功能</li>
+<li>输入模式:此模式下，可以对文件内容进行自由编辑</li>
+<li>底线命令模式:通常用于文件的保存、退出</li>
+</ol>
+</li>
+<li><p>模式转换<br>通过vim进入命令模式，敲击i进入输入模式；敲击Esc退出输入模式到命令模式；敲击:进入底线命令模式；输入wq保存文件并退出vim编辑器</p>
+</li>
+<li><p>相关快捷键</p>
+<ul>
+<li>命令模式:<ul>
+<li>&#x2F; – 进入搜索模式，n向下继续搜索，N向上继续搜索</li>
+<li>……</li>
+</ul>
+</li>
+<li>底线命令模式: <ul>
+<li>wq – 保存并退出</li>
+<li>q – 仅退出</li>
+<li>q! – 强制退出</li>
+<li>w – 仅保存</li>
+<li>set nu – 显示行号</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><ol>
+<li><code>vim 文件路径</code> – 进入vim编辑器编辑文件<ul>
+<li>如果文件路径表示的文件不存在，则新建文件进行编辑</li>
+<li>进入的是命令模式</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wang-xw-code.github.io/2026/07/22/Linux/Linux1/" data-id="cuidLEU3GK8_rF9aeGPazFxFX" data-title="Linux1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/07/21/Linux/Linux/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Linux</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ARM/">ARM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C%E6%8C%87%E9%92%88/">C指针</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/07/22/Linux/Linux1/">Linux1</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/21/Linux/Linux/">Linux</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/21/ARM/ARM/">ARM</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/21/C%E6%8C%87%E9%92%88/C%E6%8C%87%E9%92%88/">C指针</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/20/%E6%95%B0%E6%8D%AE%E5%BA%93/SQLite%E6%95%B0%E6%8D%AE%E5%BA%93/">SQLite数据库</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
