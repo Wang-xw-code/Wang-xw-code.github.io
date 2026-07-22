@@ -71,6 +71,136 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-数据结构/string函数、点与箭头访问区别、哈希表" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/" class="article-date">
+  <time class="dt-published" datetime="2026-07-10T01:30:14.000Z" itemprop="datePublished">2026-07-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/">string函数、.与-&gt;区别、哈希表</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="关于string-h头文件"><a href="#关于string-h头文件" class="headerlink" title="关于string.h头文件"></a>关于string.h头文件</h1><ol>
+<li><code>strlen(...)</code>获取字符串长度。只关注在某一片内存之中从开始到\0这一块的长度，故传入一个字符串的首地址的char*类型的参数也能够达到获取这个字符串长度的作用。</li>
+<li><code>strcpy(...，...)</code>将后者赋值给前者，包括字符串结束标志符\0。但并不会检查目的地的内存是否能够完全存储后者的数据，所以在之前的哈希表代码之中通过<code>malloc(strlen(val)+1)</code>动态分配好了内存。</li>
+<li><code>strcat(...,...)</code>字符串拼接，将后者拼到前面的字符串上。</li>
+<li><code>strcmp(...,...)</code>比较两个字符串的大小(ASCII码)。在C语言中不能用<code>if(str1==str2)</code>判断相等否，&#x3D;&#x3D;比较的是内存地址而不是字符。</li>
+</ol>
+<h1 id="与-的区别"><a href="#与-的区别" class="headerlink" title=".与-&gt;的区别"></a>.与-&gt;的区别</h1><p>使用场景分为结构体普通变量和结构体指针变量，对于同样的Student结构体Student stu使用.访问，如<code>stu.id</code>；而Student* stu则用<code>stu-&gt;id</code>访问。</p>
+<h1 id="指针理解"><a href="#指针理解" class="headerlink" title="指针理解"></a>指针理解</h1><p>无论什么类型的指针本质上都是8个字节的内存，用于存放地址，前面的类型决定了跨步的距离，p[i]挪动的内存距离，或者说通过中括号[]解引用或者*解引用后访问的肉体类型。</p>
+<p>指针[]：目标内存地址&#x3D;指针存储的首地址+(中括号里的下标index*指针指向的目标类型的内存大小)。</p>
+<h1 id="哈希冲突、扩容与链式地址"><a href="#哈希冲突、扩容与链式地址" class="headerlink" title="哈希冲突、扩容与链式地址"></a>哈希冲突、扩容与链式地址</h1><p>输入空间往往远大于输出空间，理论上存在多个输入对应相同输出的情况，称为”哈希冲突”。</p>
+<p>负载因子判断是否需要进行哈希扩容，通过哈希表元素数量数以桶数量，在java中超过0.75就会触发哈希扩容。</p>
+<p>当哈希表容量增大时多个键被分配到同一个值的概率降低，类似与数组的扩容，在数据迁移的时候效率低下，且需要重新计算键值对的存储位置。</p>
+<p>链式地址本质将原本存储Pair的桶数组换成存储链表，将相同索引的数据依次链接下去，查找的时候先根据哈希函数访问到头节点，然后对比键key，进而找到目标键值对。缺点在于占用空间大(指针)，同时查询效率低(链表)。</p>
+<h1 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h1><p>对于很长的key，可以使用取模操作将之缩减到几位数之中，避免存储两个11位的key，要开辟一个很大的数组存放，但只存储两个，空间浪费严重。</p>
+<h1 id="懒删除、开放寻址-都不能删除"><a href="#懒删除、开放寻址-都不能删除" class="headerlink" title="懒删除、开放寻址(都不能删除)"></a>懒删除、开放寻址(都不能删除)</h1><ol>
+<li>线性探测：</li>
+</ol>
+<p>添加：通过哈希函数计算桶索引，若发现桶内已有元素，则向后线性遍历(步长为1)至找到空桶，将元素插入其中。</p>
+<p>查找：若发现哈希冲突，使用相同步长向后遍历到找到对应元素；如果遇到空桶，元素不在哈希表中，返回 None。</p>
+<p>但容易产生“聚集现象”。数组中连续被占用的位置越长，哈希冲<br>突的可能性越大，形成恶性循环，导致增删查改效率劣化。</p>
+<p>且不能在开放寻址哈希表中直接删除元素。删除元素会在数组内产生一个空桶None ，当查询元素时，线性探测到该空桶就会返回，因此在该空桶之下的元素都无法再被访问到，程序误判这些元素不存在。</p>
+<p>可采用懒删除：不从哈希表中移除元素，利用常量TOMBSTONE标记桶。在该机制下，None和TOMBSTONE都代表空桶，都可以放置键值对。但线性探测到TOMBSTONE时应该继续遍历。</p>
+<p>但懒删除可能会加速哈希表的性能退化。每次删除操作都会产生一个删除标记，随着TOMBSTONE的增加。为此，考虑在线性探测中记录遇到的首个TOMBSTONE的索引，并将搜索到的目标元素与该TOMBSTONE交换位置。当每次查询或添加元素时，元素会被移动至距离理想位置（探测起始点）更近的桶，优化查询效率。</p>
+<ol start="2">
+<li>平方探测：</li>
+</ol>
+<p>跳过的步长为1、4、9……，一定程度上缓解线性探测的聚集效应。</p>
+<ol start="3">
+<li>多次哈希：</li>
+</ol>
+<p>使用多个哈希函数，如果第一个函数出现冲突，尝试第二个，知道插入元素</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wang-xw-code.github.io/2026/07/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/string%E5%87%BD%E6%95%B0%E3%80%81%E7%82%B9%E4%B8%8E%E7%AE%AD%E5%A4%B4%E8%AE%BF%E9%97%AE%E5%8C%BA%E5%88%AB%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/" data-id="cuidFJg7dyoDKvWNcw06Ylulh" data-title="string函数、.与-&gt;区别、哈希表" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-数据结构/free、栈、列表、栈堆内存、队列" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/free%E3%80%81%E6%A0%88%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E6%A0%88%E5%A0%86%E5%86%85%E5%AD%98%E3%80%81%E9%98%9F%E5%88%97/" class="article-date">
+  <time class="dt-published" datetime="2026-07-09T01:36:20.000Z" itemprop="datePublished">2026-07-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/07/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/free%E3%80%81%E6%A0%88%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E6%A0%88%E5%A0%86%E5%86%85%E5%AD%98%E3%80%81%E9%98%9F%E5%88%97/">free、栈、列表、栈堆内存、队列</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="free的使用方法"><a href="#free的使用方法" class="headerlink" title="free的使用方法"></a>free的使用方法</h1><p>使用malloc开辟了一块内存地址，在之后的释放过程中可以free(arr)，而不能是free(arr[i])，应为arr[i]是某个数据类型的数据，并不是动态开辟的内存空间。</p>
+<h1 id="栈和队列的链表与数组实现"><a href="#栈和队列的链表与数组实现" class="headerlink" title="栈和队列的链表与数组实现"></a>栈和队列的链表与数组实现</h1><ol>
+<li>栈和队列均会存储数据，不过数据的形式以链表的单个节点或数组的一个内存空间为载体，故在栈或队列的结构体声明中会存储链表节点或者数组的地址，用来存放数据。</li>
+<li>数组实现时内存的释放可用size是否等于-1判断，如果是链表则和NULL进行判断，两个是否为空的判断条件有所不同。</li>
+</ol>
+<h1 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h1><p>约等于动态数组，可存在扩容操作。</p>
+<h1 id="栈和堆"><a href="#栈和堆" class="headerlink" title="栈和堆"></a>栈和堆</h1><ol>
+<li>栈内存的特点为快但是小，普通变量的声明在栈内存上<code>int a=10</code>，当函数运行结束，大括号<code>{}</code>闭合的时候此函数所有的栈变量均会全部销毁。</li>
+<li>堆内存的特点为大但需手动管理，在调用<code>malloc()</code>或<code>calloc()</code>的时候会在堆内存中划出一定的内存。但堆内存不会自动销毁，只有使用free()的时候才会消失。故使用以上函数一定要注意堆内存的释放，避免产生大量垃圾内存。同时堆内存是通过指针来间接访问的。</li>
+</ol>
+<h1 id="队列与栈的数组实现的区别"><a href="#队列与栈的数组实现的区别" class="headerlink" title="队列与栈的数组实现的区别"></a>队列与栈的数组实现的区别</h1><p>队列在pop操作上队列会通过front指向队首元素的索引，同时用size记录队列长度，定义rear&#x3D;front+size，这里计算出来的rear指向队尾元素之后的下一个位置。故数组中元素的有效区间为<code>[front,rear-1]</code>，故在出入队的时候要考虑front、size、rear的更新。但若到数组尾部，则无法继续移动，故引入环形数组，当front或rear越过数组的尾部时，回到数组头部重新遍历(通过取余操作实现)。</p>
+<p>产生这个的问题在于栈只有尾巴在动(先进后出)，数组的头不动，只有尾巴增减；而队列(先进先出)可能头减，又或者尾增，实际存储元素的范围需要定义，同时数组内存的占用率不是100%，从而引入环形数组。</p>
+<p><code>int rear=(q-&gt;front+q-&gt;size)%q-&gt;capacity;</code>为push中的核心操作，依靠取余操作，当rear走到数组尽头时能自动绕回数组头部，从而实现环形数组。</p>
+<p><code>q-&gt;front=(q-&gt;front+1)%q-&gt;capacity;</code>也是pop中的不同操作。</p>
+<h1 id="双向队列"><a href="#双向队列" class="headerlink" title="双向队列"></a>双向队列</h1><p>即可以在头部添加删除也可以在尾部进行上述操作。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wang-xw-code.github.io/2026/07/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/free%E3%80%81%E6%A0%88%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E6%A0%88%E5%A0%86%E5%86%85%E5%AD%98%E3%80%81%E9%98%9F%E5%88%97/" data-id="cuidl89tQLeQBo9r9pWFA8P14" data-title="free、栈、列表、栈堆内存、队列" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-数据结构/数组索引、scanf、回车符清理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95%E3%80%81scanf%E3%80%81%E5%9B%9E%E8%BD%A6%E7%AC%A6%E6%B8%85%E7%90%86/" class="article-date">
@@ -111,7 +241,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95%E3%80%81scanf%E3%80%81%E5%9B%9E%E8%BD%A6%E7%AC%A6%E6%B8%85%E7%90%86/" data-id="cuid08Py7Y71z0dieFPUOOo2y" data-title="数组索引、scanf、回车符清理" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95%E3%80%81scanf%E3%80%81%E5%9B%9E%E8%BD%A6%E7%AC%A6%E6%B8%85%E7%90%86/" data-id="cuid0TaUV6GR0R-z1HR3e5kHK" data-title="数组索引、scanf、回车符清理" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -178,7 +308,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E3%80%81%E8%BE%93%E5%85%A5%E3%80%81%E9%93%BE%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84%E3%80%81assert%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93/" data-id="cuidmeSRLHUHugN5xuQHuhqRP" data-title="动态分配、输入、链表、数组、assert、结构体" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E3%80%81%E8%BE%93%E5%85%A5%E3%80%81%E9%93%BE%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84%E3%80%81assert%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93/" data-id="cuidAYZU638gjKgMKiuSa8i63" data-title="动态分配、输入、链表、数组、assert、结构体" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -235,7 +365,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9A%8F%E6%9C%BA%E6%95%B0%E3%80%81%E5%8D%A0%E4%BD%8D%E7%AC%A6%E3%80%81%E7%BC%93%E5%86%B2%E5%8C%BA(%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96)/" data-id="cuid30r4KMuBTaJxsoGefg29c" data-title="随机数、占位符、缓冲区(数据获取)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9A%8F%E6%9C%BA%E6%95%B0%E3%80%81%E5%8D%A0%E4%BD%8D%E7%AC%A6%E3%80%81%E7%BC%93%E5%86%B2%E5%8C%BA(%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96)/" data-id="cuidRfglxBFkoGWC_vdMxhb6s" data-title="随机数、占位符、缓冲区(数据获取)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -262,7 +392,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C%E6%8C%87%E9%92%88/">C指针</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ARM/">ARM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C%E6%8C%87%E9%92%88/">C指针</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li></ul>
     </div>
   </div>
 
@@ -290,6 +420,14 @@
       <ul>
         
           <li>
+            <a href="/2026/07/21/Linux/Linux/">Linux</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/21/ARM/ARM/">ARM</a>
+          </li>
+        
+          <li>
             <a href="/2026/07/21/C%E6%8C%87%E9%92%88/C%E6%8C%87%E9%92%88/">C指针</a>
           </li>
         
@@ -299,14 +437,6 @@
         
           <li>
             <a href="/2026/07/20/%E6%95%B0%E6%8D%AE%E5%BA%93/%E5%87%BD%E6%95%B0/">函数</a>
-          </li>
-        
-          <li>
-            <a href="/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/DCL%E8%AF%AD%E5%8F%A5(%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6)/">DCL语句(权限控制)</a>
-          </li>
-        
-          <li>
-            <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/DML%E8%AF%AD%E5%8F%A5(%E5%AD%97%E6%AE%B5)%E3%80%81DQL%E8%AF%AD%E5%8F%A5(%E6%9F%A5%E8%AF%A2)/">DML语句(字段)、DQL语句(查询)</a>
           </li>
         
       </ul>
