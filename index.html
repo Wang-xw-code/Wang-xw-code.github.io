@@ -71,9 +71,158 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Linux/Linux1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Linux/Linux系统管理：root用户、用户与用户组、权限控制" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/22/Linux/Linux1/" class="article-date">
+    <a href="/2026/07/22/Linux/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%EF%BC%9Aroot%E7%94%A8%E6%88%B7%E3%80%81%E7%94%A8%E6%88%B7%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E3%80%81%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" class="article-date">
+  <time class="dt-published" datetime="2026-07-22T03:24:31.000Z" itemprop="datePublished">2026-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/07/22/Linux/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%EF%BC%9Aroot%E7%94%A8%E6%88%B7%E3%80%81%E7%94%A8%E6%88%B7%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E3%80%81%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/">Linux系统管理：root用户、用户与用户组、权限控制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="root用户-–-超级管理员"><a href="#root用户-–-超级管理员" class="headerlink" title="root用户 – 超级管理员"></a>root用户 – 超级管理员</h1><ol>
+<li><p>root用户介绍:<br>root用户拥有最大的系统操作权限(在根目录下创建文件夹)；普通用户的权限，一般在其HOME目录内是不受限的，一旦出了HOME目录，大多数地方普通用户仅有只读和执行权限，无修改权限</p>
+</li>
+<li><p>权限切换:</p>
+<ol>
+<li>su(Switch User)与exit命令<br> <code>su [-] [用户名]</code></li>
+</ol>
+<p> -符号是可选的，表示是否在切换用户后加载环境变量，建议带上；</p>
+<p> 用户名省略表示切换到root用户，通过exit命令可退回上一个用户或快捷键control + d；</p>
+<p> 使用普通用户切换到其他用户需要输入密码，而root用户切换到其他用户无需密码，可直接切换；</p>
+<ol start="2">
+<li>临时赋予权限:<br> <code>sudo 其他命令</code></li>
+</ol>
+<p> 在其他命令之前带上sudo即可为这一条命令赋予临时的root权限;</p>
+<p> 但并不是所有的用户都有权力使用sudo，需要为普通用户配置sudo认证;</p>
+<ol start="3">
+<li>为普通用户配置sudo认证<br> 切换到root用户，执行visudo命令(会自动通过vi编辑器打开&#x2F;elc&#x2F;sudoers)，在文件的最后添加(用户名 ALL&#x3D;(ALL)      NOPASSWD: ALL),然后通过wq保存退出(中间的空格是一个tab制表符生成的)</li>
+</ol>
+<p> 删除普通用户的sudo权限直接删除增加的代码即可</p>
+</li>
+</ol>
+<h1 id="用户、用户组"><a href="#用户、用户组" class="headerlink" title="用户、用户组"></a>用户、用户组</h1><ol>
+<li>相关说明<br>Linux系统可以配置多个用户，配置多个用户组，将用户添加到多个用户组之中</li>
+</ol>
+<p>Linux中关于权限的管控级别分为针对用户的权限控制和针对用户组的权限控制</p>
+<ol start="2">
+<li><p>用户组管理(需要在root用户下执行)</p>
+<ol>
+<li>用户组<ol>
+<li>创建用户组<br>  <code>groupadd 用户组名</code></li>
+<li>删除用户组<br> <code>groupdel 用户组名</code></li>
+</ol>
+</li>
+<li>用户与用户组<ol>
+<li><code>useradd [-g -d] 用户名</code> –创建用户</li>
+</ol>
+<ul>
+<li>-g指定用户的组，不指定-g，会创建同名组并自动加入</li>
+<li>-d指定用户HOME路径，不指定HOME路径默认在&#x2F;home&#x2F;用户名中</li>
+</ul>
+<ol start="2">
+<li><code>userdel [-r] 用户名</code> – 删除用户</li>
+</ol>
+<ul>
+<li>-r删除用户的HOME路径，不使用-r删除时HOME目录保留</li>
+</ul>
+<ol start="3">
+<li><code>id [用户名]</code> – 查看用户所属组</li>
+<li><code>usermod -aG 用户组 用户名</code> – 将指定用户加入到指定的用户组之中</li>
+</ol>
+</li>
+<li>整体检索<ol>
+<li><code>getent password</code> – 查看当前系统有哪些用户，能够获取如下七份数据</li>
+</ol>
+<ul>
+<li>用户名：密码(显示为x)：用户ID：组ID：描述信息(无用)：HOME目录：执行终端(默认bash)</li>
+</ul>
+<ol start="2">
+<li><code>getent group</code> – 查看当前系统中有哪些用户组，能够获取如下三份数据</li>
+</ol>
+<ul>
+<li>组名称：组认证(显示为x)：组ID</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>权限说明</p>
+<ol>
+<li>通过ls -l可以列表形式查看内容，并显示权限细节(文件、文件夹的权限控制信息    文件、文件夹所属用户    文件、文件夹所属用户组)</li>
+<li><code>drwxr-xr-x</code></li>
+</ol>
+<ul>
+<li>开头-表示文件d表示文件夹l表示软连接</li>
+<li>之后三个为一组，rwx哪里没有哪里就是-，如r-w，r–，r为read读取权限，w代表写权限，x代表执行权限</li>
+<li>三小组权限按顺序为所属用户权限、所属用户组权限、其他用户权限</li>
+</ul>
+</li>
+<li><p>权限管理</p>
+<ol>
+<li><code>chmod [-R] 权限 文件或文件夹</code> – 修改文件&#x2F;文件夹的权限信息，-R表示对文件夹内的全部内容应用同样的操作，如<code>chmod u=rwx,g=rx,o=x hello.txt</code>中u表示user所属用户权限，g表示group组权限，o表示other其他用户权限</li>
+<li>权限的数字序号 – 2的210次方相加，-就跳过<ul>
+<li>0:— …</li>
+<li>1:–x 2的0次方</li>
+<li>2:-w- 2的1次方</li>
+<li>3:-wx 2的1次方+2的0次方</li>
+<li>4:r– …</li>
+<li>5:r-w …</li>
+<li>6:rw- …</li>
+<li>7:rwx …</li>
+</ul>
+</li>
+<li>chmod中的权限可用数字序号代替，如<code>chmod 751 hello.txt</code></li>
+</ol>
+</li>
+<li><p>chown命令 – 修改文件、文件夹的所属用户和用户组，需要root权限</p>
+<ul>
+<li><code>chown [-R] [用户] [:] [用户组] [文件或文件夹]</code><ul>
+<li>-R表示对文件夹内全部内容应用相同操作</li>
+<li>用户为修改后的所属用户</li>
+<li>用户组为修改后的用户组</li>
+<li>:用来分隔修改后的用户和修改后的用户组</li>
+</ul>
+</li>
+<li>例:<code>chown root:itheima hello.txt</code>将hello.txt所属用户修改为root，用户组修改为itheima，如果仅需修改所属用户组，则为<code>chown :itheima hello.txt</code></li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wang-xw-code.github.io/2026/07/22/Linux/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%EF%BC%9Aroot%E7%94%A8%E6%88%B7%E3%80%81%E7%94%A8%E6%88%B7%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E3%80%81%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" data-id="cuid4Wk0uo8dacu12F6Kuu3ac" data-title="Linux系统管理：root用户、用户与用户组、权限控制" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Linux/Linux常用命令：查找、过滤、统计与编辑指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/22/Linux/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%EF%BC%9A%E6%9F%A5%E6%89%BE%E3%80%81%E8%BF%87%E6%BB%A4%E3%80%81%E7%BB%9F%E8%AE%A1%E4%B8%8E%E7%BC%96%E8%BE%91%E6%8C%87%E5%8D%97/" class="article-date">
   <time class="dt-published" datetime="2026-07-22T01:32:03.000Z" itemprop="datePublished">2026-07-22</time>
 </a>
     
@@ -89,7 +238,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/22/Linux/Linux1/">Linux1</a>
+      <a class="p-name article-title" href="/2026/07/22/Linux/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%EF%BC%9A%E6%9F%A5%E6%89%BE%E3%80%81%E8%BF%87%E6%BB%A4%E3%80%81%E7%BB%9F%E8%AE%A1%E4%B8%8E%E7%BC%96%E8%BE%91%E6%8C%87%E5%8D%97/">Linux常用命令：查找、过滤、统计与编辑指南</a>
     </h1>
   
 
@@ -173,7 +322,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/22/Linux/Linux1/" data-id="cuidLEU3GK8_rF9aeGPazFxFX" data-title="Linux1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/22/Linux/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%EF%BC%9A%E6%9F%A5%E6%89%BE%E3%80%81%E8%BF%87%E6%BB%A4%E3%80%81%E7%BB%9F%E8%AE%A1%E4%B8%8E%E7%BC%96%E8%BE%91%E6%8C%87%E5%8D%97/" data-id="cuidNUTcvi-CriJJ9e1gZ0yC8" data-title="Linux常用命令：查找、过滤、统计与编辑指南" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -185,9 +334,9 @@
 
 
   
-    <article id="post-Linux/Linux" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Linux/Linux基础命令：路径与文件目录操作指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/21/Linux/Linux/" class="article-date">
+    <a href="/2026/07/21/Linux/Linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4%EF%BC%9A%E8%B7%AF%E5%BE%84%E4%B8%8E%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97/" class="article-date">
   <time class="dt-published" datetime="2026-07-21T02:06:20.000Z" itemprop="datePublished">2026-07-21</time>
 </a>
     
@@ -203,7 +352,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/21/Linux/Linux/">Linux</a>
+      <a class="p-name article-title" href="/2026/07/21/Linux/Linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4%EF%BC%9A%E8%B7%AF%E5%BE%84%E4%B8%8E%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97/">Linux基础命令：路径与文件目录操作指南</a>
     </h1>
   
 
@@ -277,7 +426,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/21/Linux/Linux/" data-id="cuidCl5uQG1zOyXJC1IpNSGZb" data-title="Linux" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/21/Linux/Linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4%EF%BC%9A%E8%B7%AF%E5%BE%84%E4%B8%8E%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97/" data-id="cuidanOgA2fGmxDIwWNsLm26w" data-title="Linux基础命令：路径与文件目录操作指南" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -319,7 +468,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/21/ARM/ARM/" data-id="cuid1FpcMXoimWhb7D274w8kU" data-title="ARM" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/21/ARM/ARM/" data-id="cuidSSc9DkZEqVKdr1OQgYY37" data-title="ARM" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -361,7 +510,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/21/C%E6%8C%87%E9%92%88/C%E6%8C%87%E9%92%88/" data-id="cuidKv_pjZWvSf7kiI0QgD783" data-title="C指针" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/21/C%E6%8C%87%E9%92%88/C%E6%8C%87%E9%92%88/" data-id="cuidlaR6MqQldJv-4HOcm9Euv" data-title="C指针" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -410,7 +559,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/20/%E6%95%B0%E6%8D%AE%E5%BA%93/SQLite%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="cuidIXs_fPKLUCqkpZTW-buj2" data-title="SQLite数据库" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/20/%E6%95%B0%E6%8D%AE%E5%BA%93/SQLite%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="cuidA7O-Lr6uwOi0d2w32f3DD" data-title="SQLite数据库" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -422,9 +571,9 @@
 
 
   
-    <article id="post-数据库/函数" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-数据库/MySQL数据库：常用函数、完整性约束与多表复杂查询指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/20/%E6%95%B0%E6%8D%AE%E5%BA%93/%E5%87%BD%E6%95%B0/" class="article-date">
+    <a href="/2026/07/20/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9A%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E3%80%81%E5%AE%8C%E6%95%B4%E6%80%A7%E7%BA%A6%E6%9D%9F%E4%B8%8E%E5%A4%9A%E8%A1%A8%E5%A4%8D%E6%9D%82%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%8D%97/" class="article-date">
   <time class="dt-published" datetime="2026-07-20T01:04:36.000Z" itemprop="datePublished">2026-07-20</time>
 </a>
     
@@ -440,7 +589,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/20/%E6%95%B0%E6%8D%AE%E5%BA%93/%E5%87%BD%E6%95%B0/">函数</a>
+      <a class="p-name article-title" href="/2026/07/20/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9A%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E3%80%81%E5%AE%8C%E6%95%B4%E6%80%A7%E7%BA%A6%E6%9D%9F%E4%B8%8E%E5%A4%9A%E8%A1%A8%E5%A4%8D%E6%9D%82%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%8D%97/">MySQL数据库：常用函数、完整性约束、事务与多表复杂查询指南</a>
     </h1>
   
 
@@ -566,7 +715,7 @@ COMMIT; -- 如果上述操作都成功，提交事务，永久保存
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/20/%E6%95%B0%E6%8D%AE%E5%BA%93/%E5%87%BD%E6%95%B0/" data-id="cuidka4Sdvm02eyxTwEq8GWLr" data-title="函数" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/20/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9A%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E3%80%81%E5%AE%8C%E6%95%B4%E6%80%A7%E7%BA%A6%E6%9D%9F%E4%B8%8E%E5%A4%9A%E8%A1%A8%E5%A4%8D%E6%9D%82%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%8D%97/" data-id="cuid6XXN3QXPgZ8BNrfcHy3bC" data-title="MySQL数据库：常用函数、完整性约束、事务与多表复杂查询指南" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -578,9 +727,9 @@ COMMIT; -- 如果上述操作都成功，提交事务，永久保存
 
 
   
-    <article id="post-数据库/DCL语句(权限控制)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-数据库/MySQL数据库：DCL权限控制语句与用户管理指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/DCL%E8%AF%AD%E5%8F%A5(%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6)/" class="article-date">
+    <a href="/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9ADCL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5%E4%B8%8E%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%E6%8C%87%E5%8D%97/" class="article-date">
   <time class="dt-published" datetime="2026-07-17T06:30:14.000Z" itemprop="datePublished">2026-07-17</time>
 </a>
     
@@ -596,7 +745,7 @@ COMMIT; -- 如果上述操作都成功，提交事务，永久保存
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/DCL%E8%AF%AD%E5%8F%A5(%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6)/">DCL语句(权限控制)</a>
+      <a class="p-name article-title" href="/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9ADCL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5%E4%B8%8E%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%E6%8C%87%E5%8D%97/">MySQL数据库：DCL权限控制语句与用户管理指南</a>
     </h1>
   
 
@@ -634,11 +783,11 @@ COMMIT; -- 如果上述操作都成功，提交事务，永久保存
 </ol>
 </li>
 </ol>
-<h1 id="函数-–-一段可以直接被调用的代码"><a href="#函数-–-一段可以直接被调用的代码" class="headerlink" title="函数 – 一段可以直接被调用的代码"></a>函数 – 一段可以直接被调用的代码</h1>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/DCL%E8%AF%AD%E5%8F%A5(%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6)/" data-id="cuid_TYnKvqQn3uKt7ljTw5md" data-title="DCL语句(权限控制)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/17/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9ADCL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5%E4%B8%8E%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%E6%8C%87%E5%8D%97/" data-id="cuidf0sEETPkUOw2Q_TzkaJvh" data-title="MySQL数据库：DCL权限控制语句与用户管理指南" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -650,9 +799,9 @@ COMMIT; -- 如果上述操作都成功，提交事务，永久保存
 
 
   
-    <article id="post-数据库/DML语句(字段)、DQL语句(查询)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-数据库/MySQL数据库：DML数据操作与DQL高级查询指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/DML%E8%AF%AD%E5%8F%A5(%E5%AD%97%E6%AE%B5)%E3%80%81DQL%E8%AF%AD%E5%8F%A5(%E6%9F%A5%E8%AF%A2)/" class="article-date">
+    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9ADML%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E4%B8%8EDQL%E9%AB%98%E7%BA%A7%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%8D%97/" class="article-date">
   <time class="dt-published" datetime="2026-07-16T08:37:36.000Z" itemprop="datePublished">2026-07-16</time>
 </a>
     
@@ -668,7 +817,7 @@ COMMIT; -- 如果上述操作都成功，提交事务，永久保存
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/DML%E8%AF%AD%E5%8F%A5(%E5%AD%97%E6%AE%B5)%E3%80%81DQL%E8%AF%AD%E5%8F%A5(%E6%9F%A5%E8%AF%A2)/">DML语句(字段)、DQL语句(查询)</a>
+      <a class="p-name article-title" href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9ADML%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E4%B8%8EDQL%E9%AB%98%E7%BA%A7%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%8D%97/">DML语句(字段)、DQL语句(查询)</a>
     </h1>
   
 
@@ -760,7 +909,7 @@ COMMIT; -- 如果上述操作都成功，提交事务，永久保存
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/DML%E8%AF%AD%E5%8F%A5(%E5%AD%97%E6%AE%B5)%E3%80%81DQL%E8%AF%AD%E5%8F%A5(%E6%9F%A5%E8%AF%A2)/" data-id="cuidetPt1XCub7fX1epbzFK8c" data-title="DML语句(字段)、DQL语句(查询)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9ADML%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E4%B8%8EDQL%E9%AB%98%E7%BA%A7%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%8D%97/" data-id="cuidRUHYVVCeS6egBUlbIBo3A" data-title="DML语句(字段)、DQL语句(查询)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -772,9 +921,9 @@ COMMIT; -- 如果上述操作都成功，提交事务，永久保存
 
 
   
-    <article id="post-数据库/SQL相关概述、DDL语句(库、表)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-数据库/MySQL数据库：SQL概述与DDL数据定义语言（库与表操作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/SQL%E7%9B%B8%E5%85%B3%E6%A6%82%E8%BF%B0%E3%80%81DDL%E8%AF%AD%E5%8F%A5(%E5%BA%93%E3%80%81%E8%A1%A8)/" class="article-date">
+    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9ASQL%E6%A6%82%E8%BF%B0%E4%B8%8EDDL%E6%95%B0%E6%8D%AE%E5%AE%9A%E4%B9%89%E8%AF%AD%E8%A8%80%EF%BC%88%E5%BA%93%E4%B8%8E%E8%A1%A8%E6%93%8D%E4%BD%9C/" class="article-date">
   <time class="dt-published" datetime="2026-07-16T02:51:42.000Z" itemprop="datePublished">2026-07-16</time>
 </a>
     
@@ -790,7 +939,7 @@ COMMIT; -- 如果上述操作都成功，提交事务，永久保存
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/SQL%E7%9B%B8%E5%85%B3%E6%A6%82%E8%BF%B0%E3%80%81DDL%E8%AF%AD%E5%8F%A5(%E5%BA%93%E3%80%81%E8%A1%A8)/">SQL相关概述、DDL语句(库、表)</a>
+      <a class="p-name article-title" href="/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9ASQL%E6%A6%82%E8%BF%B0%E4%B8%8EDDL%E6%95%B0%E6%8D%AE%E5%AE%9A%E4%B9%89%E8%AF%AD%E8%A8%80%EF%BC%88%E5%BA%93%E4%B8%8E%E8%A1%A8%E6%93%8D%E4%BD%9C/">SQL相关概述、DDL语句(库、表)</a>
     </h1>
   
 
@@ -885,51 +1034,7 @@ COMMIT; -- 如果上述操作都成功，提交事务，永久保存
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/SQL%E7%9B%B8%E5%85%B3%E6%A6%82%E8%BF%B0%E3%80%81DDL%E8%AF%AD%E5%8F%A5(%E5%BA%93%E3%80%81%E8%A1%A8)/" data-id="cuidNTV8_4dE_REXlYdmYa6Q8" data-title="SQL相关概述、DDL语句(库、表)" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-数据结构/堆" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/" class="article-date">
-  <time class="dt-published" datetime="2026-07-16T01:25:04.000Z" itemprop="datePublished">2026-07-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/">堆</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h1><p>满足特定条件的完全二叉树，可分为小顶堆(任意节点的值&lt;&#x3D;子节点的值)和大顶堆(任意节点的值&gt;&#x3D;子节点的值)。根节点称为堆顶，底层最靠右的为堆低。大顶堆的堆顶元素最大，小顶堆的堆顶值最小。</p>
-<p>堆通常用于实现优先队列，即具有优先级排序的队列。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/" data-id="cuid7z6XeYrbU4j5TyfvgXiHD" data-title="堆" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wang-xw-code.github.io/2026/07/16/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9ASQL%E6%A6%82%E8%BF%B0%E4%B8%8EDDL%E6%95%B0%E6%8D%AE%E5%AE%9A%E4%B9%89%E8%AF%AD%E8%A8%80%EF%BC%88%E5%BA%93%E4%B8%8E%E8%A1%A8%E6%93%8D%E4%BD%9C/" data-id="cuid_oI78slCtOmC_fiR73kKp" data-title="SQL相关概述、DDL语句(库、表)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -984,11 +1089,15 @@ COMMIT; -- 如果上述操作都成功，提交事务，永久保存
       <ul>
         
           <li>
-            <a href="/2026/07/22/Linux/Linux1/">Linux1</a>
+            <a href="/2026/07/22/Linux/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%EF%BC%9Aroot%E7%94%A8%E6%88%B7%E3%80%81%E7%94%A8%E6%88%B7%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E3%80%81%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/">Linux系统管理：root用户、用户与用户组、权限控制</a>
           </li>
         
           <li>
-            <a href="/2026/07/21/Linux/Linux/">Linux</a>
+            <a href="/2026/07/22/Linux/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%EF%BC%9A%E6%9F%A5%E6%89%BE%E3%80%81%E8%BF%87%E6%BB%A4%E3%80%81%E7%BB%9F%E8%AE%A1%E4%B8%8E%E7%BC%96%E8%BE%91%E6%8C%87%E5%8D%97/">Linux常用命令：查找、过滤、统计与编辑指南</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/21/Linux/Linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4%EF%BC%9A%E8%B7%AF%E5%BE%84%E4%B8%8E%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97/">Linux基础命令：路径与文件目录操作指南</a>
           </li>
         
           <li>
@@ -997,10 +1106,6 @@ COMMIT; -- 如果上述操作都成功，提交事务，永久保存
         
           <li>
             <a href="/2026/07/21/C%E6%8C%87%E9%92%88/C%E6%8C%87%E9%92%88/">C指针</a>
-          </li>
-        
-          <li>
-            <a href="/2026/07/20/%E6%95%B0%E6%8D%AE%E5%BA%93/SQLite%E6%95%B0%E6%8D%AE%E5%BA%93/">SQLite数据库</a>
           </li>
         
       </ul>
