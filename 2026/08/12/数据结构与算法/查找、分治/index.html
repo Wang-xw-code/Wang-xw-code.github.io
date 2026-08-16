@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>搜索、分治、回溯 | 嵌入式study</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="搜索线性搜索如暴力枚举、广度优先搜索、深度优先搜索 二分查找利用数据的有序性，每轮缩小一半搜索范围，应注意边界范围 – 也可用于寻找插入位置 12345678910111213141516171819202122232425int search(int* nums, int target)&#123;    int right &#x3D; sizeof(nums)&#x2F;sizeof(int) - 1;&#x2F;&#x2F;传参">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搜索、分治、回溯">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/08/12/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%9F%A5%E6%89%BE%E3%80%81%E5%88%86%E6%B2%BB/index.html">
+<meta property="og:site_name" content="嵌入式study">
+<meta property="og:description" content="搜索线性搜索如暴力枚举、广度优先搜索、深度优先搜索 二分查找利用数据的有序性，每轮缩小一半搜索范围，应注意边界范围 – 也可用于寻找插入位置 12345678910111213141516171819202122232425int search(int* nums, int target)&#123;    int right &#x3D; sizeof(nums)&#x2F;sizeof(int) - 1;&#x2F;&#x2F;传参">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wang-xw-code.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-08-12T08:09:32.000Z">
+<meta property="article:modified_time" content="2026-08-15T11:06:51.893Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wang-xw-code.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "搜索、分治、回溯",
+  "url": "https://wang-xw-code.github.io/2026/08/12/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%9F%A5%E6%89%BE%E3%80%81%E5%88%86%E6%B2%BB/",
+  "image": "https://wang-xw-code.github.io/img/butterfly-icon.png",
+  "datePublished": "2026-08-12T08:09:32.000Z",
+  "dateModified": "2026-08-15T11:06:51.893Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "John Doe",
+      "url": "https://wang-xw-code.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wang-xw-code.github.io/2026/08/12/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%9F%A5%E6%89%BE%E3%80%81%E5%88%86%E6%B2%BB/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css?v=5.6.2"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '搜索、分治、回溯',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div class="bg-animation" id="web_bg"></div><script>(() => {
+  const arr = ["background-image: url(/url(/img/bj1.png));","background-image: url(/url(/img/bj2.png));","background-image: url(/url(/img/bj3.png));"]
+  const webBgDiv = document.getElementById('web_bg')
+
+  const setRandomBg = () => {
+    webBgDiv.style = arr[Math.floor(Math.random() * arr.length)]
+    requestAnimationFrame(() => webBgDiv.classList.add('bg-animation'))
+  }
+
+  document.addEventListener('pjax:send', () => {
+    webBgDiv.style = ''
+    webBgDiv.classList.remove('bg-animation')
+  })
+
+  document.addEventListener('pjax:complete', setRandomBg)
+  document.addEventListener('DOMContentLoaded', setRandomBg)
+})()
+</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">嵌入式study</span></a><a class="nav-page-title" href="/"><span class="site-name">搜索、分治、回溯</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">搜索、分治、回溯</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2026-08-12T08:09:32.000Z" title="Created 2026-08-12 16:09:32">2026-08-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-08-15T11:06:51.893Z" title="Updated 2026-08-15 19:06:51">2026-08-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h1><h2 id="线性搜索"><a href="#线性搜索" class="headerlink" title="线性搜索"></a>线性搜索</h2><p>如暴力枚举、广度优先搜索、深度优先搜索</p>
+<h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><p>利用数据的有序性，每轮缩小一半搜索范围，应注意边界范围 – 也可用于寻找插入位置</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">search</span><span class="params">(<span class="type">int</span>* nums, <span class="type">int</span> target)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> right = <span class="keyword">sizeof</span>(nums)/<span class="keyword">sizeof</span>(<span class="type">int</span>) - <span class="number">1</span>;<span class="comment">//传参会使得数组退化为指针，故长度需要通过main函数传进来</span></span><br><span class="line">    <span class="type">int</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> end = searchJudge(nums, target, right, left);</span><br><span class="line">    <span class="keyword">return</span> end;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">searchJudge</span><span class="params">(<span class="type">int</span>* nums, <span class="type">int</span> target, <span class="type">int</span> right, <span class="type">int</span> left)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(left == right)<span class="keyword">return</span> INT_MAX;<span class="comment">//左右索引相同时还剩最后一个元素，不能直接认为没有</span></span><br><span class="line">    <span class="type">int</span> len = <span class="keyword">sizeof</span>(nums[right] - nums[left])/<span class="keyword">sizeof</span>(<span class="type">int</span>);<span class="comment">//应该是right-left+1</span></span><br><span class="line">    <span class="type">int</span> mid = left + len/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(nums[mid] &lt; target)</span><br><span class="line">    &#123;</span><br><span class="line">        left = mid + <span class="number">1</span>;</span><br><span class="line">        mid = searchJudge(nums, target, right, left);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(nums[mid] &gt; target)</span><br><span class="line">    &#123;</span><br><span class="line">        right = mid - <span class="number">1</span>;</span><br><span class="line">        mid = searchJudge(nums, target, right, left);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> mid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//标准化代码</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">binarySearch</span><span class="params">(<span class="type">int</span>* nums, <span class="type">int</span> len, <span class="type">int</span> target)</span><span class="comment">//这里就是在main函数中计算完len再传入回来</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>, j = len - <span class="number">1</span>;<span class="comment">//初始的左右界限</span></span><br><span class="line">    <span class="keyword">while</span>(i &lt;= j)<span class="comment">//等于的情况还剩一个数据，不能直接认为不存在</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> m = i + (j - i)/<span class="number">2</span>;<span class="comment">//计算中间索引</span></span><br><span class="line">        <span class="keyword">if</span>(nums[m] &lt; target) i = m + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(nums[m] &gt; target) j = m - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> m;<span class="comment">//刚好等于目标值</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>; <span class="comment">//代表没找到，只要上面while中两个相等的情况没出现，则数据一定不在里面</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="哈希查找"><a href="#哈希查找" class="headerlink" title="哈希查找"></a>哈希查找</h2><p>利用哈希表将搜索数据和目标数据建立为键值对映射，从而实现查询操作</p>
+<h2 id="树查找"><a href="#树查找" class="headerlink" title="树查找"></a>树查找</h2><p>在特定的树结构(二叉搜索树)中，基于比较节点值来快速排除节点，从而定位目标元素</p>
+<h1 id="分治算法"><a href="#分治算法" class="headerlink" title="分治算法"></a>分治算法</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>将问题分解为多个子问题，从已知的子问题开始从底至顶将子问题的解合并，达到解决原问题的思想。可用于算法的时间简化(排序)，此思想亦称分而治之</p>
+<p>参考以下依据判断问题是否适合</p>
+<ol>
+<li>问题可以分解</li>
+<li>子问题是独立的</li>
+<li>子问题的解可以合并</li>
+</ol>
+<h1 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h1><h2 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h2><p>一种通过穷举来解决问题的方法，暴力搜索所有可能的解决方案，直到找到结果，涉及尝试与回退操作。通常用于深度优先搜索</p>
+<h2 id="剪枝"><a href="#剪枝" class="headerlink" title="剪枝"></a>剪枝</h2><p>复杂的回溯问题通常包含一些约束条件，若不满足，可提前返回，不再继续搜索</p>
+<h2 id="启发式搜索"><a href="#启发式搜索" class="headerlink" title="启发式搜索"></a>启发式搜索</h2><p>在搜索过程中引入一些策略值或估计值，从而优先搜索最有可能产生有效解的策略</p>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><ol>
+<li>优点：适用于无法预测哪些选择可生成有效的解</li>
+<li>缺点：时间成本较高；在递归调用中需要保存当前状态，当深度很大时，空间需求较高</li>
+</ol>
+<p>故引入剪枝与启发式搜索优化效率</p>
+<h1 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h1><h2 id="概念-2"><a href="#概念-2" class="headerlink" title="概念"></a>概念</h2><p>将一个问题分解为一系列更小的子问题，并通过存储子问题的解来避免进行重复计算，从而提升时间效率</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://wang-xw-code.github.io">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://wang-xw-code.github.io/2026/08/12/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%9F%A5%E6%89%BE%E3%80%81%E5%88%86%E6%B2%BB/">https://wang-xw-code.github.io/2026/08/12/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%9F%A5%E6%89%BE%E3%80%81%E5%88%86%E6%B2%BB/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/08/11/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/" title="排序"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">排序</div></div><div class="info-2"><div class="info-item-1">排序算法选择排序 – 时间复杂度n2，空间复杂度为1开启一个循环，每轮从未排序区间选择最小的元素，将其放到已排序区间的末尾。 冒泡排序 – 平均时间复杂度n2，空间复杂度为1通过连续比较与交换相邻元素实现排序，例如通过两两比较将最大值移动到最右端。 如果某轮冒泡没有执行交换操作，则数组已完成排序，数据已经排好顺序，可直接返回结果。可增加标志位flag检测此种情况。 插入排序 – 时间复杂度n2，空间复杂度为1在未排序的区间选择一个基准元素，将该元素从已排序区间某侧进入，进行大小比较，将这个元素插入到正确的位置，直至操作完未排序区间元素 快速排序&#x2F;哨兵划分 – 时间复杂度为nlogn，空间复杂度为n(要进行n次函数调用，每次调用都会在栈开辟一块空间，记录此次函数调用的信息，该空间为栈帧)选择数组中的某个元素作为基准数，小于的移到一侧，大于的移到另一侧。本质将较长数组的排序简化为两个较短数组的排序。 选取数组最左端元素作为基准数，初始化两个指针i(左)和j(右)分别指向数组的两端；使用i从左向右寻找第一个比基准数大的元素，使用j从右向左寻找第一个比基准数小的元素，交换两个元...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">John Doe</div><div class="author-info-description">嘻嘻嘻嘻嘻嘻~</div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">这是一个猎奇的学习博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2"><span class="toc-number">1.</span> <span class="toc-text">搜索</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E6%90%9C%E7%B4%A2"><span class="toc-number">1.1.</span> <span class="toc-text">线性搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="toc-number">1.2.</span> <span class="toc-text">二分查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE"><span class="toc-number">1.3.</span> <span class="toc-text">哈希查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91%E6%9F%A5%E6%89%BE"><span class="toc-number">1.4.</span> <span class="toc-text">树查找</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">分治算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9E%E6%BA%AF"><span class="toc-number">3.</span> <span class="toc-text">回溯</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5-1"><span class="toc-number">3.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%AA%E6%9E%9D"><span class="toc-number">3.2.</span> <span class="toc-text">剪枝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8F%91%E5%BC%8F%E6%90%9C%E7%B4%A2"><span class="toc-number">3.3.</span> <span class="toc-text">启发式搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">3.4.</span> <span class="toc-text">优缺点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="toc-number">4.</span> <span class="toc-text">动态规划</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5-2"><span class="toc-number">4.1.</span> <span class="toc-text">概念</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/12/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%9F%A5%E6%89%BE%E3%80%81%E5%88%86%E6%B2%BB/" title="搜索、分治、回溯">搜索、分治、回溯</a><time datetime="2026-08-12T08:09:32.000Z" title="Created 2026-08-12 16:09:32">2026-08-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/11/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/" title="排序">排序</a><time datetime="2026-08-11T03:04:40.000Z" title="Created 2026-08-11 11:04:40">2026-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/05/Linux/1/" title="1">1</a><time datetime="2026-08-05T00:40:53.000Z" title="Created 2026-08-05 08:40:53">2026-08-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/07/23/Linux/Linux3/" title="Linux3">Linux3</a><time datetime="2026-07-23T01:27:14.000Z" title="Created 2026-07-23 09:27:14">2026-07-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/07/22/Linux/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%EF%BC%9Aroot%E7%94%A8%E6%88%B7%E3%80%81%E7%94%A8%E6%88%B7%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E3%80%81%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" title="Linux系统管理：root用户、用户与用户组、权限控制">Linux系统管理：root用户、用户与用户组、权限控制</a><time datetime="2026-07-22T03:24:31.000Z" title="Created 2026-07-22 11:24:31">2026-07-22</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By John Doe</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.6.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.6.2"></script><script src="/js/main.js?v=5.6.2"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.5" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
