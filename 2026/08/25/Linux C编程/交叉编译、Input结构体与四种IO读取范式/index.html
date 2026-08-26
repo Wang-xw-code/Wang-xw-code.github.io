@@ -1,0 +1,282 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>交叉编译、Linux Input接口与四种I/O读取范式 | 嵌入式study</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="交叉编译概念及需求在一个平台上编译的代码，通过交叉编译能够生成在另一个不同架构平台上运行的可执行程序或库文件。例如面对x86架构编译出来的程序无法被arm架构所识别。而嵌入式终端存储小，CPU效率低，默认不安装GCC等编译器及依赖头文件 格式arm-buildroot-linux-gnueabihf-gcc为工具链前缀+gcc 常见交叉工具链前缀 arm-linux-gnueabihf-适用于目标">
+<meta property="og:type" content="article">
+<meta property="og:title" content="交叉编译、Linux Input接口与四种I&#x2F;O读取范式">
+<meta property="og:url" content="https://wang-xw-code.github.io/2026/08/25/Linux%20C%E7%BC%96%E7%A8%8B/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E3%80%81Input%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%9B%9B%E7%A7%8DIO%E8%AF%BB%E5%8F%96%E8%8C%83%E5%BC%8F/index.html">
+<meta property="og:site_name" content="嵌入式study">
+<meta property="og:description" content="交叉编译概念及需求在一个平台上编译的代码，通过交叉编译能够生成在另一个不同架构平台上运行的可执行程序或库文件。例如面对x86架构编译出来的程序无法被arm架构所识别。而嵌入式终端存储小，CPU效率低，默认不安装GCC等编译器及依赖头文件 格式arm-buildroot-linux-gnueabihf-gcc为工具链前缀+gcc 常见交叉工具链前缀 arm-linux-gnueabihf-适用于目标">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wang-xw-code.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-08-25T03:27:39.000Z">
+<meta property="article:modified_time" content="2026-08-26T13:07:00.489Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wang-xw-code.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "交叉编译、Linux Input接口与四种I/O读取范式",
+  "url": "https://wang-xw-code.github.io/2026/08/25/Linux%20C%E7%BC%96%E7%A8%8B/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E3%80%81Input%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%9B%9B%E7%A7%8DIO%E8%AF%BB%E5%8F%96%E8%8C%83%E5%BC%8F/",
+  "image": "https://wang-xw-code.github.io/img/butterfly-icon.png",
+  "datePublished": "2026-08-25T03:27:39.000Z",
+  "dateModified": "2026-08-26T13:07:00.489Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "John Doe",
+      "url": "https://wang-xw-code.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wang-xw-code.github.io/2026/08/25/Linux%20C%E7%BC%96%E7%A8%8B/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E3%80%81Input%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%9B%9B%E7%A7%8DIO%E8%AF%BB%E5%8F%96%E8%8C%83%E5%BC%8F/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css?v=5.6.2"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '交叉编译、Linux Input接口与四种I/O读取范式',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div class="bg-animation" id="web_bg"></div><script>(() => {
+  const arr = ["background-image: url(/url(/img/bj1.png));","background-image: url(/url(/img/bj2.png));","background-image: url(/url(/img/bj3.png));"]
+  const webBgDiv = document.getElementById('web_bg')
+
+  const setRandomBg = () => {
+    webBgDiv.style = arr[Math.floor(Math.random() * arr.length)]
+    requestAnimationFrame(() => webBgDiv.classList.add('bg-animation'))
+  }
+
+  document.addEventListener('pjax:send', () => {
+    webBgDiv.style = ''
+    webBgDiv.classList.remove('bg-animation')
+  })
+
+  document.addEventListener('pjax:complete', setRandomBg)
+  document.addEventListener('DOMContentLoaded', setRandomBg)
+})()
+</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">嵌入式study</span></a><a class="nav-page-title" href="/"><span class="site-name">交叉编译、Linux Input接口与四种I/O读取范式</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">交叉编译、Linux Input接口与四种I/O读取范式</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2026-08-25T03:27:39.000Z" title="Created 2026-08-25 11:27:39">2026-08-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-08-26T13:07:00.489Z" title="Updated 2026-08-26 21:07:00">2026-08-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Linux-C%E7%BC%96%E7%A8%8B/">Linux C编程</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="交叉编译"><a href="#交叉编译" class="headerlink" title="交叉编译"></a>交叉编译</h1><h2 id="概念及需求"><a href="#概念及需求" class="headerlink" title="概念及需求"></a>概念及需求</h2><p>在一个平台上编译的代码，通过交叉编译能够生成在另一个不同架构平台上运行的可执行程序或库文件。例如面对x86架构编译出来的程序无法被arm架构所识别。而嵌入式终端存储小，CPU效率低，默认不安装GCC等编译器及依赖头文件</p>
+<h2 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h2><p><code>arm-buildroot-linux-gnueabihf-gcc</code>为工具链前缀+gcc</p>
+<h2 id="常见交叉工具链前缀"><a href="#常见交叉工具链前缀" class="headerlink" title="常见交叉工具链前缀"></a>常见交叉工具链前缀</h2><ol>
+<li><code>arm-linux-gnueabihf-</code>适用于目标架构32位ARMv7</li>
+<li><code>aarch64-linux-gnu-</code>适用于目标架构64为ARMv8&#x2F;v9</li>
+</ol>
+<h2 id="实际场景"><a href="#实际场景" class="headerlink" title="实际场景"></a>实际场景</h2><p>简单程序可直接通过命令行调用交叉编译器编译(arm-linux-gcc -o test test.c)，但企业级开源第三方库通常包含庞大的目录结构与复杂的依赖管理，必须使用自动化构建系统。常见为以下交叉编译方式</p>
+<ol>
+<li>传统Autotools架构(包含configure脚本)</li>
+</ol>
+<p><code>./configure --host=arm-buildroot-linux-gnueabihf --prefix=$PWD/tmp</code>其中<code>--host...-linux-</code>指定目标运行环境为ARM；<code>--prefix...</code>指定产物安装路径</p>
+<ol start="2">
+<li>CMake架构(包含CMakeLists.txt)</li>
+</ol>
+<p><code>cmake -B buile -DCMAKE_C_COMPILER=arm-linux-gnueabihf-gcc -DCMAKE_CXX_COMPILER=arm-linux-gnueabihf-g++ -DCMAKE_INSTALL_PREFIX=$PWD/tmp</code></p>
+<ol start="3">
+<li>……</li>
+</ol>
+<h1 id="交叉编译、Linux-Input接口与四种I-O读取范式"><a href="#交叉编译、Linux-Input接口与四种I-O读取范式" class="headerlink" title="交叉编译、Linux Input接口与四种I&#x2F;O读取范式"></a>交叉编译、Linux Input接口与四种I&#x2F;O读取范式</h1><h2 id="struct-input-event数据结构"><a href="#struct-input-event数据结构" class="headerlink" title="struct input_event数据结构"></a>struct input_event数据结构</h2><p>是Linux内核中专门用来描述和传输输入事件(内核用来抽象描述硬件设备产生的每一次操作的数据单元)的标准数据结构(定义在系统头文件&lt;linux&#x2F;input.h&gt;中)。当键盘、鼠标或触摸屏等硬件或者其他玩意(这里只研究硬件)产生了动作，内核驱动就会把该动作打包成一个或多个struct input_event结构，存入&#x2F;dev&#x2F;input&#x2F;eventX设备节点中</p>
+<p>结构体源码定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> &#123;</span></span><br><span class="line">    <span class="type">long</span> tv_sec;  <span class="comment">// 秒</span></span><br><span class="line">    <span class="type">long</span> tv_usec; <span class="comment">// 微秒</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">input_event</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">time</span>;</span> <span class="comment">// 事件发生的时间戳</span></span><br><span class="line">    __u16 type;          <span class="comment">// 事件类型（大类）</span></span><br><span class="line">    __u16 code;          <span class="comment">// 事件编码（具体哪一个按键/坐标轴）</span></span><br><span class="line">    __s32 value;         <span class="comment">// 事件取值（具体状态或数值）</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>time记录内核捕获到该硬件动作时的精确系统时间，应用层可以用于计算双击间隔、手势滑动速度等</li>
+<li>type指定事件的大类，常见的值有<ol>
+<li>EV_KEY (1)：按键&#x2F;按钮事件(如键盘、鼠标左右键、触摸屏按下&#x2F;抬起)</li>
+<li>EV_REL (2)：相对坐标事件(如鼠标移动、滚轮滚动)</li>
+<li>EV_ABS (3)：绝对坐标事件(触摸屏点击位置、游戏摇杆偏移)</li>
+<li>EV_SYN (0)：同步事件(相当于分隔符，表示以上这组事件打包发送完毕，可以更新UI了)</li>
+</ol>
+</li>
+<li>code作用在于type大类下，精确标明具体的硬件标识如：<ol>
+<li>type &#x3D;&#x3D; EV_KEY：code可以是KEY_A、KEY_ENTER、BTN_LEF(鼠标左键)等</li>
+<li>type &#x3D;&#x3D; EV_REL：code 可以是REL_X(X轴偏移)、REL_Y(Y轴偏移)</li>
+<li>type &#x3D;&#x3D; EV_ABS：code 可以是ABS_X(绝对X坐标)、ABS_Y(绝对Y坐标)</li>
+</ol>
+</li>
+<li>value记录动作的状态或动态变化值如：<ol>
+<li>按键事件(EV_KEY)下1为按下，0为松开，2为长按连发</li>
+<li>相对坐标(EV_REL)下表示相对偏移量，如+5表示向右移5个像素，-3表示向上移3个像素</li>
+<li>绝对坐标(EV_ABS)下表示触控点的物理坐标值，如X&#x3D;1024，Y&#x3D;768</li>
+</ol>
+</li>
+</ol>
+<h2 id="获取输入设备信息-ioctl机制-–-查查设备叫什么、支持什么按键等"><a href="#获取输入设备信息-ioctl机制-–-查查设备叫什么、支持什么按键等" class="headerlink" title="获取输入设备信息(ioctl机制) – 查查设备叫什么、支持什么按键等"></a>获取输入设备信息(ioctl机制) – 查查设备叫什么、支持什么按键等</h2><p>正式读取动态事件之前，&quot;通常&quot;需要通过ioctl命令获取设备自身的静态身份信息以及支持的操作集合，ioctl中EVIOCGNAME获取设备名称，EVIOCGID获取设备ID…</p>
+<h2 id="查询-非阻塞-与休眠唤醒-阻塞-方式读取"><a href="#查询-非阻塞-与休眠唤醒-阻塞-方式读取" class="headerlink" title="查询(非阻塞)与休眠唤醒(阻塞)方式读取"></a>查询(非阻塞)与休眠唤醒(阻塞)方式读取</h2><h3 id="休眠唤醒模式-阻塞IO"><a href="#休眠唤醒模式-阻塞IO" class="headerlink" title="休眠唤醒模式(阻塞IO)"></a>休眠唤醒模式(阻塞IO)</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>默认以open(path, O_RDWR)打开，若设备无数据，进程放入内核等待队列，状态转为TASK_INTERRUPTIBLE进入休眠，CPU占用率为0%。硬件产生中断后，内核唤醒进程并获取数据给应用层</p>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 阻塞模式读取</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">input_event</span> <span class="title">ev</span>;</span></span><br><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="comment">// 无事件发生时，程序卡在 read() 休眠</span></span><br><span class="line">    <span class="type">ssize_t</span> bytes = read(fd, &amp;ev, <span class="keyword">sizeof</span>(ev));</span><br><span class="line">    <span class="keyword">if</span> (bytes == <span class="keyword">sizeof</span>(ev) &amp;&amp; ev.type == EV_KEY) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Key Code: %d, Value: %d\n&quot;</span>, ev.code, ev.value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="阻塞底层逻辑"><a href="#阻塞底层逻辑" class="headerlink" title="阻塞底层逻辑"></a>阻塞底层逻辑</h4><p>阻塞并非由while循环所造成，当程序运行到<code>ssize_t bytes = read(fd, &amp;ev, sizeof(ev))</code>时，应用层调用read()，CPU被内核所控制，此时若&#x2F;dev&#x2F;input&#x2F;event0硬件缓冲区中没有数据，则内核将进程挂起(暂停运行)，并放入设备的休眠等待队列中，但此时read()函数并未返回，只有当硬件受到操作产生中断，内核接收到数据，才会将进程唤醒，内核对数据进行拷贝，read()函数返回</p>
+<h4 id="while循环读取"><a href="#while循环读取" class="headerlink" title="while循环读取"></a>while循环读取</h4><p>能够持续监控硬件的相关操作，例如手机电源键，系统后台存在一个专门监听按键的线程，当手机黑屏待机时线程卡在read()阻塞休眠，CPU占用率为0%，按下电源键产生硬件中断，read()被唤醒返回一个struct input_event，线程读取到该事件时点亮屏幕，渲染锁屏界面，处理完亮屏后循环重新进入下一次while，再次卡在read()阻塞休眠，等待下一次按动电源键</p>
+<h3 id="查询模式-非阻塞IO"><a href="#查询模式-非阻塞IO" class="headerlink" title="查询模式(非阻塞IO)"></a>查询模式(非阻塞IO)</h3><p>以open(path, O_RDWR | O_NONBLOCK)打开，调用read时，若有数据则立即返回，若无数据，内核不休眠，立即返回-1，并设置errno &#x3D; EAGAIN</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 非阻塞查询模式</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">input_event</span> <span class="title">ev</span>;</span></span><br><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="type">ssize_t</span> bytes = read(fd, &amp;ev, <span class="keyword">sizeof</span>(ev));</span><br><span class="line">    <span class="keyword">if</span> (bytes &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (errno == EAGAIN) &#123;</span><br><span class="line">            usleep(<span class="number">50000</span>); <span class="comment">// 假装处理其他业务，避免吃满 CPU</span></span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ev.type == EV_KEY) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Key Code: %d\n&quot;</span>, ev.code);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="POLL-SELECT方式读取-多路复用I-O"><a href="#POLL-SELECT方式读取-多路复用I-O" class="headerlink" title="POLL&#x2F;SELECT方式读取(多路复用I&#x2F;O)"></a>POLL&#x2F;SELECT方式读取(多路复用I&#x2F;O)</h3><p>应用层主线程主动调用poll()或select()，主线程在poll()处休眠等待，直到内核通知至少有一个设备有数据可读，主线程被唤醒，随后主动遍历各个文件描述符，找出有数据的设备并调用read()。适用于同时监控多个输出设备(例如同时监听键盘和触摸屏)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;poll.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/input.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span> <span class="title">fds</span>[2];</span></span><br><span class="line"></span><br><span class="line">    fds[<span class="number">0</span>].fd = open(<span class="string">&quot;/dev/input/event0&quot;</span>, O_RDONLY | O_NONBLOCK);</span><br><span class="line">    fds[<span class="number">0</span>].events = POLLIN;</span><br><span class="line"></span><br><span class="line">    fds[<span class="number">1</span>].fd = open(<span class="string">&quot;/dev/input/event1&quot;</span>, O_RDONLY | O_NONBLOCK);</span><br><span class="line">    fds[<span class="number">1</span>].events = POLLIN;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// 无数据时休眠；任意设备有数据时唤醒</span></span><br><span class="line">        <span class="type">int</span> ret = poll(fds, <span class="number">2</span>, <span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span> (ret &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (fds[i].revents &amp; POLLIN) &#123;</span><br><span class="line">                    <span class="class"><span class="keyword">struct</span> <span class="title">input_event</span> <span class="title">ev</span>;</span></span><br><span class="line">                    read(fds[i].fd, &amp;ev, <span class="keyword">sizeof</span>(ev));</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">&quot;Device %d Event: Type=%d Code=%d Value=%d\n&quot;</span>, </span><br><span class="line">                           i, ev.type, ev.code, ev.value);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    close(fds[<span class="number">0</span>].fd);</span><br><span class="line">    close(fds[<span class="number">1</span>].fd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="异步通知方式读取-FASYNC-SIGIO信号驱动"><a href="#异步通知方式读取-FASYNC-SIGIO信号驱动" class="headerlink" title="异步通知方式读取(FASYNC&#x2F;SIGIO信号驱动)"></a>异步通知方式读取(FASYNC&#x2F;SIGIO信号驱动)</h3><p>应用层不需要调用poll()去看守，主线程正常跑自己的死循环或业务逻辑。当设备有数据到来时，内核驱动主动向该进程发送SIGIO信号，强行打断主线程，跳转去执行注册好的信号处理函数，在处理函数中调用read()</p>
+<p>建立异步通知的三部曲</p>
+<ol>
+<li>注册信号handler:<code>signal(SIGIO, sig_handler);</code></li>
+<li>指定接收信号的属主进程:<code>fcntl(fd, F_SETOWN, getpid());</code></li>
+<li>使能驱动异步通知:<code>fcntl(fd, F_SETFL, flags | FASYNC);</code></li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/input.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> g_fd;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 信号处理函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">sigio_handler</span><span class="params">(<span class="type">int</span> sig)</span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">input_event</span> <span class="title">ev</span>;</span></span><br><span class="line">    <span class="keyword">while</span> (read(g_fd, &amp;ev, <span class="keyword">sizeof</span>(ev)) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (ev.type == EV_KEY) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;\n[Async Input] Key Code: %d, Value: %d\n&quot;</span>, ev.code, ev.value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    g_fd = open(<span class="string">&quot;/dev/input/event0&quot;</span>, O_RDONLY | O_NONBLOCK);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 三步曲</span></span><br><span class="line">    signal(SIGIO, sigio_handler);                  <span class="comment">// 1. 绑定函数</span></span><br><span class="line">    fcntl(g_fd, F_SETOWN, getpid());               <span class="comment">// 2. 绑定 PID</span></span><br><span class="line">    <span class="type">int</span> flags = fcntl(g_fd, F_GETFL);</span><br><span class="line">    fcntl(g_fd, F_SETFL, flags | FASYNC);          <span class="comment">// 3. 使能 FASYNC</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 主线程完全空出来做其他事</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Main thread working...\r&quot;</span>);</span><br><span class="line">        fflush(<span class="built_in">stdout</span>);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    close(g_fd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://wang-xw-code.github.io">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://wang-xw-code.github.io/2026/08/25/Linux%20C%E7%BC%96%E7%A8%8B/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E3%80%81Input%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%9B%9B%E7%A7%8DIO%E8%AF%BB%E5%8F%96%E8%8C%83%E5%BC%8F/">https://wang-xw-code.github.io/2026/08/25/Linux%20C%E7%BC%96%E7%A8%8B/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E3%80%81Input%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%9B%9B%E7%A7%8DIO%E8%AF%BB%E5%8F%96%E8%8C%83%E5%BC%8F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/08/25/Linux%20C%E7%BC%96%E7%A8%8B/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/" title="交叉编译、四种I/O读取范式及相关结构体"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">交叉编译、四种I/O读取范式及相关结构体</div></div><div class="info-2"><div class="info-item-1">交叉编译概念及需求在一个平台上编译的代码，通过交叉编译能够生成在另一个不同架构平台上运行的可执行程序或库文件。例如面对x86架构编译出来的程序无法被arm架构所识别。而嵌入式终端存储小，CPU效率低，默认不安装GCC等编译器及依赖头文件 格式arm-buildroot-linux-gnueabihf-gcc为工具链前缀+gcc 常见交叉工具链前缀 arm-linux-gnueabihf-适用于目标架构32位ARMv7 aarch64-linux-gnu-适用于目标架构64为ARMv8&#x2F;v9  实际场景简单程序可直接通过命令行调用交叉编译器编译(arm-linux-gcc -o test test.c)，但企业级开源第三方库通常包含庞大的目录结构与复杂的依赖管理，必须使用自动化构建系统。常见为以下交叉编译方式  传统Autotools架构(包含configure脚本)  ./configure --host=arm-buildroot-linux-gnueabihf --prefix=$PWD/tmp其中--host...-linux-指定目标运行环境为ARM；--pre...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">John Doe</div><div class="author-info-description">嘻嘻嘻嘻嘻嘻~</div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">这是一个猎奇的学习博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91"><span class="toc-number">1.</span> <span class="toc-text">交叉编译</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E5%8F%8A%E9%9C%80%E6%B1%82"><span class="toc-number">1.1.</span> <span class="toc-text">概念及需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E4%BA%A4%E5%8F%89%E5%B7%A5%E5%85%B7%E9%93%BE%E5%89%8D%E7%BC%80"><span class="toc-number">1.3.</span> <span class="toc-text">常见交叉工具链前缀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E5%9C%BA%E6%99%AF"><span class="toc-number">1.4.</span> <span class="toc-text">实际场景</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E3%80%81Linux-Input%E6%8E%A5%E5%8F%A3%E4%B8%8E%E5%9B%9B%E7%A7%8DI-O%E8%AF%BB%E5%8F%96%E8%8C%83%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">交叉编译、Linux Input接口与四种I&#x2F;O读取范式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#struct-input-event%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">2.1.</span> <span class="toc-text">struct input_event数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E8%BE%93%E5%85%A5%E8%AE%BE%E5%A4%87%E4%BF%A1%E6%81%AF-ioctl%E6%9C%BA%E5%88%B6-%E2%80%93-%E6%9F%A5%E6%9F%A5%E8%AE%BE%E5%A4%87%E5%8F%AB%E4%BB%80%E4%B9%88%E3%80%81%E6%94%AF%E6%8C%81%E4%BB%80%E4%B9%88%E6%8C%89%E9%94%AE%E7%AD%89"><span class="toc-number">2.2.</span> <span class="toc-text">获取输入设备信息(ioctl机制) – 查查设备叫什么、支持什么按键等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2-%E9%9D%9E%E9%98%BB%E5%A1%9E-%E4%B8%8E%E4%BC%91%E7%9C%A0%E5%94%A4%E9%86%92-%E9%98%BB%E5%A1%9E-%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%8F%96"><span class="toc-number">2.3.</span> <span class="toc-text">查询(非阻塞)与休眠唤醒(阻塞)方式读取</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%91%E7%9C%A0%E5%94%A4%E9%86%92%E6%A8%A1%E5%BC%8F-%E9%98%BB%E5%A1%9EIO"><span class="toc-number">2.3.1.</span> <span class="toc-text">休眠唤醒模式(阻塞IO)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">2.3.1.2.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%BB%E5%A1%9E%E5%BA%95%E5%B1%82%E9%80%BB%E8%BE%91"><span class="toc-number">2.3.1.3.</span> <span class="toc-text">阻塞底层逻辑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#while%E5%BE%AA%E7%8E%AF%E8%AF%BB%E5%8F%96"><span class="toc-number">2.3.1.4.</span> <span class="toc-text">while循环读取</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%A8%A1%E5%BC%8F-%E9%9D%9E%E9%98%BB%E5%A1%9EIO"><span class="toc-number">2.3.2.</span> <span class="toc-text">查询模式(非阻塞IO)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POLL-SELECT%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%8F%96-%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8I-O"><span class="toc-number">2.3.3.</span> <span class="toc-text">POLL&#x2F;SELECT方式读取(多路复用I&#x2F;O)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E9%80%9A%E7%9F%A5%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%8F%96-FASYNC-SIGIO%E4%BF%A1%E5%8F%B7%E9%A9%B1%E5%8A%A8"><span class="toc-number">2.3.4.</span> <span class="toc-text">异步通知方式读取(FASYNC&#x2F;SIGIO信号驱动)</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/25/Linux%20C%E7%BC%96%E7%A8%8B/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/" title="交叉编译、四种I/O读取范式及相关结构体">交叉编译、四种I/O读取范式及相关结构体</a><time datetime="2026-08-25T03:27:39.000Z" title="Created 2026-08-25 11:27:39">2026-08-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/25/Linux%20C%E7%BC%96%E7%A8%8B/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E3%80%81Input%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%9B%9B%E7%A7%8DIO%E8%AF%BB%E5%8F%96%E8%8C%83%E5%BC%8F/" title="交叉编译、Linux Input接口与四种I/O读取范式">交叉编译、Linux Input接口与四种I/O读取范式</a><time datetime="2026-08-25T03:27:39.000Z" title="Created 2026-08-25 11:27:39">2026-08-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/23/Linux%20C%E7%BC%96%E7%A8%8B/Framebuffer%E3%80%81%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA/" title="Framebuffer、点阵显示">Framebuffer、点阵显示</a><time datetime="2026-08-23T02:34:20.000Z" title="Created 2026-08-23 10:34:20">2026-08-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/19/Linux/Linux%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BE-man%E6%89%8B%E5%86%8C/" title="Linux命令查找-man手册">Linux命令查找-man手册</a><time datetime="2026-08-19T03:01:23.070Z" title="Created 2026-08-19 11:01:23">2026-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/19/Linux%20C%E7%BC%96%E7%A8%8B/%E6%96%87%E4%BB%B6IO%E3%80%81%E4%B8%80%E4%BA%9B%E6%96%B0%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="文件IO、一些新数据类型">文件IO、一些新数据类型</a><time datetime="2026-08-19T01:46:17.000Z" title="Created 2026-08-19 09:46:17">2026-08-19</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By John Doe</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.6.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.6.2"></script><script src="/js/main.js?v=5.6.2"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.5" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
